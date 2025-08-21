@@ -1,6 +1,6 @@
 ---
-title: "Quarto RevealJS Presentation Template"
-subtitle: "A clean and minimal presentation theme"
+title: "Pharmacokinetics/Pharmacodynamics (PK/PD) of Antimicrobials and Novel Agents"
+subtitle: "A workshop for graduate students, pharmacy students, and postdocs"
 format: 
   clean-revealjs:
     output-file: index.html
@@ -9,77 +9,13 @@ html-math-method:
   method: mathjax
   url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 author:
-  - name: Your Name
-    orcid: 0000-0000-0000-0000
-    email: your.email@domain.com
-    affiliations: Your Institution
+  - name: Jacob K. McPherson
+    orcid: 0000-0001-5486-4945
+    email: jacob@jacobkmcpherson.com
+    affiliations: University of Houston College of Pharmacy
 date: last-modified
 ---
 
-## Welcome to the Template!
+## Welcome to the Workshop!
 
 ### This template automatically renders and deploys
-
-This repository is set up as a template for creating Quarto RevealJS presentations with automatic deployment to GitHub Pages.
-
-- Every push to the main branch automatically renders the presentation
-- The rendered slides are deployed to GitHub Pages
-- You can view your presentation at: `https://[username].github.io/[repository-name]/`
-
-To use this template:
-1. Click "Use this template" on GitHub
-2. Clone your new repository
-3. Edit `template.qmd` with your content
-4. Push changes to trigger automatic deployment
-
-## Additional theme classes
-
-### Some extra things you can do with the clean theme
-
-Special classes for emphasis
-
-- `.alert` class for default emphasis, e.g. [important note]{.alert}.
-- `.fg` class for custom colour, e.g. [important note]{.fg style="--col: #e64173"}.
-- `.bg` class for custom background, e.g. [important note]{.bg style="--col: #e64173"}.
-
-Cross-references
-
-- `.button` class provides a Beamer-like button, e.g.
-[[Summary]{.button}](#sec-summary)
-
-## Template Features
-
-### Easy customization and automatic deployment
-
-This template is designed to be simple yet powerful:
-
-**Template Benefits:**
-- Automated deployment with every push
-- No manual setup required after initial configuration  
-- Clean, professional theme included
-- Responsive design works on all devices
-
-**Next Steps:**
-- Edit this file (`template.qmd`) with your content
-- Customize the theme colors in `_extensions/clean/clean.scss`
-- Add your own images to the repository
-- Push to GitHub and watch it deploy automatically!
-
-## Summary {#sec-summary}
-
-### Automated Quarto RevealJS Template
-
-This template provides everything you need to create and automatically deploy beautiful presentations:
-
-**Getting Started:**
-1. Use this repository as a template on GitHub
-2. Edit `template.qmd` with your presentation content  
-3. Push changes to automatically trigger deployment
-
-**Automatic Features:**
-- ✅ Renders presentation on every push to main
-- ✅ Deploys to GitHub Pages automatically
-- ✅ Uses the clean, minimalist theme
-- ✅ Responsive design for all devices
-
-**Live URL:** Your presentation will be available at `https://[username].github.io/[repo-name]/`
