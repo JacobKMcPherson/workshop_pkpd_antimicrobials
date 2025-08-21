@@ -4,11 +4,14 @@
 **Sponsored by:** Gulf Coast Consortia (GCC) Antimicrobial Resistance (AMR) Scholars Program  
 **Organizers:** 
 <a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob K. McPherson <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>, 
-Alex Kang, 
-Chetna Dureja, 
-Hossaena Samuel, 
-Ann Mckelvey  
-**Q/A Panel:** Taryn A. Eubank, more to be confirmed  
+<a href="https://orcid.org/0000-0001-5314-0961" target="_blank"> Alex Kang <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>, 
+<a href="https://orcid.org/0009-0001-8884-1298" target="_blank"> Chetna Dureja <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>, 
+<a href="https://orcid.org/0009-0009-0596-4996" target="_blank"> Hossaena Ayele <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>, 
+<a href="https://orcid.org/0000-0003-4767-8866" target="_blank"> Ann McKelvey <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>, 
+
+**Q/A Panel:**
+<a href="https://orcid.org/0000-0002-6645-406X" target="_blank"> Taryn A Eubank <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>,
+more to be confirmed  
 **Date & Location:** September 30th, 10:00 AM, Bioscience Research Collaborative, 6500 Main St, Houston, TX 77030  
 **Registration:** Eventbrite  
 
