@@ -39,7 +39,7 @@ This effort was inspired by a conversation:
 
 ## Resources
 
-- [Workshop agenda (README.md)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/blob/main/README.md)  
+- [Workshop agenda (README.md)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/blob/main/README.md#agenda-overview)  
 - [Scholars program](https://www.gulfcoastconsortia.org/home/research/antimicrobial-resistance/amr-scholars-program/)  
 
 ---
