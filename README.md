@@ -2,16 +2,21 @@
 ## A workshop for graduate students, pharmacy students, and postdocs
 
 **Sponsored by:** Gulf Coast Consortia (GCC) Antimicrobial Resistance (AMR) Scholars Program  
-**Organizers:** Jacob K. McPherson, Alex Kang, Chetna Dureja, Hossaena Samuel, Ann Mckelvey  
+**Organizers:** 
+<a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob K. McPherson <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>, 
+Alex Kang, 
+Chetna Dureja, 
+Hossaena Samuel, 
+Ann Mckelvey  
 **Q/A Panel:** Taryn A. Eubank, more to be confirmed  
 **Date & Location:** September 30th, 10:00 AM, Bioscience Research Collaborative, 6500 Main St, Houston, TX 77030  
 **Registration:** Eventbrite  
 
 
-[![Deploy Presentation](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml/badge.svg)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml)
-
-> 🚀 **[Launch the Live Quarto Presentation](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)**  
-> Hosted on GitHub Pages [![View Presentation](https://img.shields.io/badge/Quarto-Presentation-blue?logo=quarto)](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)
+> [![Deploy Presentation](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml/badge.svg)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml)
+> [![View Presentation](https://img.shields.io/badge/Quarto-Presentation-blue?logo=quarto)](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)
+> 
+> 🚀 **[Launch the Live Quarto Presentation](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)**  Hosted on GitHub Pages 
 
 
 ## Event Description
