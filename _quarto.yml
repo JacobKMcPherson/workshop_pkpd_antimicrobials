@@ -20,4 +20,4 @@ format:
       toggleNotesButton: true
       navigation: true
       buttons: true
-    footer: '<a href="https://github.com/JacobKMcPherson/template_quarto_presentation" target="_blank">🔗 View on GitHub</a>'
+    footer: '<a href="https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials" target="_blank">🔗 View on GitHub</a>'
