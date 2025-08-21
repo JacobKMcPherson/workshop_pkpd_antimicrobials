@@ -1,0 +1,13 @@
+project:
+  type: default
+  output-dir: .
+
+format:
+  clean-revealjs:
+    theme: [default, _extensions/clean/clean.scss]
+    menu:
+      side: left
+    slide-number: true
+    date-format: long
+    self-contained: false
+    output-file: index.html
