@@ -18,3 +18,6 @@ format:
       chalkColors: ["#FFFAAA", "#FFAAAA", "#AAAAFF"]
       toggleChalkboardButton: true
       toggleNotesButton: true
+      navigation: true
+      buttons: true
+    footer: '<a href="https://github.com/JacobKMcPherson/template_quarto_presentation" target="_blank">🔗 View on GitHub</a>'
