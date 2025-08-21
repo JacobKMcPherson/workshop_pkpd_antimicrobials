@@ -1,74 +1,44 @@
-# Quarto RevealJS Presentation Template
+# Pharmacokinetics/Pharmacodynamics (PK/PD) of Antimicrobials and Novel Agents
+## A workshop for graduate students, pharmacy students, and postdocs
 
-A template repository for creating beautiful, minimalist presentations using Quarto RevealJS with the clean theme. This template includes automatic rendering and deployment to GitHub Pages using GitHub Actions.
+**Sponsored by:** Gulf Coast Consortia (GCC) Antimicrobial Resistance (AMR) Scholars Program  
+**Organizers:** Jacob K. McPherson, Alex Kang, Chetna Dureja, Hossaena Samuel, Ann Mckelvey  
+**Q/A Panel:** Taryn A. Eubank, more to be confirmed  
+**Date & Location:** September 30th, 10:00 AM, Bioscience Research Collaborative, 6500 Main St, Houston, TX 77030  
+**Registration:** Eventbrite  
 
-[![Deploy Presentation](https://github.com/JacobKMcPherson/template_quarto_presentation/actions/workflows/render-and-deploy.yml/badge.svg)](https://github.com/JacobKMcPherson/template_quarto_presentation/actions/workflows/render-and-deploy.yml)
 
-## ✨ Features
+[![Deploy Presentation](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml/badge.svg)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml)
 
-- 🎨 **Clean Theme**: Minimalist and elegant presentation design inspired by Kyle's LaTeX template
-- 🚀 **Automatic Deployment**: GitHub Actions automatically renders and deploys your presentation
-- 📱 **Responsive**: Works perfectly on any device or display size
-- 🔧 **Easy Setup**: Just edit the `.qmd` file and push - everything else is handled automatically
-- 🌐 **GitHub Pages**: Your presentation is automatically published online
+> 🚀 **[Launch the Live Quarto Presentation](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)**  
+> Hosted on GitHub Pages [![View Presentation](https://img.shields.io/badge/Quarto-Presentation-blue?logo=quarto)](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)
 
-## 🚀 Quick Start
 
-1. **Use this template**: Click the "Use this template" button on GitHub
-2. **Clone your repository**: `git clone https://github.com/yourusername/your-repo-name.git`
-3. **Edit the presentation**: Modify `template.qmd` with your content
-4. **Enable GitHub Pages**: 
-   - Go to Settings → Pages
-   - Set Source to "GitHub Actions"
-5. **Push changes**: Your presentation will automatically build and deploy!
+## Event Description
 
-Your presentation will be available at: `https://yourusername.github.io/your-repo-name/`
+This workshop aims to introduce trainees to the fundamental principles of PK/PD, with a focus on antimicrobial agents and how these principles apply in the context of dose optimization and drug development.
 
-## 🎯 Live Example
+## Intended Audience
+Graduate students, pharmacy students, and postdoctoral fellows of microbiology, immunology, pharmaceutical sciences, and translational sciences.
 
-You can see this template in action at: [https://jacobkmcpherson.github.io/template_quarto_presentation/](https://jacobkmcpherson.github.io/template_quarto_presentation/) (after the workflow runs)
+## Objectives
+Upon completion of this course, the participant should be able to:
 
-## 📝 Customization
+1. Describe PK/PD concepts  
+2. Discuss design and utility of in vitro PK/PD studies (using R programming)  
+3. Translate clinical PK/PD to dose optimization (using R programming)  
 
-### Edit Your Presentation
+## Agenda Overview
 
-The main presentation file is `template.qmd`. Update the YAML frontmatter with your details:
-
-```yaml
----
-title: "Your Presentation Title"
-subtitle: "Your subtitle"
-author:
-  - name: Your Name
-    email: your.email@domain.com
-    affiliations: Your Institution
-date: last-modified
----
-```
-
-### Theme Customization
-
-The clean theme provides several special classes for enhanced formatting:
-
-- `.alert` class for emphasis: [important note]{.alert}
-- `.fg` class for custom colors: [colored text]{.fg style="--col: #e64173"}
-- `.bg` class for backgrounds: [highlighted text]{.bg style="--col: #e64173"}
-- `.button` class for navigation: [[Next Section]{.button}](#next)
-
-## 🛠 Local Development
-
-To work on your presentation locally:
-
-```bash
-# Install Quarto (if not already installed)
-# Visit https://quarto.org/docs/get-started/ for installation instructions
-
-# Render the presentation
-quarto render template.qmd
-
-# Preview with live reload
-quarto preview template.qmd
-```
+| Time            | Duration  | Topic                                                                 | Objective      |
+|-----------------|-----------|----------------------------------------------------------------------|----------------|
+| **10:00** – 10:30   | 30 min    | Introduction to PK/PD: in vitro hollow-fiber models (HFM), pre-clinical in vivo animal models, clinical drug therapy monitoring (DTM) | Objective One |
+| **10:30** – 11:00   | 30 min    | Group-specific assignment of in vitro HFM                            | Objective Two |
+| **11:00** – 11:15   | _15 min_    | _Break_                                                                | —              |
+| **11:15** – 12:00   | 45 min    | Group-specific assignment of six clinical cases                      | Objective Three |
+| **12:00** – 12:45   | 45 min    | Lunch and Panel Q&A                                                  | —              |
+| **12:45** – 1:15    | 30 min    | Patient presentation and suggestions for dose optimization (5 min/group) | Bonus       |
+| **1:15** – 2:00     | 45 min    | Next steps in drug development for novel agents                      | Bonus          |
 
 ## 📁 Repository Structure
 
@@ -80,29 +50,6 @@ quarto preview template.qmd
 ├── _quarto.yml                   # Quarto project configuration
 └── README.md                     # This file
 ```
-
-## 🔧 Advanced Configuration
-
-### GitHub Actions Workflow
-
-The included workflow (`.github/workflows/render-and-deploy.yml`) automatically:
-
-1. Sets up Quarto and dependencies
-2. Renders your presentation
-3. Deploys to GitHub Pages
-
-The workflow triggers on:
-- Pushes to the main branch
-- Pull requests to main
-- Manual workflow dispatch
-
-### Project Configuration
-
-The `_quarto.yml` file contains project-wide settings. You can customize:
-
-- Output directory
-- Default format options
-- Website metadata
 
 ## 📚 Resources
 
