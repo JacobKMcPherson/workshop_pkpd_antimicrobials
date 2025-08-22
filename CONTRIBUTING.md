@@ -43,6 +43,20 @@ The presentation automatically deploys to GitHub Pages when you push to the main
 3. Renders the presentation
 4. Deploys to GitHub Pages
 
+## PDF Releases
+
+PDF versions of the presentation are automatically generated and attached to GitHub releases:
+
+1. **Automatic Release**: Create a version tag (e.g., `v1.0.0`) to trigger PDF generation and release creation
+2. **Manual Release**: Use the "Run workflow" button in the Actions tab for the "Build PDF and Create Release" workflow
+3. **Generated PDF**: The PDF is named `workshop_pkpd_antimicrobials.pdf` and attached to the release
+
+To create a new release with PDF:
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
 ## Troubleshooting
 
 ### Workflow Fails

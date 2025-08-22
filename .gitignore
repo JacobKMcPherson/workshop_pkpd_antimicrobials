@@ -2,4 +2,5 @@
 # Quarto output
 /template.html
 /template_files/
+*.pdf
 /.quarto/
