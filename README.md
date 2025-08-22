@@ -60,12 +60,19 @@ Upon completion of this course, the participant should be able to:
 
 ```
 ├── .github/workflows/
-│   ├── render-and-deploy.yml    # GitHub Pages deployment workflow
-│   └── pdf-release.yml          # PDF build and release workflow
-├── _extensions/clean/            # Clean theme files
-├── template.qmd                  # Main presentation file
-├── _quarto.yml                   # Quarto project configuration
-└── README.md                     # This file
+│   ├── render-and-deploy.yml    # GitHub Actions workflow to render and deploy to GitHub Pages
+│   └── pdf-release.yml          # GitHub Actions workflow to build and release PDF
+├── _extensions/clean/           # "clean" theme extension for Quarto
+│   ├── _extension.yml           # Metadata/config for the clean theme extension
+│   └── clean.scss               # Custom SCSS styles for the clean theme
+├── .gitignore                   # Files and folders to ignore in Git version control
+├── .quartoignore                # Files and folders to exclude from Quarto rendering
+├── CONTRIBUTING.md              # Contribution guidelines for the repo
+├── LICENSE                      # Project license
+├── README.md                    # THIS FILE/Project overview and usage instructions
+├── _quarto.yml                  # Main Quarto project configuration (format, theme, options)
+├── index.html                   # Rendered output (presentation entry point)
+└── template.qmd                 # Source file for the presentation
 ```
 
 ## 📚 Resources
