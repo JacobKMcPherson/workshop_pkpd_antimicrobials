@@ -3,3 +3,6 @@
 /template.html
 /template_files/
 /.quarto/
+
+# Generated PDF files (only ignore locally, CI will create and upload them)
+workshop-pkpd-antimicrobials.pdf

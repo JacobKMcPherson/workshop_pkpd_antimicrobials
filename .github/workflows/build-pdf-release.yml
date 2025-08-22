@@ -1,0 +1,64 @@
+name: Build PDF and Create Release
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-pdf-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Quarto
+      uses: quarto-dev/quarto-actions/setup@v2
+      with:
+        tinytex: true
+
+    - name: Install additional LaTeX packages
+      run: |
+        # Install additional packages needed for PDF generation
+        sudo apt-get update
+        sudo apt-get install -y librsvg2-bin texlive-xetex
+
+    - name: Convert README.md to PDF
+      run: |
+        # Use pandoc (included with Quarto/tinytex) to convert README to PDF
+        pandoc README.md -o workshop-pkpd-antimicrobials.pdf \
+          --pdf-engine=xelatex \
+          --toc \
+          -V geometry:margin=1in \
+          -V fontsize=11pt \
+          -V colorlinks=true
+
+    - name: Generate release tag
+      id: tag
+      run: |
+        # Generate a timestamp-based tag
+        TAG="v$(date +'%Y.%m.%d-%H%M%S')"
+        echo "tag=$TAG" >> $GITHUB_OUTPUT
+        echo "Generated tag: $TAG"
+
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.tag.outputs.tag }}
+        name: Workshop Documentation ${{ steps.tag.outputs.tag }}
+        body: |
+          Automated release with workshop documentation PDF.
+          
+          Generated from commit: ${{ github.sha }}
+          
+          📄 **workshop-pkpd-antimicrobials.pdf** - Complete workshop documentation in PDF format
+        files: workshop-pkpd-antimicrobials.pdf
+        draft: false
+        prerelease: false
