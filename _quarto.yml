@@ -12,7 +12,7 @@ format:
       side: left
     slide-number: true
     date-format: long
-    self-contained: false
+    self-contained: true
     output-file: index.html
     chalkboard:
       boardmarkerWidth: 3
