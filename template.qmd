@@ -1,4 +1,4 @@
-in ---
+---
 title: "Pharmacokinetics/Pharmacodynamics (PK/PD) of Antimicrobials and Novel Agents"
 subtitle: "A workshop for graduate students, pharmacy students, and postdocs"
 format: 
@@ -16,7 +16,7 @@ author:
 date: last-modified
 ---
 
-# Welcome to the Workshop!
+## Welcome to the Workshop!
 
 ### *This workshop was inspired by a conversation*
 
@@ -43,86 +43,3 @@ date: last-modified
 - [NIAID 2017 Workshop](https://amr.solutions/wp-content/uploads/99/niaid_june2017_pkpdworkshopsummary.pdf)
 - [SIDP 2025 Workshop](https://sidp.org/PKPD)
 - [ESCMID 2026 Workshop](https://www.escmid.org/event-detail/optimised-dosing-of-antibiotics-understanding-pkpd-clinical-breakpoints-and-therapeutic-drug-monitoring-2026/)
-
-
-# Introduction to Pharmacokinetics/Pharmacodynamics (PK/PD)
-
-
-
-# Pre-clinical Infection Models
-
-
-
-## The Hollow-Fiber Model (HFM)
-
-
-
-## Animal Models of Infection
-
-
-
-# Clinical PK/PD/Clinical Outcomes (CO)
-
-
-
-## Drug Therapy Monitoring
-
-
-
-# Group-Specific Assignments of in vitro HFM
-
-## Group 1: 
-
-
-
-## Group 2: 
-
-
-
-## Group 3: 
-
-
-
-## Group 4: 
-
-
-
-## Group 5: 
-
-
-
-## Group 6: 
-
-
-
-# Break
-
-
-
-# Group-specific assignment of six clinical cases
-
-
-
-## Group 1: 
-
-
-
-## Group 2: 
-
-
-
-## Group 3: 
-
-
-
-## Group 4: 
-
-
-
-## Group 5: 
-
-
-
-## Group 6: 
-
-
