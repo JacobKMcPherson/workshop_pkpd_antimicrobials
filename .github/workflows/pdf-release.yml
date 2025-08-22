@@ -41,33 +41,47 @@ jobs:
           echo "is_tag=false" >> $GITHUB_OUTPUT
         fi
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ steps.version.outputs.version }}
-        release_name: PK/PD Workshop ${{ steps.version.outputs.version }}
-        draft: false
-        prerelease: ${{ steps.version.outputs.is_tag == 'false' }}
-        body: |
-          ## PK/PD Antimicrobials Workshop Presentation
-          
-          This release contains the PDF version of the workshop presentation.
-          
-          ### 📄 Contents
-          - **workshop_pkpd_antimicrobials.pdf**: Complete presentation slides
-          
-          ### 🚀 Live Presentation
-          View the interactive presentation online: [https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)
+    - name: Create release notes
+      run: |
+        if [[ "${{ steps.version.outputs.is_tag }}" == "true" ]]; then
+          cat > release_notes.md << 'EOF'
+        ## PK/PD Antimicrobials Workshop Presentation
+        
+        This release contains the PDF version of the workshop presentation.
+        
+        ### 📄 Contents
+        - **workshop_pkpd_antimicrobials.pdf**: Complete presentation slides
+        
+        ### 🚀 Live Presentation
+        View the interactive presentation online: https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/
+        EOF
+        else
+          cat > release_notes.md << 'EOF'
+        ## PK/PD Antimicrobials Workshop Presentation (Development Build)
+        
+        This is a development build of the workshop presentation.
+        
+        ### 📄 Contents
+        - **workshop_pkpd_antimicrobials.pdf**: Complete presentation slides
+        
+        ### 🚀 Live Presentation
+        View the interactive presentation online: https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/
+        EOF
+        fi
 
-    - name: Upload PDF Asset
-      uses: actions/upload-release-asset@v1
+    - name: Create Release and Upload PDF
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./workshop_pkpd_antimicrobials.pdf
-        asset_name: workshop_pkpd_antimicrobials.pdf
-        asset_content_type: application/pdf
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        if [[ "${{ steps.version.outputs.is_tag }}" == "true" ]]; then
+          gh release create ${{ steps.version.outputs.version }} \
+            --title "PK/PD Workshop ${{ steps.version.outputs.version }}" \
+            --notes-file release_notes.md \
+            ./workshop_pkpd_antimicrobials.pdf
+        else
+          gh release create ${{ steps.version.outputs.version }} \
+            --title "PK/PD Workshop ${{ steps.version.outputs.version }}" \
+            --prerelease \
+            --notes-file release_notes.md \
+            ./workshop_pkpd_antimicrobials.pdf
+        fi
