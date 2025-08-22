@@ -1,7 +1,7 @@
 # Pharmacokinetics/Pharmacodynamics (PK/PD) of Antimicrobials and Novel Agents
 ## A workshop for graduate students, pharmacy students, and postdocs
 
-**Sponsored by:** Gulf Coast Consortia (GCC) Antimicrobial Resistance (AMR) Scholars Program  
+**Sponsored by:** Gulf Coast Consortia (GCC) Antimicrobial Resistance (AMR) and Innovative Drug Discovery and Development (IDDD) Scholars Program
 **Organizers:** 
 <a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob K. McPherson <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>, 
 <a href="https://orcid.org/0000-0001-5314-0961" target="_blank"> Alex Kang <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>, 
@@ -24,7 +24,7 @@ more to be confirmed
 
 ## Event Description
 
-This workshop aims to introduce trainees to the fundamental principles of PK/PD, with a focus on antimicrobial agents and how these principles apply in the context of dose optimization and drug development.
+This workshop introduces trainees to the fundamental principles of pharmacokinetics and pharmacodynamics (PK/PD), with a particular emphasis on antimicrobial agents. Participants will learn how PK/PD modeling informs dose selection, regimen optimization, and the translation of preclinical findings into clinical trial design. By highlighting the role of PK/PD as a bridge between laboratory research and clinical drug development, the workshop will illustrate how these principles guide decision-making across the drug development pipeline—from candidate selection to regulatory approval. 
 
 ## Intended Audience
 Graduate students, pharmacy students, and postdoctoral fellows of microbiology, immunology, pharmaceutical sciences, and translational sciences.
@@ -32,21 +32,21 @@ Graduate students, pharmacy students, and postdoctoral fellows of microbiology, 
 ## Objectives
 Upon completion of this course, the participant should be able to:
 
-1. Describe PK/PD concepts  
-2. Discuss design and utility of in vitro PK/PD studies (using R programming)  
-3. Translate clinical PK/PD to dose optimization (using R programming)  
+1. Describe the fundamental concepts of pharmacokinetics and pharmacodynamics (PK/PD).
+2. Discuss the design and utility of PK/PD studies, including hands-on applications using R programming.
+3. Explain the role of PK/PD in drug discovery and development, with emphasis on how these principles guide dose selection, regimen optimization, and progression from preclinical to clinical studies.
 
 ## Agenda Overview
 
-| Time            | Duration  | Topic                                                                 | Objective      |
-|-----------------|-----------|----------------------------------------------------------------------|----------------|
-| **10:00** – 10:30   | 30 min    | Introduction to PK/PD: in vitro hollow-fiber models (HFM), pre-clinical in vivo animal models, clinical drug therapy monitoring (DTM) | Objective One |
-| **10:30** – 11:00   | 30 min    | Group-specific assignment of in vitro HFM                            | Objective Two |
-| **11:00** – 11:15   | _15 min_    | _Break_                                                                | —              |
-| **11:15** – 12:00   | 45 min    | Group-specific assignment of six clinical cases                      | Objective Three |
-| **12:00** – 12:45   | 45 min    | Lunch and Panel Q&A                                                  | —              |
-| **12:45** – 1:15    | 30 min    | Patient presentation and suggestions for dose optimization (5 min/group) | Bonus       |
-| **1:15** – 2:00     | 45 min    | Next steps in drug development for novel agents                      | Bonus          |
+| Time                | Duration  | Topic                                                                             | Objective       |
+|---------------------|-----------|-----------------------------------------------------------------------------------|-----------------|
+| **10:00** – 10:30   | 30 min    | Introduction to PK/PD: in vitro hollow-fiber models (HFM), pre-clinical in vivo animal models, clinical drug therapy monitoring (DTM) | One |
+| **10:30** – 11:00   | 30 min    | Group-specific assignment of in vitro HFM                                         | Two   |
+| **11:00** – 11:15   | _15 min_  | _Break_                                                                           | —               |
+| **11:15** – 12:00   | 45 min    | Group-specific assignment of six clinical cases                                   | Three |
+| **12:00** – 12:45   | 45 min    | Lunch and Panel Q&A                                                               | —               |
+| **12:45** – 1:15    | 30 min    | Patient presentation and suggestions for dose optimization (5 min/group)          | Bonus           |
+| **1:15** – 2:00     | 45 min    | Next steps in drug development for novel agents                                   | Bonus           |
 
 ## 📁 Repository Structure
 
