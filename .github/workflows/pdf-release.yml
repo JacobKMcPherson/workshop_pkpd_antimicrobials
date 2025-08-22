@@ -1,0 +1,73 @@
+name: Build PDF and Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on version tags like v1.0.0, v1.1.0, etc.
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+# Allow only one concurrent release workflow
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required for creating releases and uploading assets
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Quarto
+      uses: quarto-dev/quarto-actions/setup@v2
+      with:
+        tinytex: true
+
+    - name: Render PDF
+      run: |
+        quarto render template.qmd --to pdf --output workshop_pkpd_antimicrobials.pdf
+
+    - name: Get tag or generate version
+      id: version
+      run: |
+        if [[ "${{ github.ref_type }}" == "tag" ]]; then
+          echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          echo "is_tag=true" >> $GITHUB_OUTPUT
+        else
+          echo "version=dev-$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+          echo "is_tag=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+        release_name: PK/PD Workshop ${{ steps.version.outputs.version }}
+        draft: false
+        prerelease: ${{ steps.version.outputs.is_tag == 'false' }}
+        body: |
+          ## PK/PD Antimicrobials Workshop Presentation
+          
+          This release contains the PDF version of the workshop presentation.
+          
+          ### 📄 Contents
+          - **workshop_pkpd_antimicrobials.pdf**: Complete presentation slides
+          
+          ### 🚀 Live Presentation
+          View the interactive presentation online: [https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)
+
+    - name: Upload PDF Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./workshop_pkpd_antimicrobials.pdf
+        asset_name: workshop_pkpd_antimicrobials.pdf
+        asset_content_type: application/pdf
