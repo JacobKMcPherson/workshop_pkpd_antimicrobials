@@ -46,42 +46,40 @@ date: last-modified
 
 
 # Introduction
+Content
 
 ## Introduction to pharmacokinetics-pharmacodynamics (PK/PD)
 ### subtitle
-
+Content
 
 ---
-
 
 ## in vitro Hollow-Fiber Models (HFM)
 ### subtitle
-
+Content
 
 ---
-
 
 ## Pre-clinical Animal Models of Infection
 ### subtitle
-
+Content
 
 ---
-
 
 ## Clinical Drug Therapy Monitoring (DTM)
 ### subtitle
-
-
----
-
+Content
 
 # Group-Specific Assignment of (6) Clinical Cases
+Content
+
 ## Group-Specific Assignment of (6) Clinical Cases
 ### subtitle
-
-
----
+Content
 
 # Patient Presentations and Suggestions for Dose-Optimization
+Content
+
 ## Patient Presentations and Suggestions for Dose-Optimization
 ### subtitle
+Content
