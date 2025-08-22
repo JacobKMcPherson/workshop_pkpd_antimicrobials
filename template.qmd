@@ -16,9 +16,9 @@ author:
 date: last-modified
 ---
 
-## Welcome to the Workshop!
+# Welcome to the Workshop!
 
-### *This workshop was inspired by a conversation*
+## *This workshop was inspired by a conversation*
 
 <div style="text-align: center;">
   <iframe 
@@ -43,3 +43,25 @@ date: last-modified
 - [NIAID 2017 Workshop](https://amr.solutions/wp-content/uploads/99/niaid_june2017_pkpdworkshopsummary.pdf)
 - [SIDP 2025 Workshop](https://sidp.org/PKPD)
 - [ESCMID 2026 Workshop](https://www.escmid.org/event-detail/optimised-dosing-of-antibiotics-understanding-pkpd-clinical-breakpoints-and-therapeutic-drug-monitoring-2026/)
+
+
+# Introduction
+
+
+## Introduction to pharmacokinetics-pharmacodynamics (PK/PD)
+subtitle: subtitle
+
+## in vitro Hollow-Fiber Models (HFM)
+subtitle: subtitle
+
+## Pre-clinical Animal Models of Infection
+subtitle: subtitle
+
+## Clinical Drug Therapy Monitoring (DTM)
+subtitle: subtitle
+
+# Group-Specific Assignment of (6) Clinical Cases
+subtitle: subtitle
+
+# Patient Presentations and Suggestions for Dose-Optimization
+subtitle: subtitle
