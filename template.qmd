@@ -17,18 +17,23 @@ date: last-modified
 ---
 
 ## Welcome to the Workshop!
-::: {.center}
+
+
+::: {.text-center}
 This effort was inspired by a conversation:
 :::
-<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-  <iframe src="https://www.youtube.com/embed/3z4BItBrzbk?si=ot_n5ruLbyF7j6fr"
-          title="YouTube video player"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen>
-  </iframe>
+
+::: {=html}
+<div class="video-16x9">
+  <iframe
+    src="https://www.youtube.com/embed/3z4BItBrzbk?si=ot_n5ruLbyF7j6fr"
+    title="YouTube video player"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    loading="lazy"
+  ></iframe>
 </div>
+:::
 
 ## Learning Objectives
 
@@ -43,4 +48,3 @@ This effort was inspired by a conversation:
 - [NIAID 2017 Workshop](https://amr.solutions/wp-content/uploads/99/niaid_june2017_pkpdworkshopsummary.pdf)
 - [SIDP 2025 Workshop](https://sidp.org/PKPD)
 - [ESCMID 2026 Workshop](https://www.escmid.org/event-detail/optimised-dosing-of-antibiotics-understanding-pkpd-clinical-breakpoints-and-therapeutic-drug-monitoring-2026/)
-
