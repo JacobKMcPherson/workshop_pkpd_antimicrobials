@@ -7,7 +7,9 @@ format:
     theme: [default, _extensions/clean/clean.scss]
     menu:
       side: left
-    slide-number: true
+    slide-number: true # add slide numbers
+    navigation-mode: linear # or 'grid', 'default'
+    controls: true # show next/prev arrows
     date-format: long
     self-contained: true
     output-file: index.html
