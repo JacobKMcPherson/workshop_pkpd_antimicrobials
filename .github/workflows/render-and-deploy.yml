@@ -2,6 +2,7 @@ name: Render and Deploy Quarto Presentation
 
 on:
   push:
+    branches-ignore: [ edits ]
     branches: [ main ]
   pull_request:
     branches: [ main ]
