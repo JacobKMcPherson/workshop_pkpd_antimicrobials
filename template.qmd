@@ -24,7 +24,7 @@ This effort was inspired by a conversation:
 :::
 
 ::: {=html}
-<div class="video-16x9">
+<div class="video-wrap">
   <iframe
     src="https://www.youtube.com/embed/3z4BItBrzbk?si=ot_n5ruLbyF7j6fr"
     title="YouTube video player"
