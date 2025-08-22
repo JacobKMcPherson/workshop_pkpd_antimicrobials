@@ -4,9 +4,6 @@ project:
 
 format:
   clean-revealjs:
-    include-after-body: 
-      - text: |
-          <script src="libs/preview-links.js"></script>
     theme: [default, _extensions/clean/clean.scss]
     menu:
       side: left
