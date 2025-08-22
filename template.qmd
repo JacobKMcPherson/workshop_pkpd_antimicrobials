@@ -29,7 +29,6 @@ This effort was inspired by a conversation:
           allowfullscreen>
   </iframe>
 </div>
----
 
 ## Learning Objectives
 
