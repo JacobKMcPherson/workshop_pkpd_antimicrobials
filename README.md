@@ -17,9 +17,11 @@ more to be confirmed
 
 
 > [![Deploy Presentation](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml/badge.svg)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml)
+> [![Build PDF](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/build-pdf-release.yml/badge.svg)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/build-pdf-release.yml)
 > [![View Presentation](https://img.shields.io/badge/Quarto-Presentation-blue?logo=quarto)](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)
 > 
 > 🚀 **[Launch the Live Quarto Presentation](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)**  Hosted on GitHub Pages 
+> 📄 **[Download PDF Documentation](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/releases/latest)** Automatically generated from this README
 
 
 ## Event Description
@@ -52,11 +54,12 @@ Upon completion of this course, the participant should be able to:
 
 ```
 ├── .github/workflows/
-│   └── render-and-deploy.yml    # GitHub Actions workflow
-├── _extensions/clean/            # Clean theme files
-├── template.qmd                  # Main presentation file
-├── _quarto.yml                   # Quarto project configuration
-└── README.md                     # This file
+│   ├── render-and-deploy.yml      # GitHub Actions workflow for presentation
+│   └── build-pdf-release.yml      # GitHub Actions workflow for PDF generation
+├── _extensions/clean/              # Clean theme files
+├── template.qmd                    # Main presentation file
+├── _quarto.yml                     # Quarto project configuration
+└── README.md                       # This file
 ```
 
 ## 📚 Resources
