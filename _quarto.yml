@@ -4,6 +4,7 @@ project:
 
 format:
   clean-revealjs:
+    include-after-body: libs/preview-links.js
     theme: [default, _extensions/clean/clean.scss]
     menu:
       side: left
@@ -21,4 +22,3 @@ format:
       navigation: true
       buttons: true
     footer: '<a href="https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials" target="_blank">🔗 View on GitHub</a>'
-    include-after-body: preview-links.js
