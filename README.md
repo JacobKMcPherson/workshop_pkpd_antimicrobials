@@ -3,6 +3,7 @@
 ## Introducing foundational PK/PD principles with a focus on antimicrobial agents, dose optimization, and drug development
 
 **A workshop**  sponsored by the Gulf Coast Consortium for Antimicrobial Resistance, co-sponsored by the Consortium for Innovative Drug Discovery and Development (IDDD), and organized by the GCC AMR Scholars Program
+
 **Organizers:** 
 <a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob K. McPherson <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>, 
 <a href="https://orcid.org/0000-0001-5314-0961" target="_blank"> Alex Kang <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>, 
@@ -13,7 +14,9 @@
 **Q/A Panel:**
 <a href="https://orcid.org/0000-0002-6645-406X" target="_blank"> Taryn A Eubank <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" width="16" height="16" alt="ORCID iD"/></a>,
 more to be confirmed  
+
 **Date & Location:** September 30th, 10:00 AM, Bioscience Research Collaborative, 6500 Main St, Houston, TX 77030  
+
 **Registration:** Eventbrite  
 
 
