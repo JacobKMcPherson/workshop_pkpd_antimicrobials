@@ -20,15 +20,14 @@ date: last-modified
 
 ### *This workshop was inspired by a conversation*
 
-<div style="display: flex; justify-content: center;">
-  <div style="position: relative; width: 80vw; max-width: 800px; aspect-ratio: 16/9;">
-    <iframe
-      src="https://www.youtube.com/embed/3z4BItBrzbk?si=WMiGwvZnvsreN57v"
-      style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;"
-      frameborder="0"
-      allowfullscreen>
-    </iframe>
-  </div>
+<div style="text-align: center;">
+  <iframe 
+    src="https://www.youtube.com/embed/3z4BItBrzbk?si=WMiGwvZnvsreN57v"
+    width="800" 
+    height="450" 
+    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
+    allowfullscreen>
+  </iframe>
 </div>
 
 ## Learning Objectives
