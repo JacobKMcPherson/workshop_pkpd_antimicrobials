@@ -3,6 +3,8 @@ name: Render and Deploy Quarto Presentation
 on:
   push:
     branches: [ main ]
+    branches-ignore:
+      - edits
   pull_request:
     branches: [ main ]
   workflow_dispatch:
