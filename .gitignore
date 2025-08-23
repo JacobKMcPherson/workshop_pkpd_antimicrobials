@@ -4,3 +4,7 @@
 /template_files/
 *.pdf
 /.quarto/
+.Rproj.user
+.Rhistory
+.Rdata
+project.Rproj
