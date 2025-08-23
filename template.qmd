@@ -18,8 +18,8 @@ date: last-modified
 
 # Welcome to the Workshop!
 
-## *This workshop was inspired by a conversation*
-
+## *This workshop was inspired by a conversation that emphasized PK/PD to clinical outcomes (PK/PD/CO)*
+<!-- this is a comment in the Quarto document, hidden from render -->
 <div style="text-align: center;">
   <iframe 
     src="https://www.youtube.com/embed/3z4BItBrzbk?si=WMiGwvZnvsreN57v"
@@ -32,9 +32,10 @@ date: last-modified
 
 ## Learning Objectives
 
-- Describe PK/PD concepts  
-- Discuss in vitro PK/PD study design  
-- Translate PK/PD to dose optimization  
+- Describe the fundamental concepts of pharmacokinetics and pharmacodynamics (PK/PD).  
+- Discuss the design and utility of PK/PD studies, including hands-on applications using R programming. 
+- translate clinical PK/PD to dose optimization using R programming.
+- Identify PK/PD considerations for new drug development.
 
 ## Resources
 
@@ -53,6 +54,20 @@ Content
 Content
 
 ---
+
+## Bacteriostatic vs. Bactericidal Activity
+### Minimum Inhibitory Concentrations (MIC)<sup><a href="https://doi.org/10.1016/j.xpro.2023.102512">1</a></sup>
+
+![](https://prod-shared-star-protocols.s3.amazonaws.com/protocols/2912-Fig2.jpg)
+
+---
+
+## Bacteriostatic vs. Bactericidal Activity
+### Minimum Bactericidal Concentrations (MBC)<sup><a href="https://doi.org/10.1186/s12866-016-0838-9">2</a></sup>
+
+![](content/images/Foerster2016BMCmicrobiol_fig4_panelA.png)
+
+--- 
 
 ## in vitro Hollow-Fiber Models (HFM)
 ### subtitle
