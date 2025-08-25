@@ -57,9 +57,15 @@ date: last-modified
 ---
 
 ## Bacteriostatic vs. Bactericidal Activity
+<<<<<<< HEAD
 ### Minimum Bactericidal Concentrations (MBC)<sup><a href="https://doi.org/10.1016/B978-0-12-801238-3.00244-0">2</a></sup>
 
 ![](content/images/Bury-Mone2014_mbc_mic_ratio.jpg){fig-align="center" height="80%"}
+=======
+### Minimum Bactericidal Concentrations (MBC)<sup><a href="https://doi.org/10.1016/B978-0-12-801238-3.00244-0">1</a></sup>
+
+![](content/images/Bury-Mone2014_mbc_mic_ratio.jpg){fig-align="center" height="60%"}
+>>>>>>> 45274950ac7df676696a0815763127864f9d9aab
 
 
 ---
