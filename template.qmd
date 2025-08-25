@@ -60,7 +60,7 @@ date: last-modified
 
 ### Minimum Bactericidal Concentrations (MBC)<sup><a href="https://doi.org/10.1016/B978-0-12-801238-3.00244-0">2</a></sup>
 
-![](content/images/Bury-Mone2014_mbc_mic_ratio.jpg){fig-align="center" height="100%"}
+![](content/images/Bury-Mone2014_mbc_mic_ratio.jpg){fig-align="center" height="90%"}
 
 
 ---
