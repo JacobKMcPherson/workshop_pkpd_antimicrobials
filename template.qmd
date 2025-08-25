@@ -18,8 +18,8 @@ date: last-modified
 
 # Welcome to the Workshop!
 
-## *This workshop was inspired by a conversation that emphasized PK/PD to clinical outcomes (PK/PD/CO)*
-
+## This workshop was inspired by a conversation
+### Between Dr. Cesar Arias, MD, PhD, and Dr. Brad spellberg, MD
 <!-- this is a comment in the Quarto document, hidden from render -->
 
 ::: {style="text-align: center;"}
@@ -46,68 +46,148 @@ date: last-modified
 -   [SIDP 2025 Workshop](https://sidp.org/PKPD)
 -   [ESCMID 2026 Workshop](https://www.escmid.org/event-detail/optimised-dosing-of-antibiotics-understanding-pkpd-clinical-breakpoints-and-therapeutic-drug-monitoring-2026/)
 
-# Background Clinical Microbiology
+## If this workshop is insufficient, 
+### I hope these resources from the NIH Clinical Center help!
 
 
-## Bacteriostatic vs. Bactericidal Activity
+## Animal Scale Up and First-in-Human Studies
+### by Dr. Jerry Collins, PhD
+
+<!-- this is a comment in the Quarto document, hidden from render -->
+
+::: {style="text-align: center;"}
+<iframe
+    width="800"
+    height="450"
+    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
+    src="https://www.youtube.com/embed/IFGcMrOHlVk?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
+    allowfullscreen>
+</iframe>
+:::
+
+## Dose Selection and Optimization
+### by Dr. Yaning Wang, PhD
+
+::: {style="text-align: center;"}
+<iframe
+    width="800"
+    height="450"
+    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
+    src="https://www.youtube.com/embed/zqLkBeGp8g8?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
+    allowfullscreen>
+</iframe>
+:::
+
+## Drub Absorption and Bioavailability
+### by Dr. Jan H. Beumer, PharmD, PhD
+
+<!-- this is a comment in the Quarto document, hidden from render -->
+
+::: {style="text-align: center;"}
+<iframe
+    width="800"
+    height="450"
+    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
+    src="https://www.youtube.com/embed/bqKHy2xeIkw?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
+    allowfullscreen>
+</iframe>
+:::
+
+## Multicompartment Pharmacokinetic Modeling
+### by Dr. Scott r. Penzak, PharmD, FCP
+
+<!-- this is a comment in the Quarto document, hidden from render -->
+
+::: {style="text-align: center;"}
+<iframe
+    width="800"
+    height="450"
+    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
+    src="https://www.youtube.com/embed/H8d7MoNM6t0?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
+    allowfullscreen>
+</iframe>
+:::
+
+
+## Population Pharmacokinetics
+### by Dr. Robert R. Bies, PharmD, PhD
+
+::: {style="text-align: center;"}
+<iframe
+    width="800"
+    height="450"
+    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
+    src="https://www.youtube.com/embed/TozOUOj2YvI?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
+    allowfullscreen>
+</iframe>
+:::
+
+## Pharmacodynamics in Drug Development
+### by Dr. James Doroshow, MD
+
+::: {style="text-align: center;"}
+<iframe
+    width="800"
+    height="450"
+    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
+    src="https://www.youtube.com/embed/1qvfSMJJpQU?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
+    allowfullscreen>
+</iframe>
+:::
+
+
+
+
+# Background Clinical Microbiology     
+## Bacteriostatic vs. Bactericidal Activity 
 ### Minimum Inhibitory Concentrations (MIC)<sup><a href="https://doi.org/10.1016/j.xpro.2023.102512">1</a></sup>
 
 ![](content/images/Barnes2023StarProtocols_mic.jpg){fig-align="center" width="60%"}
 
 ---
-
-## Bacteriostatic vs. Bactericidal Activity
-
+## Bacteriostatic vs. Bactericidal Activity 
 ### Minimum Bactericidal Concentrations (MBC)<sup><a href="https://doi.org/10.1016/B978-0-12-801238-3.00244-0">2</a></sup>
+![](content/images/Bury-Mone2014_mbc_mic_ratio.jpg){fig-align="center" height="70vh" width="auto"}
 
-![](content/images/Bury-Mone2014_mbc_mic_ratio.jpg){fig-align="center" height="90%"}
-
-
----
-
-# in vitro Hollow-Fiber Models (HFM)
-
-## One-compartment modeling
-
-![](content/images/Bulitta2019AAC_fig1.jpeg){fig-align="center"}
----
-
-## Two-compartment modeling
-
-![](content/images/Bulitta2019AAC_fig2.jpeg){fig-align="center"}
-
----
-
-## Pre-clinical Animal Models of Infection
-
+# Pharmacokinetics (PK) 101
+## Title
 ### subtitle
+content
 
-Content
+## ADME
+### Absorption, Distribution, Metabolism, Excretion
+content
 
----
+## ADME
+### Absorption
+content
 
-## Clinical Drug Therapy Monitoring (DTM)
+## ADME
+### Distribution
+content
 
+## ADME
+### Metabolism
+content
+
+## ADME
+### Excretion
+content
+
+
+
+## Non-Compartmental (NCA) vs. Compartmental Analysis (CA)
 ### subtitle
+content
 
-Content
-
-# Group-Specific Assignment of (6) Clinical Cases
-
-Content
-
-## Group-Specific Assignment of (6) Clinical Cases
-
+## One- vs. Multi-Compartment Models
 ### subtitle
+content
 
-Content
 
-# Patient Presentations and Suggestions for Dose-Optimization
+# Pharmacokinetics/Pharmacodynamics (PK/PD) of Antimicrobials
 
-Content
+# The *in vitro* Hollow-Fiber Infection Model (HFIM)
 
-## Patient Presentations and Suggestions for Dose-Optimization
+# The *in vivo* Animal Models of Infection 
 
-### subtitle
-
-Content
