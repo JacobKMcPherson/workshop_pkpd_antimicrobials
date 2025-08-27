@@ -18,9 +18,14 @@ and Development (IDDD), and organized by the GCC AMR Scholars Program
 <a href="https://orcid.org/0009-0001-8884-1298" target="_blank"> Chetna Dureja
 <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>
 
+**Special Guest Speaker:** <a href="https://orcid.org/0000-0002-7586-4992" target="_blank"> Srinivas Chamakuri
+<img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>
+
+
 **Q/A Panel:**
-<a href="https://orcid.org/0000-0002-6645-406X" target="_blank"> Taryn A
-Eubank
+<a href="https://orcid.org/0000-0002-6645-406X" target="_blank"> Taryn A Eubank
+<img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
+<a href="https://orcid.org/0000-0002-7586-4992" target="_blank"> Srinivas Chamakuri
 <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
 more to be confirmed
 
