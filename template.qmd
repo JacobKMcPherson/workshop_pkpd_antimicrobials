@@ -40,9 +40,10 @@ date: last-modified
 
 ## Learning Resources
 
--   [Workshop agenda (README.md)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/blob/main/README.md#agenda-overview)\
--   [Scholars program](https://www.gulfcoastconsortia.org/home/research/antimicrobial-resistance/amr-scholars-program/)\
+<!-- [Workshop agenda (README.md)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/blob/main/README.md#agenda-overview)\--> 
+<!-- [Scholars program](https://www.gulfcoastconsortia.org/home/research/antimicrobial-resistance/amr-scholars-program/)\ -->
 -   [NIAID 2017 Workshop](https://amr.solutions/wp-content/uploads/99/niaid_june2017_pkpdworkshopsummary.pdf)
+-   [NIH Clinical Center YouTube](https://www.youtube.com/NIHClinicalCenter)
 -   [SIDP 2025 Workshop](https://sidp.org/PKPD)
 -   [ESCMID 2026 Workshop](https://www.escmid.org/event-detail/optimised-dosing-of-antibiotics-understanding-pkpd-clinical-breakpoints-and-therapeutic-drug-monitoring-2026/)
 
@@ -135,22 +136,18 @@ date: last-modified
 </iframe>
 :::
 
-
-
-
 # Background Clinical Microbiology     
 ## Bacteriostatic vs. Bactericidal Activity 
 ### Minimum Inhibitory Concentrations (MIC)<sup><a href="https://doi.org/10.1016/j.xpro.2023.102512">1</a></sup>
 
 ![](content/images/Barnes2023StarProtocols_mic.jpg){fig-align="center" width="60%"}
 
----
 ## Bacteriostatic vs. Bactericidal Activity 
 ### Minimum Bactericidal Concentrations (MBC)<sup><a href="https://doi.org/10.1016/B978-0-12-801238-3.00244-0">2</a></sup>
-![](content/images/Bury-Mone2014_mbc_mic_ratio.jpg){fig-align="center" height="70vh" width="auto"}
+![](content/images/Bury-Mone2014_mbc_mic_ratio.svg){fig-align="center" height="70vh" width="auto"}
 
 # Pharmacokinetics (PK) 101
-## Title
+## Pharmacokinetics (PK) 101
 ### subtitle
 content
 
@@ -174,8 +171,6 @@ content
 ### Excretion
 content
 
-
-
 ## Non-Compartmental (NCA) vs. Compartmental Analysis (CA)
 ### subtitle
 content
@@ -185,9 +180,40 @@ content
 content
 
 
-# Pharmacokinetics/Pharmacodynamics (PK/PD) of Antimicrobials
+# PK/PD of Antimicrobials
 
-# The *in vitro* Hollow-Fiber Infection Model (HFIM)
+## PK/PD of Antimicrobials
+### Commonly used parameters
 
-# The *in vivo* Animal Models of Infection 
 
+
+
+## The *in vitro* Hollow-Fiber Infection Model (HFIM)
+### subtitle
+
+
+
+
+## The *in vivo* Animal Models of Infection 
+### subtitle
+
+
+
+
+# Six Clinical Cases
+
+## Six Clinical Cases
+### subtitle
+
+
+## Analysis of *in vitro* HFIM data
+### subtitle
+
+
+# Six Clinical Cases
+
+## Six Clinical Cases
+### subtitle
+
+## Analysis via PopPK
+### subtitle
