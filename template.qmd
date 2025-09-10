@@ -153,37 +153,68 @@ date: last-modified
 
 
 # Pharmacokinetics (PK) 101
-## Pharmacokinetics (PK) 101
+
+## Fundamentals of Biopharmaceutics
+### Shargel and Yu's Biopharmaceutics and Pharmacokinetics, 8th Edition, 2022
+content
+
+## Physiologic factors related to drug absorption
 ### subtitle
 content
 
-## ADME
-### Absorption, Distribution, Metabolism, Excretion
-content
-
-## ADME
-### Absorption
-content
-
-## ADME
-### Distribution
-content
-
-## ADME
-### Metabolism
-content
-
-## ADME
-### Excretion
-content
-
-## Non-Compartmental (NCA) vs. Compartmental Analysis (CA)
+## Drug distribution and protein binding
 ### subtitle
 content
 
-## One- vs. Multi-Compartment Models
+## Physiology of drug elimination
 ### subtitle
 content
+
+## Introduction to PK/PD models
+### subtitle
+
+## One-compartment open model: IV bolus
+### 
+
+## Intravenous infusion
+### 
+
+## Pharmacokinetic calculations for drug elimination and clearance
+### 
+
+## Pharmacokinetics of drug absorption
+###
+
+## Multiple-dosage regimens
+### subtitle
+
+## Nonlinear pharmacokinetics
+### subtitle
+
+# Pharmacokinetics 201
+
+## Empiric Models, Mechanistic Models, Statistical Moments, and Non-compartmental Models
+### subtitle
+
+## Pharmacogenetics, Drug Metabolism, Transporters, and Individualization of Drug Therapy
+### subtitle
+
+## Relationship between Pharmacokinetics and Pharmacodynamics
+### subtitle
+
+## Application of Pharmacokinetics to Clinical Situations
+### subtitle
+
+## Application of Pharmacokinetics and Pharmacodynamics to Aging, Obese, and Pediatric Patients
+### subtitle
+
+## Dose Adjustment in Renal and Hepatic Diseases
+### subtitle
+
+## Pharmacokinetics and Pharmacodynamics in Clinical Drug Product Development
+### subtitle
+
+
 
 
 # PK/PD of Antimicrobials
@@ -191,20 +222,11 @@ content
 ## PK/PD of Antimicrobials
 ### Commonly used parameters
 
-
-
-
 ## The *in vitro* Hollow-Fiber Infection Model (HFIM)
 ### subtitle
 
-
-
-
 ## The *in vivo* Animal Models of Infection 
 ### subtitle
-
-
-
 
 # Six Clinical Cases
 
