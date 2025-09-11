@@ -33,7 +33,11 @@ jobs:
       uses: quarto-dev/quarto-actions/setup@v2
       with:
         tinytex: true
-
+        
+    - name: Render README.qmd to README.md
+      run: |
+        quarto render README.qmd --to gfm
+        
     - name: Render Quarto website
       run: |
         quarto render
