@@ -1,0 +1,26 @@
+/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+.hero-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 1rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.hero-banner h1 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.btn-primary {
+  background-color: #667eea;
+  border-color: #667eea;
+}
+
+.btn-primary:hover {
+  background-color: #5a6bd8;
+  border-color: #5a6bd8;
+}
