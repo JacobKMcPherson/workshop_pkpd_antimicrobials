@@ -48,20 +48,24 @@ Advanced modeling and optimization strategies.
 
 ## Workshop Schedule
 
-| Day | Time | Session | Description |
-|:---:|:---:|:---:|:---|
-| 1 | 9:00-12:00 | [Session 1](sessions/session_01/template.html) | Fundamentals of PK/PD |
-| 2 | 9:00-12:00 | [Session 2](sessions/session_02/template.html) | Clinical Applications |
-| 3 | 9:00-12:00 | [Session 3](sessions/session_03/template.html) | Advanced Modeling |
+| Day |     Time     |  Duration  |  Session                                       |      Description      |      Speaker      |
+|:---:|:------------:|:----------:|:----------------------------------------------:|:---------------------:|:-----------------:|
+|  1  |  10:00-10:30 | 30-minutes | [Session 1](sessions/session_01/template.html) | Fundamentals of PK/PD | <a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob K. McPherson <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a> |
+|  1  |  10:30-12:00 | 30-minutes | [Session 2](sessions/session_02/template.html) | Clinical Applications | " |
+|  1  |  9:00-12:00  | 30-minutes | [Session 3](sessions/session_03/template.html) | Advanced Modeling     | " |
 
 ## Resources
 
 - [GitHub Repository](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials) - Access all materials and code
-- [Workshop Documentation](README.md) - Detailed agenda and setup instructions
+- [Workshop Documentation](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/blob/main/README.md) - Detailed agenda and setup instructions
 
 ## Contact
 
 **Jacob K. McPherson**  
-📧 jacobmcpherson@utexas.edu  
-🏛️ University of Houston College of Pharmacy  
+📧 [jacobmcpherson@utexas.edu, or jkmcpherson@uh.edu](mailto:jacobmcpherson@utexas.edu;jkmcpherson@uh.edu) 
+🏛 [University of Houston College of Pharmacy](https://www.uh.edu/pharmacy/)
 🔬 [ORCID: 0000-0001-5486-4945](https://orcid.org/0000-0001-5486-4945)
+📝 [Author.Link](https://author.link/JacobKMcPherson)
+
+*Business Inquiries:* 🏢 [jacobkmcpherson.com](https://jacobkmcpherson.com)
+*Personal Website:* [jacobkmcpherson.github.io](https://jacobkmcpherson.github.io)
