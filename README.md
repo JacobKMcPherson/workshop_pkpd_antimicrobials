@@ -51,12 +51,12 @@ Collaborative, 6500 Main St, Houston, TX 77030
 
 ## Event Description
 
-This workshop introduces trainees to the fundamental principles of
-pharmacokinetics and pharmacodynamics (PK/PD), with a particular
-emphasis on antimicrobial agents. Participants will learn how PK/PD
-modeling informs dose selection, regimen optimization, and the
-translation of preclinical findings into clinical trial design. By
-highlighting the role of PK/PD as a bridge between laboratory research
+This **interactive** workshop provides trainees the opportunities to 
+learn the fundamental principles of pharmacokinetics and pharmacodynamics 
+(PK/PD), with a particular emphasis on antimicrobial agents. 
+Participants will gain hands-on experience with the analysis of pharmacokinetic 
+data using the open-source, free-forever *r* programming language. 
+By highlighting the role of PK/PD as a bridge between laboratory research
 and clinical drug development, the workshop will illustrate how these
 principles guide decision-making across the drug development
 pipeline—from candidate selection to regulatory approval.
