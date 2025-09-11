@@ -62,9 +62,12 @@ Advanced modeling and optimization strategies.
 ## Contact
 
 **Jacob K. McPherson**  
-📧 [jacobmcpherson@utexas.edu, or jkmcpherson@uh.edu](mailto:jacobmcpherson@utexas.edu;jkmcpherson@uh.edu) 
+📧 [jacobmcpherson@utexas.edu, or jkmcpherson@uh.edu](mailto:jacobmcpherson@utexas.edu;jkmcpherson@uh.edu)
+
 🏛 [University of Houston College of Pharmacy](https://www.uh.edu/pharmacy/)
+
 🔬 [ORCID: 0000-0001-5486-4945](https://orcid.org/0000-0001-5486-4945)
+
 📝 [Author.Link](https://author.link/JacobKMcPherson)
 
 *Business Inquiries:* 🏢 [jacobkmcpherson.com](https://jacobkmcpherson.com)
