@@ -1,4 +1,4 @@
-name: Render and Deploy Quarto Presentation
+name: Render and Deploy Quarto Website
 
 on:
   push:
@@ -34,9 +34,9 @@ jobs:
       with:
         tinytex: true
 
-    - name: Render Quarto presentation
+    - name: Render Quarto website
       run: |
-        quarto render template.qmd
+        quarto render
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
@@ -46,7 +46,7 @@ jobs:
       uses: actions/upload-pages-artifact@v3
       if: github.ref == 'refs/heads/main'
       with:
-        path: '.'
+        path: '_site'
 
     - name: Deploy to GitHub Pages
       id: deployment

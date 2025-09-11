@@ -1,16 +1,40 @@
 project:
-  type: default
-  output-dir: .
+  type: website
+  output-dir: _site
+
+website:
+  title: "PKPD Antimicrobials Workshop"
+  navbar:
+    title: "PKPD Workshop"
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Sessions
+        menu:
+          - href: sessions/session_01/template.html
+            text: Session 1
+          - href: sessions/session_02/template.html
+            text: Session 2
+          - href: sessions/session_03/template.html
+            text: Session 3
+    right:
+      - icon: github
+        href: https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials
+        target: _blank
 
 format:
+  html:
+    theme: [cosmo, theme.scss]
+    toc: true
+    toc-location: left
+    footer: '<a href="https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials" target="_blank">🔗 View on GitHub</a>'
   clean-revealjs:
     theme: [default, _extensions/clean/clean.scss]
     menu:
       side: left
     slide-number: true
     date-format: long
-    self-contained: true
-    output-file: index.html
+    self-contained: false
     chalkboard:
       boardmarkerWidth: 3
       chalkWidth: 7

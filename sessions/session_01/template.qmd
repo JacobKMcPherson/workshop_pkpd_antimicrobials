@@ -3,7 +3,7 @@ title: "Pharmacokinetics/Pharmacodynamics (PK/PD) of Antimicrobials and Novel Ag
 subtitle: "A workshop for graduate students, pharmacy students, and postdocs"
 format: 
   clean-revealjs:
-    output-file: index.html
+    output-file: template.html
     self-contained: false
 html-math-method:
   method: mathjax

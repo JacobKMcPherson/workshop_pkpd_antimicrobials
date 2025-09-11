@@ -1,0 +1,37 @@
+---
+title: "Session 2: Clinical Applications"
+subtitle: "PK/PD in Clinical Practice"
+format: 
+  clean-revealjs:
+    output-file: template.html
+    self-contained: false
+author:
+  - name: Jacob K. McPherson
+    orcid: 0000-0001-5486-4945
+    email: jacobmcpherson@utexas.edu
+    affiliations: University of Houston College of Pharmacy
+date: last-modified
+---
+
+# Welcome to Session 2!
+
+## Clinical Applications
+
+This session covers the practical application of PK/PD principles in clinical settings.
+
+## Learning Objectives
+
+- Apply PK/PD concepts to clinical scenarios
+- Understand dose optimization strategies
+- Explore real-world case studies
+
+## Topics Covered
+
+1. Clinical PK/PD modeling
+2. Therapeutic drug monitoring
+3. Case studies in antimicrobial therapy
+4. Dose optimization strategies
+
+## Next Steps
+
+Continue with practical exercises and hands-on applications.
