@@ -11,7 +11,7 @@ html-math-method:
 author:
   - name: Jacob K. McPherson
     orcid: 0000-0001-5486-4945
-    email: jacobmcpherson@utexas.edu, jkmcpherson@uh.edu, jacob@jacobkmcpherson.com
+    email: jacobmcpherson@utexas.edu
     affiliations: University of Houston College of Pharmacy
 date: last-modified
 ---
@@ -147,9 +147,20 @@ date: last-modified
 ![](content/images/Bury-Mone2014_mbc_mic_ratio_1.svg){fig-align="center" height="70vh" width="auto"}
 
 
-## But do you know how to determine PK/PD?
-### Cmax/MIC, AUC/MIC, %freeT>MIC
-![](content/images/Bury-Mone2014_mbc_mic_ratio_2.svg){fig-align="center" height="70vh" width="auto"}
+<!--- ## You already know: 
+<!--- ### Cmax/MIC, AUC/MIC, %free T>MIC
+<!--- ![](content/images/Bury-Mone2014_mbc_mic_ratio_2.svg){fig-align="center" height="70vh" width="auto"} --> 
+
+## Only 'Free' Antibiotics are Microbiologically Active
+### Commonly used parameters
+
+![](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrmicro862/MediaObjects/41579_2004_Article_BFnrmicro862_Fig3_HTML.gif){fig-align="center" height="70vh" width="auto"} 
+
+
+## PK/PD Indices Predict Efficacy
+### Commonly used parameters
+
+![](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrmicro862/MediaObjects/41579_2004_Article_BFnrmicro862_Fig5_HTML.gif){fig-align="center" height="70vh" width="auto"} 
 
 
 # Pharmacokinetics (PK) 101
@@ -166,23 +177,23 @@ content
 ### subtitle
 content
 
-## Physiology of drug elimination
+## Physiology of drug Elimination
 ### subtitle
 content
 
 ## Introduction to PK/PD models
 ### subtitle
 
-## One-compartment open model: IV bolus
+## One-compartment Open Model: IV bolus
 ### 
 
-## Intravenous infusion
+## Intravenous Infusion
 ### 
 
-## Pharmacokinetic calculations for drug elimination and clearance
+## Pharmacokineitcs of Drug Elimination and Clearance
 ### 
 
-## Pharmacokinetics of drug absorption
+## Pharmacokinetics of Drug Absorption
 ###
 
 ## Multiple-dosage regimens
@@ -215,12 +226,7 @@ content
 ### subtitle
 
 
-
-
-# PK/PD of Antimicrobials
-
-## PK/PD of Antimicrobials
-### Commonly used parameters
+# Pre-clinical Models of Infection
 
 ## The *in vitro* Hollow-Fiber Infection Model (HFIM)
 ### subtitle
