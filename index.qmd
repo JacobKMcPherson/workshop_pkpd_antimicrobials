@@ -50,7 +50,7 @@ Advanced modeling and optimization strategies.
 
 | Day |     Time     |  Duration  |  Session                                       |      Description      |      Speaker      |
 |:---:|:------------:|:----------:|:----------------------------------------------:|:---------------------:|:-----------------:|
-|  1  |  10:00-10:30 | 30-minutes | [Session 1](sessions/session_01/template.html) | Fundamentals of PK/PD | <a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob K. McPherson <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a> |
+|  1  |  10:00-10:30 | 30-minutes | [Session 1](sessions/session_01/template.html) | Fundamentals of PK/PD | Jacob K. McPherson, PharmD |
 |  1  |  10:30-12:00 | 30-minutes | [Session 2](sessions/session_02/template.html) | Clinical Applications | " |
 |  1  |  9:00-12:00  | 30-minutes | [Session 3](sessions/session_03/template.html) | Advanced Modeling     | " |
 
@@ -64,8 +64,8 @@ Advanced modeling and optimization strategies.
 **Jacob K. McPherson**  
 📧 [jacobmcpherson@utexas.edu, or jkmcpherson@uh.edu](mailto:jacobmcpherson@utexas.edu;jkmcpherson@uh.edu) <br>
 🏛 [University of Houston College of Pharmacy](https://www.uh.edu/pharmacy/) <br>
-🔬 [ORCID: 0000-0001-5486-4945](https://orcid.org/0000-0001-5486-4945) <br>
-📝 [Author.Link](https://author.link/JacobKMcPherson) <br>
+🔬 <a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> ORCID: 0000-0001-5486-4945 <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a><br>
+📝 [Author.Link](https://author.link/JacobKMcPherson) <br> 
 
 *Business Inquiries:* 🏢 [jacobkmcpherson.com](https://jacobkmcpherson.com) <br>
 *Personal Website:* [jacobkmcpherson.github.io](https://jacobkmcpherson.github.io) <br>
