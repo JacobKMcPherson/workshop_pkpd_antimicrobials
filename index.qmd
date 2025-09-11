@@ -64,7 +64,7 @@ Advanced modeling and optimization strategies.
 **Jacob K. McPherson**  
 📧 [jacobmcpherson@utexas.edu, or jkmcpherson@uh.edu](mailto:jacobmcpherson@utexas.edu;jkmcpherson@uh.edu) <br>
 🏛 [University of Houston College of Pharmacy](https://www.uh.edu/pharmacy/) <br>
-<a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> ORCID: 0000-0001-5486-4945 <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a><br>
+<a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/> ORCID: 0000-0001-5486-4945</a><br>
 📝 [Author.Link](https://author.link/JacobKMcPherson) <br> 
 
 *Business Inquiries:* 🏢 [jacobkmcpherson.com](https://jacobkmcpherson.com) <br>
