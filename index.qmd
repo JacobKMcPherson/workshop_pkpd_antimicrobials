@@ -48,11 +48,7 @@ Advanced modeling and optimization strategies.
 
 ## Workshop Schedule
 
-| Day |     Time     |  Duration  |  Session                                       |      Description      |      Speaker      |
-|:---:|:------------:|:----------:|:----------------------------------------------:|:---------------------:|:-----------------:|
-|  1  |  10:00-10:30 | 30-minutes | [Session 1](sessions/session_01/template.html) | Fundamentals of PK/PD | Jacob K. McPherson, PharmD |
-|  1  |  10:30-12:00 | 30-minutes | [Session 2](sessions/session_02/template.html) | Clinical Applications | " |
-|  1  |  9:00-12:00  | 30-minutes | [Session 3](sessions/session_03/template.html) | Advanced Modeling     | " |
+{{< include agenda.md >}}
 
 ## Resources
 
