@@ -3,9 +3,9 @@ project:
   output-dir: _site
 
 website:
-  title: "PKPD Antimicrobials Workshop"
+  title: "Antimicrobial PK/PD Workshop"
   navbar:
-    title: "PKPD Workshop"
+    title: "Antimicrobial PK/PD Workshop"
     left:
       - href: index.qmd
         text: Home
