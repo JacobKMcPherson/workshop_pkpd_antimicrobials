@@ -11,5 +11,6 @@
 .Rproj.user
 project.Rproj
 _site/
+site_libs/
 *.html
 .quarto

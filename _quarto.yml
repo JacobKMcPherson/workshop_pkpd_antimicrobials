@@ -17,6 +17,8 @@ website:
             text: Session 2
           - href: sessions/session_03/template.html
             text: Session 3
+      - href: CONTRIBUTING.qmd
+        text: Contributing
     right:
       - icon: github
         href: https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials
