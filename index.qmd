@@ -70,7 +70,7 @@ Advanced modeling and optimization strategies.
 
 ## Agenda 
 
-{{< include info/agenda.md >}}
+{{< include info/agenda.qmd >}}
 
 ## Event Description
 
