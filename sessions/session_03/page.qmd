@@ -1,4 +1,19 @@
 ---
 title: "Session 03"
 format: html
+editor: visual
 ---
+
+::: callout-important
+:::
+
+## Slides
+🖥️ [Slides](sessions/sessoin_03/slides.html)
+
+## Exercise
+💪🏻[Exercise](sessions/sessoin_03/exercise.html)
+
+<br><br>
+
+::: {style="font-size: 0.875em;"}
+:::
