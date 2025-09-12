@@ -1,8 +1,3 @@
----
-title: "Workshop Agenda"
-format: html
----
-
 |       Time        |   Duration   |   Session                                       |      Description      |      Objective    |                 Speaker                |
 |:-----------------:|:------------:|:-----------------------------------------------:|:---------------------:|:-----------------:|:--------------------------------------:|
 | **10:00** – 10:30 |  30-minutes  |  [Session 1](sessions/session_01/template.html) | Fundamentals of PK/PD |    Objective 1    | Jacob K. McPherson, Pharm.D., Ph.D.(c) |
