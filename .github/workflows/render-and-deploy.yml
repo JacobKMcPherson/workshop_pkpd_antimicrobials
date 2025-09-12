@@ -15,7 +15,11 @@ concurrency:
 
 jobs:
   render-and-deploy:
-    runs-on: ubuntu-latest
+    
+    runs-on: ${{ matrix.os }}
+      strategy: 
+        marrix: 
+          os: [ubuntu-latest]
     permissions:
       contents: write
       pages: write
@@ -26,6 +30,24 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
+    - name: Set Environment Variables
+      run: |
+        case "$RUNNER_OS" in
+          Linux)
+            echo "BUNDLE_EXT=linux.tar.gz" >> $GITHUB_ENV
+            ;;
+          macOS)
+            echo "BUNDLE_EXT=mac.dmg" >> $GITHUB_ENV
+            ;;
+          Windows)
+            echo "BUNDLE_EXT=win.msi" >> $GITHUB_ENV
+            ;;
+          *)
+            echo "$RUNNER_OS not supported"
+            exit 1
+            ;;
+        esac
+
     - name: Checkout repository
       uses: actions/checkout@v4
 
