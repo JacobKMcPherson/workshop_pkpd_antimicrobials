@@ -11,11 +11,11 @@ website:
         text: Home
       - text: Sessions
         menu:
-          - href: sessions/session_01/template.html
+          - href: sessions/session_01/page.html
             text: Session 1
-          - href: sessions/session_02/template.html
+          - href: sessions/session_02/page.html
             text: Session 2
-          - href: sessions/session_03/template.html
+          - href: sessions/session_03/page.html
             text: Session 3
       - href: CONTRIBUTING.qmd
         text: Contributing
