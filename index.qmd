@@ -48,7 +48,7 @@ Advanced modeling and optimization strategies.
 
 ## Workshop Schedule
 
-{{< include info/agenda.md >}}
+{{< include info/agenda.qmd >}}
 
 ## Resources
 
