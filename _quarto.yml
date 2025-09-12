@@ -17,8 +17,18 @@ website:
             text: Session 2
           - href: sessions/session_03/page.html
             text: Session 3
-      - href: CONTRIBUTING.qmd
-        text: Contributing
+      - text: Info
+        menu: 
+          - href: info/agemda.qmd
+            text: Agenda
+          - href: info/team.qmd
+            text: Team
+          - href: info/support.qmd
+            text: Support
+          - href: info/faq.qmd
+            text: Frequently Asked Questions
+          - href: CONTRIBUTING.qmd
+            text: Contributing
     right:
       - icon: github
         href: https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials
