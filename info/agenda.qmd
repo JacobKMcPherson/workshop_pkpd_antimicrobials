@@ -1,7 +1,6 @@
 ---
 title: "Agenda"
 format: html
-keep-md: true
 ---
 
 |       Time        |   Duration   |   Session                                       |      Description      |      Objective    |                 Speaker                |
