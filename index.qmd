@@ -3,37 +3,12 @@ title: "Pharmacokinetics/Pharmacodynamics of Antimicrobials"
 subtitle: "A workshop for graduate students, pharmacy students, and postdocs"
 format: html
 ---
-**Organizers:**
-<a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob
-K. McPherson
-<img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
-<a href="https://orcid.org/0000-0001-5314-0961" target="_blank"> Alex
-Kang
-<img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
-<a href="https://orcid.org/0009-0009-0596-4996" target="_blank">
-Hossaena Ayele
-<img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
-<a href="https://orcid.org/0000-0003-4767-8866" target="_blank"> Ann
-McKelvey
-<img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
-<a href="https://orcid.org/0009-0001-8884-1298" target="_blank"> Chetna
-Dureja
-<img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a><br>
-**Special Guest Speaker:**
-<a href="https://orcid.org/0000-0002-7586-4992" target="_blank">
-Srinivas Chamakuri
-<img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a><br>
-**Q/A Panel:**
-<a href="https://orcid.org/0000-0002-6645-406X" target="_blank"> Taryn A
-Eubank
-<img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
-<a href="https://orcid.org/0000-0002-7586-4992" target="_blank">
-Srinivas Chamakuri
-<img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
-more to be confirmed<br>
-**Date & Time:** Tuesday, September 30th, 10:00 AM<br>
-**Location: **Bioscience Research Collaborative, 6500 Main St, Houston, TX 77030<br>
-[**GCC Workshop Page**](https://www.gulfcoastconsortia.org/event/gcc-amr-and-iddd-scholars-workshop-on-pharmacokinetics-and-pharmacodynamics-pk-pd-of-antimicrobials-and-novel-agents-for-trainees/) and [**Eventbrite Registration**](https://www.eventbrite.com/e/gcc-workshop-on-pkpd-of-antimicrobials-novel-agents-for-trainees-tickets-1632238582539?aff=website)<br>
+
+::: {.hero-banner}
+# Welcome to the Antimicrobial PK/PD Workshop!
+
+This workshop provides a comprehensive introduction to the pharmacokinetics and pharmacodynamics of antimicrobials and novel agents, designed for graduate students, pharmacy students, and postdocs.
+:::
 
 > [![Deploy
 > Presentation](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml/badge.svg)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml)
@@ -46,12 +21,22 @@ more to be confirmed<br>
 > Version**](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/releases/latest)
 > Available in GitHub Releases
 
-::: {.hero-banner}
-# Welcome to the Antimicrobial PK/PD Workshop!
-
-This workshop provides a comprehensive introduction to the pharmacokinetics and pharmacodynamics of antimicrobials and novel agents, designed for graduate students, pharmacy students, and postdocs.
-:::
-
+**Organizers:**
+<a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob K. McPherson <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
+<a href="https://orcid.org/0000-0001-5314-0961" target="_blank"> Alex Kang <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
+<a href="https://orcid.org/0009-0009-0596-4996" target="_blank"> Hossaena Ayele <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
+<a href="https://orcid.org/0000-0003-4767-8866" target="_blank"> Ann McKelvey <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
+<a href="https://orcid.org/0009-0001-8884-1298" target="_blank"> Chetna Dureja <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a><br>
+**Special Guest Speaker:**
+<a href="https://orcid.org/0000-0002-7586-4992" target="_blank"> Srinivas Chamakuri <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a><br>
+**Panelists:**
+<a href="https://orcid.org/0000-0002-6645-406X" target="_blank"> Taryn A. Eubank <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
+<a href="https://orcid.org/0000-0002-7586-4992" target="_blank"> Srinivas Chamakuri <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
+<a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob K. McPherson <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>
+more to be confirmed<br>
+**Date & Time:** Tuesday, September 30th, 10:00 AM<br>
+**Location: **Bioscience Research Collaborative, 6500 Main St, Houston, TX 77030<br>
+[**GCC Workshop Page**](https://www.gulfcoastconsortia.org/event/gcc-amr-and-iddd-scholars-workshop-on-pharmacokinetics-and-pharmacodynamics-pk-pd-of-antimicrobials-and-novel-agents-for-trainees/) and [**Eventbrite Registration**](https://www.eventbrite.com/e/gcc-workshop-on-pkpd-of-antimicrobials-novel-agents-for-trainees-tickets-1632238582539?aff=website)<br>
 ## Workshop Sessions
 
 Explore our interactive presentation sessions:
