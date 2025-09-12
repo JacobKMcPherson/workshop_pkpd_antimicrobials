@@ -34,6 +34,16 @@ jobs:
       with:
         tinytex: true
 
+    - name: Render README.qmd -> README.md (gfm)
+      run: |
+        quarto render README.qmd --to gfm --output README.md
+
+    - name: Commit README.md back
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "chore: auto-render README.md from README.qmd"
+        file_pattern: README.md
+
     - name: Render Quarto website
       run: |
         quarto render
