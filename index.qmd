@@ -3,22 +3,6 @@ title: "Pharmacokinetics/Pharmacodynamics of Antimicrobials"
 subtitle: "A workshop for graduate students, pharmacy students, and postdocs"
 format: html
 ---
-
-> [![Deploy
-> Presentation](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml/badge.svg)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml)
-> [![PDF
-> Build](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/pdf-release.yml/badge.svg)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/pdf-release.yml)
-> [![View
-> Presentation](https://img.shields.io/badge/Quarto-Presentation-blue?logo=quarto.png)](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)
->
-> 🚀 [**Launch the Live Quarto
-> Presentation**](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)
-> Hosted on GitHub Pages
->
-> 📄 [**Download PDF
-> Version**](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/releases/latest)
-> Available in GitHub Releases
-
 **Organizers:**
 <a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob
 K. McPherson
@@ -49,7 +33,18 @@ Srinivas Chamakuri
 more to be confirmed<br>
 **Date & Time:** Tuesday, September 30th, 10:00 AM<br>
 **Location: **Bioscience Research Collaborative, 6500 Main St, Houston, TX 77030<br>
-**Registration:** Eventbrite<br>
+[**GCC Workshop Page**](https://www.gulfcoastconsortia.org/event/gcc-amr-and-iddd-scholars-workshop-on-pharmacokinetics-and-pharmacodynamics-pk-pd-of-antimicrobials-and-novel-agents-for-trainees/) and [**Eventbrite Registration**](https://www.eventbrite.com/e/gcc-workshop-on-pkpd-of-antimicrobials-novel-agents-for-trainees-tickets-1632238582539?aff=website)<br>
+
+> [![Deploy
+> Presentation](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml/badge.svg)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/render-and-deploy.yml)
+> [![PDF
+> Build](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/pdf-release.yml/badge.svg)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/actions/workflows/pdf-release.yml)
+> [![View
+> Presentation](https://img.shields.io/badge/Quarto-Presentation-blue?logo=quarto.png)](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)
+>
+> 📄 [**Download PDF
+> Version**](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/releases/latest)
+> Available in GitHub Releases
 
 ::: {.hero-banner}
 # Welcome to the Antimicrobial PK/PD Workshop!
