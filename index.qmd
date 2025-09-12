@@ -68,6 +68,10 @@ Advanced modeling and optimization strategies.
 
 :::
 
+## Agenda 
+
+{{< include info/agenda.md >}}
+
 ## Event Description
 
 This **interactive** workshop provides trainees the opportunities to
