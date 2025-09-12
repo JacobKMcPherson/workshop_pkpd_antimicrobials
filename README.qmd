@@ -83,10 +83,6 @@ Upon completion of this course, the participant should be able to:
 3.  translate clinical PK/PD to dose optimization using R programming.
 4.  Identify PK/PD considerations for new drug development.
 
-## Workshop Schedule
-
-{{< include info/agenda.qmd >}}
-
 ## 📁 Repository Structure
 
 ```         

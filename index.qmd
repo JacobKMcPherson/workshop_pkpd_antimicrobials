@@ -46,10 +46,6 @@ Advanced modeling and optimization strategies.
 - Translate clinical PK/PD to dose optimization using R programming
 - Identify PK/PD considerations for new drug development
 
-## Workshop Schedule
-
-{{< include info/agenda.qmd >}}
-
 ## Resources
 
 - [GitHub Repository](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials) - Access all materials and code
