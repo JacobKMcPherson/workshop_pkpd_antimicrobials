@@ -1,5 +1,5 @@
 ---
-title: "syllabus"
+title: "Syllabus"
 format: html
 ---
 
