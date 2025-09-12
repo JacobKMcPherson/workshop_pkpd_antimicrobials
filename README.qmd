@@ -85,7 +85,7 @@ Upon completion of this course, the participant should be able to:
 
 ## Agenda Overview
 
-{{< include agenda.md >}}
+{{< include info/agenda.md >}}
 
 ## 📁 Repository Structure
 
