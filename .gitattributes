@@ -1,9 +1,7 @@
-# Exclude SCSS from GitHub Linguist language statistics
-*.scss linguist-vendored
-
-# Optional: If desired later, you can uncomment one of the following to influence how .qmd files are counted.
 # Treat Quarto files as Markdown (will show as Markup if counted):
-# *.qmd linguist-language=Markdown
-# Force Quarto files to a specific language (not generally recommended unless accurate):
-# *.qmd linguist-language=R
-# *.qmd linguist-language=Python
+*.qmd linguist-language=Markdown
+
+# Explicitly include HTML, CSS, and JS as first-class code (not vendored)
+*.html linguist-detectable=true
+*.css  linguist-detectable=true
+*.js   linguist-detectable=true
