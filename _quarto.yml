@@ -30,9 +30,7 @@ editor: visual
 
 format:
   html:
-    theme: 
-      light: [cosmo, theme.scss]
-      dark: [cosmo, theme-dark.scss]
+    theme: [cosmo, theme.scss]
     toc: true
     toc-location: left
     footer: '<a href="https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials" target="_blank">🔗 View on GitHub</a>'
