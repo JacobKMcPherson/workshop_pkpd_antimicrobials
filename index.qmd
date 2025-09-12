@@ -5,7 +5,7 @@ format: html
 ---
 
 ::: {.hero-banner}
-# Welcome to the Antimicrobial PK/PD Workshop!
+# Welcome to the Workshop!
 
 This workshop provides a comprehensive introduction to the pharmacokinetics and pharmacodynamics of antimicrobials and novel agents, designed for graduate students, pharmacy students, and postdocs.
 :::
