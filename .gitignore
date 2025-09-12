@@ -1,18 +1,20 @@
 .DS_Store
-# Quarto output
-/template.html
-/template_files/
-*.pdf
-/.quarto/
+
+# RStudio
 .Rhistory
 .Renv
 .Rprofile
 *.Rproj
 .Rproj.user
 project.Rproj
-_site/
-site_libs/
-*.html
-.quarto
 
-**/*.quarto_ipynb
+# Quarto output
+#/template.html
+#/template_files/
+#_site/
+#site_libs/
+#/.quarto
+#/.quarto/
+#**/*.quarto_ipynb
+
+#*.pdf
