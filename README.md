@@ -89,18 +89,6 @@ Upon completion of this course, the participant should be able to:
 3.  translate clinical PK/PD to dose optimization using R programming.
 4.  Identify PK/PD considerations for new drug development.
 
-## Agenda Overview
-
-| Time | Duration | Session | Description | Objective | Speaker |
-|:--:|:--:|:--:|:--:|:--:|:--:|
-| **10:00** – 10:30 | 30-minutes | [Session 1](sessions/session_01/template.html) | Fundamentals of PK/PD | Objective 1 | Jacob K. McPherson, Pharm.D., Ph.D.(c) |
-| **10:30** – 11:00 | 30-minutes | [Session 2](sessions/session_02/template.html) | Clinical Applications | Objective 1 | ” |
-| **11:00** – 11:15 | 15-minutes | *Break* | — | — | — |
-| **11:15** – 12:00 | 45-minutes | [Session 3](sessions/session_03/template.html) | Advanced Modeling | — | ” |
-| **12:00** – 12:45 | 45-minutes | **Panel Discussion & Lunch** | — | — | — |
-| **12:45** – 13:15 | 30-minutes | Patient presentations | 5 min/group | Bonus | — |
-| **13:15** – 14:00 | 45-minutes | **PK/PD Considerations for Innovative Drug Discovery and Development** | Bonus | Srinivas Chamakuri, Ph.D. |  |
-
 ## 📁 Repository Structure
 
     ├── .github/workflows/
