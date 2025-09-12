@@ -68,7 +68,9 @@ Advanced modeling and optimization strategies.
 
 :::
 
+## Event Agenda
 
+{{< include info/agenda.md >}}
 
 ## Event Description
 
