@@ -3,8 +3,6 @@ title: "Contributing to the Workshop"
 format: html
 ---
 
-# Contributing to Your Presentation
-
 ## Quick Setup
 
 1. **Clone the repository**
