@@ -2,7 +2,13 @@
 format: md
 ---
 
-# README
+# Pharmacokinetics/Pharmacodynamics of Antimicrobials Workshop Documentation
+
+See *https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/* for the fully rendered, **interactive** website
+
+## Agenda 
+
+{{< include info/agenda.qmd >}}
 
 ## 📁 Repository Structure
 
