@@ -42,6 +42,22 @@ jobs:
       run: |
         quarto render
 
+    - name: Render README.qmd to README.md
+      run: |
+        quarto render README.qmd --to md
+
+    - name: Commit and push README.md
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add README.md
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Auto-update README.md from README.qmd"
+          git push
+        fi
+
     - name: Setup Pages
       uses: actions/configure-pages@v4
       if: github.ref == 'refs/heads/main'
