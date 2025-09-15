@@ -44,6 +44,7 @@ format:
     toc: true
     toc-location: left
     footer: '<a href="https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials" target="_blank">🔗 View on GitHub</a>'
+    include-after-body: _includes/after-body.html
   clean-revealjs:
     theme: [default, _extensions/clean/clean.scss]
     menu:
