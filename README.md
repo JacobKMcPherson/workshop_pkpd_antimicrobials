@@ -1,3 +1,4 @@
+
 # README
 
 ## 📁 Repository Structure
@@ -12,10 +13,10 @@
 
 ## 📚 Resources
 
-- [Quarto Documentation](https://quarto.org/docs/)
-- [RevealJS Features](https://quarto.org/docs/presentations/revealjs/)
-- [Clean Theme
-  Documentation](https://github.com/grantmcdermott/quarto-revealjs-clean)
+-   [Quarto Documentation](https://quarto.org/docs/)
+-   [RevealJS Features](https://quarto.org/docs/presentations/revealjs/)
+-   [Clean Theme
+    Documentation](https://github.com/grantmcdermott/quarto-revealjs-clean)
 
 ## 🤝 Contributing
 

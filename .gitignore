@@ -9,6 +9,9 @@
 project.Rproj
 
 # Quarto output
+_site/
+#/template.html
+#/template_files/
 #/template.html
 #/template_files/
 #_site/
@@ -18,3 +21,9 @@ project.Rproj
 #**/*.quarto_ipynb
 
 #*.pdf
+
+# Temporary files
+*.deb
+*.tmp
+
+/.quarto/
