@@ -10,4 +10,4 @@ format: html
 | **11:15** – 12:00 |  45-minutes  |  [Session 3](sessions/session_03/template.html) |   Advanced Modeling   |         —         |                    "                   |
 | **12:00** – 12:45 |  45-minutes  |  **Panel Discussion & Lunch**                   |            —          |         —         |                    —                   |
 | **12:45** – 13:15 |  30-minutes  |  Patient presentations                          |      5 min/group      |       Bonus       |                    —                   |
-| **13:15** – 14:00 |  45-minutes  |  **PK/PD Considerations for Innovative Drug Discovery and Development** |       Bonus       |        Srinivas Chamakuri, Ph.D.       |
+| **13:15** – 14:00 |  45-minutes  |  Special Guest Lecture                          |**PK/PD Considerations for Innovative Drug Discovery and Development** |       Bonus       |        Srinivas Chamakuri, Ph.D.       |
