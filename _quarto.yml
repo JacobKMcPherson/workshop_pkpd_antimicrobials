@@ -19,8 +19,6 @@ website:
             text: Session 3
       - text: Info
         menu: 
-          - href: info/agenda.qmd
-            text: Agenda
           - href: info/team.qmd
             text: Team
           - href: info/support.qmd
