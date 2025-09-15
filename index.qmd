@@ -46,6 +46,7 @@ more to be confirmed<br>
 ::: {.g-col-md-4 .g-col-12}
 ### [Session 1: Fundamentals](sessions/session_01/page.html)
 [📊 View Presentation](sessions/session_01/slides.html){.btn .btn-primary .btn-lg target="_blank"}
+
 [💪🏻 View Exercise](sessions/session_01/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
 
 Introduction to PK/PD concepts and antimicrobial mechanisms.
@@ -54,6 +55,7 @@ Introduction to PK/PD concepts and antimicrobial mechanisms.
 ::: {.g-col-md-4 .g-col-12}
 ### [Session 2: Applications](sessions/session_02/page.html)
 [📊 View Presentation](sessions/session_02/slides.html){.btn .btn-primary .btn-lg target="_blank"}
+
 [💪🏻 View Exercise](sessions/session_02/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
 
 Practical applications and clinical considerations.
@@ -62,6 +64,7 @@ Practical applications and clinical considerations.
 ::: {.g-col-md-4 .g-col-12}
 ### [Session 3: Advanced Topics](sessions/session_03/page.html)
 [📊 View Presentation](sessions/session_03/slides.html){.btn .btn-primary .btn-lg target="_blank"}
+
 [💪🏻 View Exercise](sessions/session_03/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
 
 Advanced modeling and optimization strategies.
