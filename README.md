@@ -1,13 +1,5 @@
 # README
 
-# Pharmacokinetics and Pharmacodynamics (PK/PD) of Antimicrobials and Novel Agents for Trainees
-
-## Introducing foundational PK/PD principles with a focus on antimicrobial agents, dose optimization, and drug development
-
-**A workshop** sponsored by the Gulf Coast Consortium for Antimicrobial
-Resistance, co-sponsored by the Consortium for Innovative Drug Discovery
-and Development (IDDD), and organized by the GCC AMR Scholars Program
-
 ## 📁 Repository Structure
 
     ├── .github/workflows/
