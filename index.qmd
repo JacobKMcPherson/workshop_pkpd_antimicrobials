@@ -19,7 +19,7 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 >
 > 📄 [**Download PDF
 > Version**](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/releases/latest)
-> *Available in GitHub Releases* under **Assets**
+> *Available in GitHub Releases under **Assets*** 
 
 **Organizers:**
 <a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob K. McPherson <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
