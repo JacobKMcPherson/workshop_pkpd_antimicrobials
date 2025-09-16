@@ -41,6 +41,15 @@ website:
             text: Drugs@FDA
           - href: content/ncats.qmd
             text: NCATS
+          - href: content/certara.qmd
+            text: Certara
+          - href: content/pharmar.qmd
+            text: PharmaR
+          - href: content/rcrswg.qmd
+            text: R Consortium "R Submissions" Working Group
+          - href: content/pharmaverse.qmd
+            text: Pharmaverse
+
     right:
       - icon: github
         href: https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials
