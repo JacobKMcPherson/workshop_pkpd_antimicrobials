@@ -1,1 +1,6 @@
-
+---
+title: "NIH CC"
+format: 
+  html:
+    include-after-body: ../_includes/resources-navigation.html
+---
