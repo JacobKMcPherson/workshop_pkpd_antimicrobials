@@ -29,27 +29,27 @@ website:
             text: Contributing
       - text: Resources
         menu: 
-          - href: content/iuphar.qmd
-            text: IUPHAR
           - href: content/accesspharmacy.qmd
             text: Access Pharmacy
           - href: content/boomer.qmd
             text: Boomer
-          - href: content/icp.org.nz/
-            text: Interactive Clinical Pharmacology
+          - href: content/certara.qmd
+            text: Certara
           - href: content/drugsatfda.qmd
             text: Drugs@FDA
           - href: content/ncats.qmd
             text: NCATS
-          - href: content/certara.qmd
-            text: Certara
-          - href: content/pharmar.qmd
-            text: PharmaR
+          - href: content/iuphar.qmd
+            text: IUPHAR
+          - href: content/icp.org.nz/
+            text: Interactive Clinical Pharmacology
           - href: content/rcrswg.qmd
             text: R Consortium "R Submissions" Working Group
           - href: content/pharmaverse.qmd
             text: Pharmaverse
-
+          - href: content/pharmar.qmd
+            text: PharmaR
+            
     right:
       - icon: github
         href: https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials
