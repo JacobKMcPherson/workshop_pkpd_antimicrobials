@@ -1,4 +1,6 @@
 ---
 title: "Drugs@FDA"
-format: html
+format: 
+  html:
+    include-after-body: ../_includes/resources-navigation.html
 ---

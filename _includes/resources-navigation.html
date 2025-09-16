@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="../_includes/navigation.css">
+
+<div class="page-navigation">
+  <div class="nav-prev">
+    <!-- Previous button will be populated by JavaScript -->
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-next">
+    <!-- Next button will be populated by JavaScript -->
+  </div>
+</div>
+
+<script>
+// Define the Resources menu navigation order
+const resourcePages = [
+  { href: 'accesspharmacy.html', title: 'Access Pharmacy' },
+  { href: 'boomer.html', title: 'Boomer' },
+  { href: 'certara.html', title: 'Certara' },
+  { href: 'drugsatfda.html', title: 'Drugs@FDA' },
+  { href: 'ncats.html', title: 'NCATS' },
+  { href: 'iuphar.html', title: 'IUPHAR' },
+  { href: 'icp.org.nz.html', title: 'Interactive Clinical Pharmacology' },
+  { href: 'rcrswg.html', title: 'R Consortium "R Submissions" Working Group' },
+  { href: 'pharmaverse.html', title: 'Pharmaverse' },
+  { href: 'pharmar.html', title: 'PharmaR' }
+];
+
+// Get current page filename
+const currentPath = window.location.pathname;
+const currentPage = currentPath.split('/').pop();
+
+// Find current page index
+let currentIndex = -1;
+for (let i = 0; i < resourcePages.length; i++) {
+  if (resourcePages[i].href === currentPage) {
+    currentIndex = i;
+    break;
+  }
+}
+
+// Create navigation buttons
+const navPrev = document.querySelector('.nav-prev');
+const navNext = document.querySelector('.nav-next');
+
+if (currentIndex > 0) {
+  const prevPage = resourcePages[currentIndex - 1];
+  navPrev.innerHTML = `<a href="${prevPage.href}" class="nav-button nav-button-prev">${prevPage.title}</a>`;
+}
+
+if (currentIndex >= 0 && currentIndex < resourcePages.length - 1) {
+  const nextPage = resourcePages[currentIndex + 1];
+  navNext.innerHTML = `<a href="${nextPage.href}" class="nav-button nav-button-next">${nextPage.title}</a>`;
+}
+</script>

@@ -1,6 +1,8 @@
 ---
 title: "Contributing to the Workshop"
-format: html
+format: 
+  html:
+    include-after-body: _includes/info-navigation.html
 ---
 
 ## Quick Setup
