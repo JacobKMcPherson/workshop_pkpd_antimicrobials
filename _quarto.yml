@@ -41,6 +41,8 @@ website:
             text: Certara
           - href: content/drugsatfda.qmd
             text: Drugs@FDA
+          - href: content/nihcc.qmd
+            text: NIH CC            
           - href: content/ncats.qmd
             text: NCATS
           - href: content/iuphar.qmd
