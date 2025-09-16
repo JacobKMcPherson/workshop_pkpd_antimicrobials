@@ -21,6 +21,6 @@ Content
 <div>
 </div>
 <div>
-[Session 1 →](../session_01/page.qmd){.btn .btn-outline-primary}
+[Session 1 →](sessions/session_01/page.qmd){.btn .btn-outline-primary}
 </div>
 :::
