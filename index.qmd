@@ -17,7 +17,7 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 > [![View
 > Presentation](https://img.shields.io/badge/Quarto-Presentation-blue?logo=quarto.png)](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/)
 >
-> 📄 [**Download PDF
+> 🚀 [**Download PDF
 > Version**](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/releases/latest)
 > *Available in GitHub Releases under **Assets*** 
 
