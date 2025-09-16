@@ -3,7 +3,7 @@ title: "Session 3: Advanced Modeling"
 subtitle: "Population PK/PD and Optimization"
 format: 
   clean-revealjs:
-    output-file: template.html
+    #output-file: NAME.html
     self-contained: false
 author:
   - name: Jacob K. McPherson
