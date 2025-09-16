@@ -3,7 +3,7 @@ title: "Session 2: Clinical Applications"
 subtitle: "PK/PD in Clinical Practice"
 format: 
   clean-revealjs:
-    output-file: template.html
+    #output-file: NAME.html
     self-contained: false
 author:
   - name: Jacob K. McPherson
