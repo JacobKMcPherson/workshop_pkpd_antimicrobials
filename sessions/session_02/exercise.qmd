@@ -5,7 +5,9 @@ format: html
 
 
 
-
+::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 [← Session 2](page.qmd){.btn .btn-outline-primary}
 </div>
+<div></div>
+:::
