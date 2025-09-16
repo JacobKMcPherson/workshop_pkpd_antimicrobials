@@ -3,3 +3,24 @@ title: "Pre-Workshop Materials"
 format: html
 editor: visual
 ---
+
+::: callout-important
+:::
+
+## Slides
+Content
+
+<br><br>
+
+::: {style="font-size: 0.875em;"}
+:::
+
+---
+
+::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+<div>
+</div>
+<div>
+[Session 1 →](../session_01/page.qmd){.btn .btn-outline-primary}
+</div>
+:::
