@@ -13,6 +13,8 @@ website:
       - text: Sessions
         icon: graph-up
         menu:
+          - href: pre-workshop-materials.qmd
+            text: Pre-Workshop Materials
           - href: sessions/session_01/page.html
             text: Session 1
           - href: sessions/session_02/page.html
