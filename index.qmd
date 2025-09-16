@@ -38,6 +38,9 @@ more to be confirmed<br>
 **Location: **Bioscience Research Collaborative, 6500 Main St, Houston, TX 77030<br>
 **Registration**: [**Gulf Coast Consortia**](https://www.gulfcoastconsortia.org/event/gcc-amr-and-iddd-scholars-workshop-on-pharmacokinetics-and-pharmacodynamics-pk-pd-of-antimicrobials-and-novel-agents-for-trainees/) or [**Eventbrite**](https://www.eventbrite.com/e/gcc-workshop-on-pkpd-of-antimicrobials-novel-agents-for-trainees-tickets-1632238582539?aff=website)<br>
 
+## Pre-Workshop Materials
+
+[📃 View Materials](pre-workshop-materials.html){.btn .btn-primary .btn-lg target="_blank"}
 
 ## Workshop Sessions
 
