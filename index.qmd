@@ -19,7 +19,7 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 >
 > 📄 [**Download PDF
 > Version**](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/releases/latest)
-> Available in GitHub Releases
+> *Available in GitHub Releases* under **Assets**
 
 **Organizers:**
 <a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> Jacob K. McPherson <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/></a>,
@@ -36,7 +36,7 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 more to be confirmed<br>
 **Date & Time:** Tuesday, September 30th, 10:00 AM <br>
 **Location: **Bioscience Research Collaborative, 6500 Main St, Houston, TX 77030<br>
-[**GCC Workshop Page WITH CALENDAR INVITE**](https://www.gulfcoastconsortia.org/event/gcc-amr-and-iddd-scholars-workshop-on-pharmacokinetics-and-pharmacodynamics-pk-pd-of-antimicrobials-and-novel-agents-for-trainees/) and [**Eventbrite Registration**](https://www.eventbrite.com/e/gcc-workshop-on-pkpd-of-antimicrobials-novel-agents-for-trainees-tickets-1632238582539?aff=website)<br>
+[**GCC Workshop Page**](https://www.gulfcoastconsortia.org/event/gcc-amr-and-iddd-scholars-workshop-on-pharmacokinetics-and-pharmacodynamics-pk-pd-of-antimicrobials-and-novel-agents-for-trainees/) and [**Eventbrite Registration**](https://www.eventbrite.com/e/gcc-workshop-on-pkpd-of-antimicrobials-novel-agents-for-trainees-tickets-1632238582539?aff=website)<br>
 
 
 ## Workshop Sessions
