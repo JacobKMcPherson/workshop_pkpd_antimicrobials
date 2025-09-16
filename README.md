@@ -34,8 +34,7 @@ for the fully rendered, **interactive** website
 href="sessions/session_01/page.html"><strong>Session 1</strong></a></td>
 <td style="text-align: center;"><em>Fundamentals of PK/PD</em></td>
 <td style="text-align: center;">One</td>
-<td style="text-align: center;">Jacob K. McPherson, Pharm.D.,
-Ph.D.(c)</td>
+<td style="text-align: center;">Jacob K. McPherson, Pharm.D.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>10:30</strong></td>
@@ -70,7 +69,7 @@ href="sessions/session_03/page.html"><strong>Session 3</strong></a></td>
 Lunch</strong></td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
+<td style="text-align: center;">Taryn A. Eubank, Pharm.D., SC, JKM</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>12:45</strong></td>
