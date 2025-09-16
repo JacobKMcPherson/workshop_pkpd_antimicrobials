@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="../_includes/navigation.css">
+
+<div class="page-navigation">
+  <div class="nav-prev">
+    <!-- Previous button will be populated by JavaScript -->
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-next">
+    <!-- Next button will be populated by JavaScript -->
+  </div>
+</div>
+
+<script>
+// Define the Info menu navigation order
+const infoPages = [
+  { href: 'team.html', title: 'Team' },
+  { href: 'support.html', title: 'Support' },
+  { href: 'faq.html', title: 'Frequently Asked Questions' },
+  { href: '../CONTRIBUTING.html', title: 'Contributing' }
+];
+
+// Get current page filename
+const currentPath = window.location.pathname;
+const currentPage = currentPath.split('/').pop();
+
+// Find current page index
+let currentIndex = -1;
+for (let i = 0; i < infoPages.length; i++) {
+  if (infoPages[i].href === currentPage || 
+      (currentPage === 'CONTRIBUTING.html' && infoPages[i].href === '../CONTRIBUTING.html')) {
+    currentIndex = i;
+    break;
+  }
+}
+
+// Create navigation buttons
+const navPrev = document.querySelector('.nav-prev');
+const navNext = document.querySelector('.nav-next');
+
+if (currentIndex > 0) {
+  const prevPage = infoPages[currentIndex - 1];
+  navPrev.innerHTML = `<a href="${prevPage.href}" class="nav-button nav-button-prev">${prevPage.title}</a>`;
+}
+
+if (currentIndex >= 0 && currentIndex < infoPages.length - 1) {
+  const nextPage = infoPages[currentIndex + 1];
+  navNext.innerHTML = `<a href="${nextPage.href}" class="nav-button nav-button-next">${nextPage.title}</a>`;
+}
+</script>

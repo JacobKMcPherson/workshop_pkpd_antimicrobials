@@ -1,4 +1,6 @@
 ---
 title: "Interactive Clinical Pharmacology"
-format: html
+format: 
+  html:
+    include-after-body: ../_includes/resources-navigation.html
 ---

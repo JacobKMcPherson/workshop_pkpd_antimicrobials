@@ -1,5 +1,7 @@
 ---
 title: "Frequently Asked Questions"
-format: html
+format: 
+  html:
+    include-after-body: ../_includes/info-navigation.html
 ---
 

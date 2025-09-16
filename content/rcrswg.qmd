@@ -1,4 +1,6 @@
 ---
 title: "R Consortium R Submissions Working Group"
-format: html
+format: 
+  html:
+    include-after-body: ../_includes/resources-navigation.html
 ---

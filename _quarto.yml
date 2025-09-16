@@ -41,7 +41,7 @@ website:
             text: NCATS
           - href: content/iuphar.qmd
             text: IUPHAR
-          - href: content/icp.org.nz/
+          - href: content/icp.org.nz.qmd
             text: Interactive Clinical Pharmacology
           - href: content/rcrswg.qmd
             text: R Consortium "R Submissions" Working Group
