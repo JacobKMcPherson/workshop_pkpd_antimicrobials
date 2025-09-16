@@ -27,6 +27,20 @@ website:
             text: Frequently Asked Questions
           - href: CONTRIBUTING.qmd
             text: Contributing
+      - text: Resources
+        menu: 
+          - href: content/iuphar.qmd
+            text: IUPHAR
+          - href: content/accesspharmacy.qmd
+            text: Access Pharmacy
+          - href: content/boomer.qmd
+            text: Boomer
+          - href: content/icp.org.nz/
+            text: Interactive Clinical Pharmacology
+          - href: content/drugsatfda.qmd
+            text: Drugs@FDA
+          - href: content/ncats.qmd
+            text: NCATS
     right:
       - icon: github
         href: https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials
