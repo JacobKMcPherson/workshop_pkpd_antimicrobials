@@ -8,10 +8,10 @@ editor: visual
 :::
 
 ## Slides
-🖥️ [Slides](sessions/session_03/slides.html)
+🖥️ [Slides](slides.html)
 
 ## Exercise
-💪🏻[Exercise](sessions/session_03/exercise.html)
+💪🏻[Exercise](exercise.html)
 
 <br><br>
 
