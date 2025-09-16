@@ -44,7 +44,7 @@ more to be confirmed<br>
 ::: {.grid}
 
 ::: {.g-col-md-4 .g-col-12}
-### [Session 1: Fundamentals](sessions/session_01/page.html)
+### [**Session 1: Fundamentals**](sessions/session_01/page.html)
 [📊 View Presentation](sessions/session_01/slides.html){.btn .btn-primary .btn-lg target="_blank"}
 
 [💪🏻 View Exercise](sessions/session_01/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
@@ -53,7 +53,7 @@ Introduction to PK/PD concepts and antimicrobial mechanisms.
 :::
 
 ::: {.g-col-md-4 .g-col-12}
-### [Session 2: Applications](sessions/session_02/page.html)
+### [**Session 2: Applications**](sessions/session_02/page.html)
 [📊 View Presentation](sessions/session_02/slides.html){.btn .btn-primary .btn-lg target="_blank"}
 
 [💪🏻 View Exercise](sessions/session_02/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
@@ -62,7 +62,7 @@ Practical applications and clinical considerations.
 :::
 
 ::: {.g-col-md-4 .g-col-12}
-### [Session 3: Advanced Topics](sessions/session_03/page.html)
+### [**Session 3: Advanced Topics**](sessions/session_03/page.html)
 [📊 View Presentation](sessions/session_03/slides.html){.btn .btn-primary .btn-lg target="_blank"}
 
 [💪🏻 View Exercise](sessions/session_03/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
@@ -118,6 +118,5 @@ Upon completion of this course, the participant should be able to:
 *Email:* 📧 [jacobmcpherson@utexas.edu, or jkmcpherson@uh.edu](mailto:jacobmcpherson@utexas.edu;jkmcpherson@uh.edu) <br>
 *Instution:* 🏛 [University of Houston College of Pharmacy](https://www.uh.edu/pharmacy/) <br>
 *Scholarship:* 📝 [Author.Link](https://author.link/JacobKMcPherson) and <a href="https://orcid.org/0000-0001-5486-4945" target="_blank"> <img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" alt="ORCID iD" width="16" height="16"/> ORCID: 0000-0001-5486-4945</a><br>
-
-*Business Inquiries:* 🏢 [jacobkmcpherson.com](https://jacobkmcpherson.com) <br>
 *Personal Website:* [jacobkmcpherson.github.io](https://jacobkmcpherson.github.io) <br>
+*Business Inquiries:* 🏢 [jacobkmcpherson.com](https://jacobkmcpherson.com) <br>
