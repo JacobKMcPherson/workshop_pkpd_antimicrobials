@@ -1,5 +1,37 @@
 ---
-title: "slides"
-format: html
+title: "Session 3: Advanced Modeling"
+subtitle: "Population PK/PD and Optimization"
+format: 
+  clean-revealjs:
+    output-file: template.html
+    self-contained: false
+author:
+  - name: Jacob K. McPherson
+    orcid: 0000-0001-5486-4945
+    email: jacobmcpherson@utexas.edu
+    affiliations: University of Houston College of Pharmacy
+date: last-modified
 ---
 
+# Welcome to Session 3!
+
+## Advanced Modeling Techniques
+
+This session explores advanced PK/PD modeling approaches and optimization strategies.
+
+## Learning Objectives
+
+- Understand population PK/PD modeling
+- Learn advanced optimization techniques
+- Apply modeling to drug development
+
+## Topics Covered
+
+1. Population pharmacokinetics
+2. Bayesian approaches
+3. Model-informed drug development
+4. Regulatory considerations
+
+## Conclusion
+
+Bringing together all concepts for practical application in research and clinical practice.
