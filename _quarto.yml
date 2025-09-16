@@ -8,8 +8,10 @@ website:
     title: "Antimicrobial PK/PD Workshop"
     left:
       - href: index.qmd
+        icon: house
         text: Home
       - text: Sessions
+        icon: graph-down
         menu:
           - href: sessions/session_01/page.html
             text: Session 1
@@ -18,6 +20,7 @@ website:
           - href: sessions/session_03/page.html
             text: Session 3
       - text: Info
+        icon: info-circle
         menu: 
           - href: info/team.qmd
             text: Team
@@ -28,6 +31,7 @@ website:
           - href: CONTRIBUTING.qmd
             text: Contributing
       - text: Resources
+        icon: globe2
         menu: 
           - href: content/accesspharmacy.qmd
             text: Access Pharmacy
