@@ -10,10 +10,10 @@ for the fully rendered, **interactive** website
 <table>
 <colgroup>
 <col style="width: 7%" />
-<col style="width: 8%" />
-<col style="width: 31%" />
-<col style="width: 14%" />
-<col style="width: 12%" />
+<col style="width: 7%" />
+<col style="width: 30%" />
+<col style="width: 16%" />
+<col style="width: 11%" />
 <col style="width: 25%" />
 </colgroup>
 <thead>
@@ -29,26 +29,26 @@ for the fully rendered, **interactive** website
 <tbody>
 <tr>
 <td style="text-align: center;"><strong>10:00</strong></td>
-<td style="text-align: center;">30 minutes</td>
+<td style="text-align: center;">30 min.</td>
 <td style="text-align: center;"><a
 href="sessions/session_01/page.html"><strong>Session 1</strong></a></td>
 <td style="text-align: center;"><em>Fundamentals of PK/PD</em></td>
-<td style="text-align: center;">Objective 1</td>
+<td style="text-align: center;">One</td>
 <td style="text-align: center;">Jacob K. McPherson, Pharm.D.,
 Ph.D.(c)</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>10:30</strong></td>
-<td style="text-align: center;">30 minutes</td>
+<td style="text-align: center;">30 min.</td>
 <td style="text-align: center;"><a
 href="sessions/session_02/page.html"><strong>Session 2</strong></a></td>
 <td style="text-align: center;"><em>Clinical Applications</em></td>
-<td style="text-align: center;">Objective 1</td>
+<td style="text-align: center;">Two</td>
 <td style="text-align: center;">”</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>11:00</strong></td>
-<td style="text-align: center;">15 minutes</td>
+<td style="text-align: center;">15 min.</td>
 <td style="text-align: center;"><em>Break</em></td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
@@ -56,16 +56,16 @@ href="sessions/session_02/page.html"><strong>Session 2</strong></a></td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>11:15</strong></td>
-<td style="text-align: center;">45 minutes</td>
+<td style="text-align: center;">45 min.</td>
 <td style="text-align: center;"><a
 href="sessions/session_03/page.html"><strong>Session 3</strong></a></td>
 <td style="text-align: center;"><em>Advanced Modeling</em></td>
-<td style="text-align: center;">—</td>
+<td style="text-align: center;">Three</td>
 <td style="text-align: center;">”</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>12:00</strong></td>
-<td style="text-align: center;">45 minutes</td>
+<td style="text-align: center;">45 min.</td>
 <td style="text-align: center;"><strong>Panel Discussion &amp;
 Lunch</strong></td>
 <td style="text-align: center;">—</td>
@@ -74,7 +74,7 @@ Lunch</strong></td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>12:45</strong></td>
-<td style="text-align: center;">30 minutes</td>
+<td style="text-align: center;">30 min.</td>
 <td style="text-align: center;">Patient presentations</td>
 <td style="text-align: center;">5 min/group</td>
 <td style="text-align: center;">Bonus</td>
@@ -82,7 +82,7 @@ Lunch</strong></td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>13:15</strong></td>
-<td style="text-align: center;">45 minutes</td>
+<td style="text-align: center;">45 min.</td>
 <td style="text-align: center;"><strong>Special Guest
 Lecture</strong></td>
 <td style="text-align: center;"><em>PK/PD Considerations for Innovative
