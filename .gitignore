@@ -27,3 +27,5 @@ _site/
 *.tmp
 
 /.quarto/
+
+**/*.quarto_ipynb
