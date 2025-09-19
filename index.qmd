@@ -42,6 +42,8 @@ more to be confirmed<br>
 
 [📃 View Materials](pre-workshop-materials.html){.btn .btn-primary .btn-lg target="_blank"}
 
+[📝 Take Survey](content/pre-workshop-survey.html){.btn .btn-primary .btn-lg target="_blank"}
+
 ## Workshop Sessions
 
 ::: {.grid}
@@ -74,6 +76,10 @@ Advanced modeling and optimization strategies.
 :::
 
 :::
+
+## Post-Workshop Evaluation
+
+[📝 Take Survey](content/post-workshop-survey.html){.btn .btn-primary .btn-lg target="_blank"}
 
 ## Agenda 
 

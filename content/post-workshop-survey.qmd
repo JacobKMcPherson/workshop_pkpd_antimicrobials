@@ -1,0 +1,101 @@
+---
+title: "post-workshop-survey"
+format: html
+---
+
+<form id="quiz-form">
+  <fieldset data-qid="q1" data-answer="PolC">
+    <legend>1) Primary target of ibezapolstat?</legend>
+    <label><input type="radio" name="q1" value="PolC" required> PolC</label><br>
+    <label><input type="radio" name="q1" value="GyrA"> GyrA</label><br>
+    <label><input type="radio" name="q1" value="RpoB"> RpoB</label>
+    <p class="feedback" aria-live="polite"></p>
+  </fieldset>
+
+  <fieldset data-qid="q2" data-answer="Cmax">
+    <legend>2) Which parameter changes with oral bioavailability (all else equal)?</legend>
+    <label><input type="radio" name="q2" value="Cmax" required> Cmax</label><br>
+    <label><input type="radio" name="q2" value="Vd"> Vd</label><br>
+    <label><input type="radio" name="q2" value="t1/2"> t1/2</label>
+    <p class="feedback" aria-live="polite"></p>
+  </fieldset>
+
+  <button type="submit">Submit</button>
+  <span id="quiz-status"></span>
+</form>
+
+<script>
+const SUPABASE_URL = "https://YOURPROJECT.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY"; // safe with insert-only policy
+const QUIZ_ID = "pk_quiz_v1";
+
+// instant feedback per question (optional)
+document.querySelectorAll("fieldset").forEach(fs => {
+  fs.addEventListener("change", () => {
+    const correct = fs.dataset.answer;
+    const chosen = new FormData(document.getElementById("quiz-form")).get(fs.getAttribute("data-qid"));
+    const fb = fs.querySelector(".feedback");
+    if (!chosen) return;
+    fb.textContent = chosen === correct ? "✅ Correct" : "❌ Try again";
+  });
+});
+
+document.getElementById("quiz-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+
+  // gather answers & compute accuracy
+  const fieldsets = [...form.querySelectorAll("fieldset[data-qid]")];
+  const details = {};
+  let totalCorrect = 0;
+
+  fieldsets.forEach(fs => {
+    const qid = fs.dataset.qid;
+    const correct = fs.dataset.answer;
+    const chosen = new FormData(form).get(qid);
+    const isCorrect = chosen === correct;
+    details[qid] = { chosen, correct, isCorrect };
+    if (isCorrect) totalCorrect++;
+  });
+
+  const totalQuestions = fieldsets.length;
+  const percent = Math.round((totalCorrect / totalQuestions) * 10000) / 100; // 2 decimals
+
+  // POST to Supabase REST
+  const payload = {
+    quiz_id: QUIZ_ID,
+    user_id: "", // optionally fill from your site (email, hash, cohort tag)
+    total_questions: totalQuestions,
+    total_correct: totalCorrect,
+    percent: percent,
+    details: {
+      ...details,
+      meta: {
+        ua: navigator.userAgent,
+        tz: Intl.DateTimeFormat().resolvedOptions().timeZone
+      }
+    }
+  };
+
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/quiz_responses`, {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+      "Content-Type": "application/json",
+      "Prefer": "return=representation"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const status = document.getElementById("quiz-status");
+  if (res.ok) {
+    status.textContent = `✅ Recorded. Score: ${totalCorrect}/${totalQuestions} (${percent}%)`;
+    form.reset();
+    // optional: disable after submit to avoid double-posts
+    [...form.elements].forEach(el => el.disabled = true);
+  } else {
+    status.textContent = "❌ Failed to record. Please try again.";
+  }
+});
+</script>

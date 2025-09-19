@@ -7,20 +7,29 @@ editor: visual
 ::: callout-important
 :::
 
-## Slides
+## Content
+
 Content
+
+## Pre-Workshop Evaluation
+
+[Survey](content/pre-workshop-survey.qmd){.btn .btn-primary target="_blank"}
 
 <br><br>
 
 ::: {style="font-size: 0.875em;"}
 :::
 
----
+------------------------------------------------------------------------
 
-::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
+
 </div>
+
 <div>
+
 [Session 1 →](sessions/session_01/page.qmd){.btn .btn-outline-primary}
+
 </div>
-:::
+:::::

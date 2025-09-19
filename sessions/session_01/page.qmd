@@ -8,9 +8,11 @@ editor: visual
 :::
 
 ## Slides
+
 🖥️ [Slides](slides.html)
 
 ## Exercise
+
 💪🏻[Exercise](exercise.html)
 
 <br><br>
@@ -18,13 +20,18 @@ editor: visual
 ::: {style="font-size: 0.875em;"}
 :::
 
----
+------------------------------------------------------------------------
 
-::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
-[← Pre-Workshop Materials](../../pre-workshop-materials.qmd){.btn .btn-outline-primary} 
+
+[← Pre-Workshop Materials](../../pre-workshop-materials.qmd){.btn .btn-outline-primary}
+
 </div>
+
 <div>
+
 [Session 2 →](../session_02/page.qmd){.btn .btn-outline-primary}
+
 </div>
-:::
+:::::
