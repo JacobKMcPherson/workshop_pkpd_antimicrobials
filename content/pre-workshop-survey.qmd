@@ -7,7 +7,11 @@ format: html
 
 <fieldset data-qid="q1" data-answer="PolC">
 
-<legend>1) Primary target of ibezapolstat?</legend> <label><input type="radio" name="q1" value="PolC" required> PolC</label><br> <label><input type="radio" name="q1" value="GyrA"> GyrA</label><br> <label><input type="radio" name="q1" value="RpoB"> RpoB</label> <label><input type="radio" name="q1" value="idk">I don't know</label>
+<legend>1) Primary target of ibezapolstat?</legend> 
+    <label><input type="radio" name="q1" value="PolC" required> PolC</label><br> 
+    <label><input type="radio" name="q1" value="GyrA"> GyrA</label><br> 
+    <label><input type="radio" name="q1" value="RpoB"> RpoB</label><br> 
+    <label><input type="radio" name="q1" value="idk">I don't know</label>
 
 <p class="feedback" aria-live="polite">
 
