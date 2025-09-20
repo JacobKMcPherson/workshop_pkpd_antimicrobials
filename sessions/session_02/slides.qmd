@@ -11,6 +11,7 @@ author:
     email: jacobmcpherson@utexas.edu
     affiliations: University of Houston College of Pharmacy
 date: last-modified
+footer: '<a href="https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/sessions/session_02/page.html" target="_blank">🔗 Return</a>'
 ---
 
 # Welcome to Session 2!
@@ -21,16 +22,16 @@ This session covers the practical application of PK/PD principles in clinical se
 
 ## Learning Objectives
 
-- Apply PK/PD concepts to clinical scenarios
-- Understand dose optimization strategies
-- Explore real-world case studies
+-   Apply PK/PD concepts to clinical scenarios
+-   Understand dose optimization strategies
+-   Explore real-world case studies
 
 ## Topics Covered
 
-1. Clinical PK/PD modeling
-2. Therapeutic drug monitoring
-3. Case studies in antimicrobial therapy
-4. Dose optimization strategies
+1.  Clinical PK/PD modeling
+2.  Therapeutic drug monitoring
+3.  Case studies in antimicrobial therapy
+4.  Dose optimization strategies
 
 ## Next Steps
 

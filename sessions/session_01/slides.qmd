@@ -14,21 +14,21 @@ author:
     email: jacobmcpherson@utexas.edu
     affiliations: University of Houston College of Pharmacy
 date: last-modified
+footer: '<a href="https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/sessions/session_01/page.html" target="_blank">🔗 Return</a>'
 ---
 
 # Welcome to the Workshop!
 
 ## This workshop was inspired by a conversation
+
 ### Between Dr. Cesar Arias, MD, PhD, and Dr. Brad spellberg, MD
+
 <!-- this is a comment in the Quarto document, hidden from render -->
 
 ::: {style="text-align: center;"}
-<iframe 
-    src="https://www.youtube.com/embed/3z4BItBrzbk?si=WMiGwvZnvsreN57v"
-    width="800" 
-    height="450" 
-    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
-    allowfullscreen> </iframe>
+<iframe src="https://www.youtube.com/embed/3z4BItBrzbk?si=WMiGwvZnvsreN57v" width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" allowfullscreen>
+
+</iframe>
 :::
 
 ## Learning Objectives
@@ -40,214 +40,228 @@ date: last-modified
 
 ## Similar Workshops
 
-<!-- [Workshop agenda (README.md)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/blob/main/README.md#agenda-overview)\--> 
+<!-- [Workshop agenda (README.md)](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/blob/main/README.md#agenda-overview)\-->
+
 <!-- [Scholars program](https://www.gulfcoastconsortia.org/home/research/antimicrobial-resistance/amr-scholars-program/)\ -->
+
 -   [NIAID 2017 Workshop](https://amr.solutions/wp-content/uploads/99/niaid_june2017_pkpdworkshopsummary.pdf)
 -   [SIDP 2025 Workshop](https://sidp.org/PKPD)
 -   [ESCMID 2026 Workshop](https://www.escmid.org/event-detail/optimised-dosing-of-antibiotics-understanding-pkpd-clinical-breakpoints-and-therapeutic-drug-monitoring-2026/)
 
-## If this workshop is insufficient, 
+## If this workshop is insufficient,
+
 ### I hope these resources from the NIH Clinical Center help!
 
 -   [NIH Clinical Center YouTube](https://www.youtube.com/NIHClinicalCenter)
 
 ## Animal Scale Up and First-in-Human Studies
+
 ### by Dr. Jerry Collins, PhD
 
 <!-- this is a comment in the Quarto document, hidden from render -->
 
 ::: {style="text-align: center;"}
-<iframe
-    width="800"
-    height="450"
-    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
-    src="https://www.youtube.com/embed/IFGcMrOHlVk?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
-    allowfullscreen>
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/IFGcMrOHlVk?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
 </iframe>
 :::
 
 ## Dose Selection and Optimization
+
 ### by Dr. Yaning Wang, PhD
 
 ::: {style="text-align: center;"}
-<iframe
-    width="800"
-    height="450"
-    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
-    src="https://www.youtube.com/embed/zqLkBeGp8g8?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
-    allowfullscreen>
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/zqLkBeGp8g8?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
 </iframe>
 :::
 
 ## Drub Absorption and Bioavailability
+
 ### by Dr. Jan H. Beumer, PharmD, PhD
 
 <!-- this is a comment in the Quarto document, hidden from render -->
 
 ::: {style="text-align: center;"}
-<iframe
-    width="800"
-    height="450"
-    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
-    src="https://www.youtube.com/embed/bqKHy2xeIkw?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
-    allowfullscreen>
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/bqKHy2xeIkw?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
 </iframe>
 :::
 
 ## Multicompartment Pharmacokinetic Modeling
+
 ### by Dr. Scott r. Penzak, PharmD, FCP
 
 <!-- this is a comment in the Quarto document, hidden from render -->
 
 ::: {style="text-align: center;"}
-<iframe
-    width="800"
-    height="450"
-    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
-    src="https://www.youtube.com/embed/H8d7MoNM6t0?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
-    allowfullscreen>
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/H8d7MoNM6t0?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
 </iframe>
 :::
 
-
 ## Population Pharmacokinetics
+
 ### by Dr. Robert R. Bies, PharmD, PhD
 
 ::: {style="text-align: center;"}
-<iframe
-    width="800"
-    height="450"
-    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
-    src="https://www.youtube.com/embed/TozOUOj2YvI?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
-    allowfullscreen>
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/TozOUOj2YvI?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
 </iframe>
 :::
 
 ## Pharmacodynamics in Drug Development
+
 ### by Dr. James Doroshow, MD
 
 ::: {style="text-align: center;"}
-<iframe
-    width="800"
-    height="450"
-    style="max-width: 80vw; aspect-ratio: 16/9; border: none;"
-    src="https://www.youtube.com/embed/1qvfSMJJpQU?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt"
-    allowfullscreen>
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/1qvfSMJJpQU?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
 </iframe>
 :::
 
-# Background Clinical Microbiology     
+# Background Clinical Microbiology
+
 ## You already know:
+
 ### Minimum Inhibitory Concentrations (MIC)<sup><a href="https://doi.org/10.1016/j.xpro.2023.102512">1</a></sup>
 
 ![](content/images/Barnes2023StarProtocols_mic.jpg){fig-align="center" width="60%"}
 
 ## You already know:
+
 ### Minimum Bactericidal Concentrations (MBC)<sup><a href="https://doi.org/10.1016/B978-0-12-801238-3.00244-0">2</a></sup>
+
 ![](content/images/Bury-Mone2014_mbc_mic_ratio_1.svg){fig-align="center" height="70vh" width="auto"}
 
-
+```{=html}
 <!--- ## You already know: 
 <!--- ### Cmax/MIC, AUC/MIC, %free T>MIC
-<!--- ![](content/images/Bury-Mone2014_mbc_mic_ratio_2.svg){fig-align="center" height="70vh" width="auto"} --> 
+<!--- ![](content/images/Bury-Mone2014_mbc_mic_ratio_2.svg){fig-align="center" height="70vh" width="auto"} -->
+```
 
 ## Only 'Free' Antibiotics are Microbiologically Active
+
 ### Commonly used parameters
 
-![](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrmicro862/MediaObjects/41579_2004_Article_BFnrmicro862_Fig3_HTML.gif){fig-align="center" height="70vh" width="auto"} 
-
+![](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrmicro862/MediaObjects/41579_2004_Article_BFnrmicro862_Fig3_HTML.gif){fig-align="center" height="70vh" width="auto"}
 
 ## PK/PD Indices Predict Efficacy
+
 ### Commonly used parameters
 
-![](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrmicro862/MediaObjects/41579_2004_Article_BFnrmicro862_Fig5_HTML.gif){fig-align="center" height="70vh" width="auto"} 
-
+![](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnrmicro862/MediaObjects/41579_2004_Article_BFnrmicro862_Fig5_HTML.gif){fig-align="center" height="70vh" width="auto"}
 
 # Pharmacokinetics (PK) 101
 
 ## Fundamentals of Biopharmaceutics
+
 ### Shargel and Yu's Biopharmaceutics and Pharmacokinetics, 8th Edition, 2022
+
 content
 
 ## Physiologic factors related to drug absorption
+
 ### subtitle
+
 content
 
 ## Drug distribution and protein binding
+
 ### subtitle
+
 content
 
 ## Physiology of drug Elimination
+
 ### subtitle
+
 content
 
 ## Introduction to PK/PD models
+
 ### subtitle
 
 ## One-compartment Open Model: IV bolus
+
 ### 
 
 ## Intravenous Infusion
+
 ### 
 
 ## Pharmacokineitcs of Drug Elimination and Clearance
+
 ### 
 
 ## Pharmacokinetics of Drug Absorption
-###
+
+### 
 
 ## Multiple-dosage regimens
+
 ### subtitle
 
 ## Nonlinear pharmacokinetics
+
 ### subtitle
 
 # Pharmacokinetics 201
 
 ## Empiric Models, Mechanistic Models, Statistical Moments, and Non-compartmental Models
+
 ### subtitle
 
 ## Pharmacogenetics, Drug Metabolism, Transporters, and Individualization of Drug Therapy
+
 ### subtitle
 
 ## Relationship between Pharmacokinetics and Pharmacodynamics
+
 ### subtitle
 
 ## Application of Pharmacokinetics to Clinical Situations
+
 ### subtitle
 
 ## Application of Pharmacokinetics and Pharmacodynamics to Aging, Obese, and Pediatric Patients
+
 ### subtitle
 
 ## Dose Adjustment in Renal and Hepatic Diseases
+
 ### subtitle
 
 ## Pharmacokinetics and Pharmacodynamics in Clinical Drug Product Development
-### subtitle
 
+### subtitle
 
 # Pre-clinical Models of Infection
 
 ## The *in vitro* Hollow-Fiber Infection Model (HFIM)
+
 ### subtitle
 
-## The *in vivo* Animal Models of Infection 
+## The *in vivo* Animal Models of Infection
+
 ### subtitle
 
 # Six Clinical Cases
 
 ## Six Clinical Cases
-### subtitle
 
+### subtitle
 
 ## Analysis of *in vitro* HFIM data
-### subtitle
 
+### subtitle
 
 # Six Clinical Cases
 
 ## Six Clinical Cases
+
 ### subtitle
 
 ## Analysis via PopPK
+
 ### subtitle

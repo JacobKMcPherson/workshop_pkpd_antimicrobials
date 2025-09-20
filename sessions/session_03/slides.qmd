@@ -11,6 +11,7 @@ author:
     email: jacobmcpherson@utexas.edu
     affiliations: University of Houston College of Pharmacy
 date: last-modified
+footer: '<a href="https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/sessions/session_03/page.html" target="_blank">🔗 Return</a>'
 ---
 
 # Welcome to Session 3!
@@ -21,16 +22,16 @@ This session explores advanced PK/PD modeling approaches and optimization strate
 
 ## Learning Objectives
 
-- Understand population PK/PD modeling
-- Learn advanced optimization techniques
-- Apply modeling to drug development
+-   Understand population PK/PD modeling
+-   Learn advanced optimization techniques
+-   Apply modeling to drug development
 
 ## Topics Covered
 
-1. Population pharmacokinetics
-2. Bayesian approaches
-3. Model-informed drug development
-4. Regulatory considerations
+1.  Population pharmacokinetics
+2.  Bayesian approaches
+3.  Model-informed drug development
+4.  Regulatory considerations
 
 ## Conclusion
 

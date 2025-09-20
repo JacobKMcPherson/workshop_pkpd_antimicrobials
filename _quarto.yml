@@ -100,4 +100,4 @@ format:
       toggleNotesButton: true
       navigation: true
       buttons: true
-    footer: '<a href="https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials" target="_blank">🔗 View on GitHub</a>'
+    footer: '<a href="https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials" target="_blank">🔗 Return Home</a>'
