@@ -38,6 +38,23 @@ jobs:
       with:
         tinytex: true
 
+    - name: Inject Supabase secrets into survey files
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      run: |
+        # Set fallback values if secrets are not available (for forks/PRs)
+        SUPABASE_URL_VALUE="${SUPABASE_URL:-https://YOURPROJECT.supabase.co}"
+        SUPABASE_ANON_KEY_VALUE="${SUPABASE_ANON_KEY:-YOUR_PUBLIC_ANON_KEY}"
+        
+        # Replace placeholders in pre-workshop survey
+        sed -i "s|\${SUPABASE_URL}|$SUPABASE_URL_VALUE|g" content/pre-workshop-survey.qmd
+        sed -i "s|\${SUPABASE_ANON_KEY}|$SUPABASE_ANON_KEY_VALUE|g" content/pre-workshop-survey.qmd
+        
+        # Replace placeholders in post-workshop survey
+        sed -i "s|\${SUPABASE_URL}|$SUPABASE_URL_VALUE|g" content/post-workshop-survey.qmd
+        sed -i "s|\${SUPABASE_ANON_KEY}|$SUPABASE_ANON_KEY_VALUE|g" content/post-workshop-survey.qmd
+
     - name: Render Quarto website
       run: |
         quarto render
