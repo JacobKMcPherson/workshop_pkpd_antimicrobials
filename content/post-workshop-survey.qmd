@@ -28,7 +28,7 @@ format: html
 // Configuration injected during build time
 const SUPABASE_URL = "${SUPABASE_URL}";
 const SUPABASE_ANON_KEY = "${SUPABASE_ANON_KEY}"; // safe with insert-only policy
-const QUIZ_ID = "pk_quiz_v1";
+const QUIZ_ID = "post-workshop-survey";
 
 // instant feedback per question (optional)
 document.querySelectorAll("fieldset").forEach(fs => {
