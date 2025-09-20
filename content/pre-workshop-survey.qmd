@@ -129,18 +129,16 @@ document.getElementById("quiz-form").addEventListener("submit", async (e) => {
 </script>
 ```
 
-------------------------------------------------------------------------
-
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← Pre-Workshop Materials](../../pre-workshop-materials.qmd){.btn .btn-outline-primary}
+[← Pre-Workshop Materials](../../pre-workshop-materials.html){.btn .btn-outline-primary}
 
 </div>
 
 <div>
 
-[Session 1 →](sessions/session_01/page.qmd){.btn .btn-outline-primary}
+[Session 1 →](sessions/session_01/page.html){.btn .btn-outline-primary}
 
 </div>
 :::::
