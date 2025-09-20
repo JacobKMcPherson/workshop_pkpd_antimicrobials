@@ -11,8 +11,8 @@ editor: visual
 
 1.  Create a free [**GitHub**](https://github.com) account
 2.  Log in to [**RStudio Cloud**](https://rstudio.cloud/) using your GitHub account
-3.  Familiarize yourself with the [workshop schedule](schedule.qmd)
-4.  Interact with this website using *Discussions* (bottom of every page)
+3.  Familiarize yourself with the [**workshop schedule**](#agenda)
+4.  Interact with this website using **Discussions** (bottom of every page)
 5.  Take the **pre-workshop evaluation** survey below
 
 ## Pre-Workshop Evaluation
