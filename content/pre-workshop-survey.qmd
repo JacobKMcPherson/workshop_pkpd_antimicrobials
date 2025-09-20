@@ -4,28 +4,36 @@ format: html
 ---
 
 <form id="quiz-form">
-  <fieldset data-qid="q1" data-answer="PolC">
-    <legend>1) Primary target of ibezapolstat?</legend>
-    <label><input type="radio" name="q1" value="PolC" required> PolC</label><br>
-    <label><input type="radio" name="q1" value="GyrA"> GyrA</label><br>
-    <label><input type="radio" name="q1" value="RpoB"> RpoB</label>
-    <label><input type="radio" name="q1" value="idk">I don't know</label>
-    <p class="feedback" aria-live="polite"></p>
-  </fieldset>
 
-  <fieldset data-qid="q2" data-answer="Cmax">
-    <legend>2) Which parameter changes with oral bioavailability (all else equal)?</legend>
-    <label><input type="radio" name="q2" value="Cmax" required> Cmax</label><br>
-    <label><input type="radio" name="q2" value="Vd"> Vd</label><br>
-    <label><input type="radio" name="q2" value="t1/2"> t1/2</label>
-    <label><input type="radio" name="q1" value="idk">I don't know</label>
-    <p class="feedback" aria-live="polite"></p>
-  </fieldset>
+<fieldset data-qid="q1" data-answer="PolC">
 
-  <button type="submit">Submit</button>
-  <span id="quiz-status"></span>
+<legend>1) Primary target of ibezapolstat?</legend> <label><input type="radio" name="q1" value="PolC" required> PolC</label><br> <label><input type="radio" name="q1" value="GyrA"> GyrA</label><br> <label><input type="radio" name="q1" value="RpoB"> RpoB</label> <label><input type="radio" name="q1" value="idk">I don't know</label>
+
+<p class="feedback" aria-live="polite">
+
+</p>
+
+</fieldset>
+
+<fieldset data-qid="q2" data-answer="Cmax">
+
+<legend>2) Which parameter changes with oral bioavailability (all else equal)?</legend> <label><input type="radio" name="q2" value="Cmax" required> Cmax</label><br> <label><input type="radio" name="q2" value="Vd"> Vd</label><br> <label><input type="radio" name="q2" value="t1/2"> t1/2</label> <label><input type="radio" name="q1" value="idk">I don't know</label>
+
+<p class="feedback" aria-live="polite">
+
+</p>
+
+</fieldset>
+
+<button type="submit">
+
+Submit
+
+</button>
+
 </form>
 
+```{=html}
 <script>
 // Configuration injected during build time
 const SUPABASE_URL = "${SUPABASE_URL}";
@@ -119,3 +127,19 @@ document.getElementById("quiz-form").addEventListener("submit", async (e) => {
   }
 });
 </script>
+```
+
+
+------------------------------------------------------------------------
+
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+<div>
+
+[← Pre-Workshop Materials](../../pre-workshop-materials.qmd){.btn .btn-outline-primary}
+
+</div>
+
+<div>
+
+</div>
+:::::
