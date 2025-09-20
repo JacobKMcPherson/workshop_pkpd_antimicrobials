@@ -36,7 +36,7 @@ document.querySelectorAll("fieldset").forEach(fs => {
     const chosen = new FormData(document.getElementById("quiz-form")).get(fs.getAttribute("data-qid"));
     const fb = fs.querySelector(".feedback");
     if (!chosen) return;
-    fb.textContent = chosen === correct ? "✅ Correct" : "❌ Try again";
+    //fb.textContent = chosen === correct ? "✅ Correct" : "❌ Try again";
   });
 });
 
