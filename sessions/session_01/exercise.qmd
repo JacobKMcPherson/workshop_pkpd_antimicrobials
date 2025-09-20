@@ -3,11 +3,16 @@ title: "exercise"
 format: html
 ---
 
-
-
-::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
+
 [← Session 1](page.qmd){.btn .btn-outline-primary}
+
 </div>
-<div></div>
-:::
+
+<div>
+
+[Session 2 →](../session_02/page.qmd){.btn .btn-outline-primary}
+
+</div>
+:::::
