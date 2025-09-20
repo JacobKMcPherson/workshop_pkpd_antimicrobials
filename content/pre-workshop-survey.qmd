@@ -17,7 +17,7 @@ format: html
 
 <fieldset data-qid="q2" data-answer="Cmax">
 
-<legend>2) Which parameter changes with oral bioavailability (all else equal)?</legend> <label><input type="radio" name="q2" value="Cmax" required> Cmax</label><br> <label><input type="radio" name="q2" value="Vd"> Vd</label><br> <label><input type="radio" name="q2" value="t1/2"> t1/2</label> <label><input type="radio" name="q1" value="idk"> I don't know</label>
+<legend>2) Which parameter changes with oral bioavailability (all else equal)?</legend> <label><input type="radio" name="q2" value="Cmax" required> Cmax</label><br> <label><input type="radio" name="q2" value="Vd"> Vd</label><br> <label><input type="radio" name="q2" value="t1/2"> t1/2</label><br> <label><input type="radio" name="q1" value="idk"> I don't know</label>
 
 <p class="feedback" aria-live="polite">
 
