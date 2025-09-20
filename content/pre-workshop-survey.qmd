@@ -129,7 +129,6 @@ document.getElementById("quiz-form").addEventListener("submit", async (e) => {
 </script>
 ```
 
-
 ------------------------------------------------------------------------
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
@@ -140,6 +139,8 @@ document.getElementById("quiz-form").addEventListener("submit", async (e) => {
 </div>
 
 <div>
+
+[Session 1 →](sessions/session_01/page.qmd){.btn .btn-outline-primary}
 
 </div>
 :::::
