@@ -1,6 +1,0 @@
----
-title: "NCATS"
-format: 
-  html:
-    include-after-body: ../_includes/resources-navigation.html
----

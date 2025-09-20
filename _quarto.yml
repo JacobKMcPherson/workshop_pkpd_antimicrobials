@@ -37,27 +37,27 @@ website:
       - text: Resources
         icon: globe2
         menu: 
-          - href: content/accesspharmacy.qmd
+          - href: https://accesspharmacy.mhmedical.com/
             text: Access Pharmacy
-          - href: content/boomer.qmd
-            text: Boomer
-          - href: content/certara.qmd
+          - href: https://www.boomer.org/
+            text: David Bourne's Boomer Pharmacokinetics
+          - href: https://www.certara.com/
             text: Certara
-          - href: content/drugsatfda.qmd
+          - href: https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm
             text: Drugs@FDA
-          - href: content/nihcc.qmd
+          - href: https://www.youtube.com/@NIHClinicalCenter
             text: NIH CC            
-          - href: content/ncats.qmd
+          - href: https://ncats.nih.gov/
             text: NCATS
-          - href: content/iuphar.qmd
+          - href: https://iuphar.org/
             text: IUPHAR
-          - href: content/icp.org.nz.qmd
+          - href: https://www.icp.org.nz/
             text: Interactive Clinical Pharmacology
-          - href: content/rcrswg.qmd
+          - href: https://r-consortium.org/
             text: R Consortium "R Submissions" Working Group
-          - href: content/pharmaverse.qmd
+          - href: https://pharmaverse.org/
             text: Pharmaverse
-          - href: content/pharmar.qmd
+          - href: https://pharmar.org/
             text: PharmaR    
     right:
       - icon: github
