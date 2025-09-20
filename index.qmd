@@ -18,7 +18,7 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 
 ## Getting Started
 
-### [**Pre-Workshop Materials and Instructions**](pre-workshop-materials.html){.btn .btn-primary .btn-lg target="_blank"}
+### [**Pre-Workshop Materials and Instructions**](pre-workshop-materials.html)
 
 [📝 Take Survey](content/pre-workshop-survey.html){.btn .btn-primary .btn-lg target="_blank"}
 
