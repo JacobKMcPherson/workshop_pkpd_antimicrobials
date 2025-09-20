@@ -9,6 +9,7 @@ format: html
     <label><input type="radio" name="q1" value="PolC" required> PolC</label><br>
     <label><input type="radio" name="q1" value="GyrA"> GyrA</label><br>
     <label><input type="radio" name="q1" value="RpoB"> RpoB</label>
+    <label><input type="radio" name="q1" value="idk">I don't know</label>
     <p class="feedback" aria-live="polite"></p>
   </fieldset>
 
@@ -17,6 +18,7 @@ format: html
     <label><input type="radio" name="q2" value="Cmax" required> Cmax</label><br>
     <label><input type="radio" name="q2" value="Vd"> Vd</label><br>
     <label><input type="radio" name="q2" value="t1/2"> t1/2</label>
+    <label><input type="radio" name="q1" value="idk">I don't know</label>
     <p class="feedback" aria-live="polite"></p>
   </fieldset>
 
