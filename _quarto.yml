@@ -21,6 +21,8 @@ website:
             text: Session 2
           - href: sessions/session_03/page.html
             text: Session 3
+          - href: content/post-workshop-survey.qmd
+            text: Post-Workshop Survey
       - text: Info
         icon: info-circle
         menu: 

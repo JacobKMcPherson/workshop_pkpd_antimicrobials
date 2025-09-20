@@ -31,5 +31,7 @@ editor: visual
 
 <div>
 
+[Post-Workshop-Survey →](../content/post-workshop-survey.qmd){.btn .btn-outline-primary}
+
 </div>
 :::::
