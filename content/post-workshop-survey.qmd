@@ -30,6 +30,19 @@ const SUPABASE_URL = "${SUPABASE_URL}";
 const SUPABASE_ANON_KEY = "${SUPABASE_ANON_KEY}"; // safe with insert-only policy
 const QUIZ_ID = "post-workshop-survey";
 
+function getAnonUserId() {
+  const localKey = "pk_quiz_user_id";
+  let uuid = localStorage.getItem(localKey);
+  if (!uuid) {
+    uuid = ([1e7]+-1e3+-4e3+-8e3+-1e11)
+      .replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+    localStorage.setItem(localKey, uuid);
+  }
+  return uuid;
+}
+
 // instant feedback per question (optional)
 document.querySelectorAll("fieldset").forEach(fs => {
   fs.addEventListener("change", () => {
@@ -62,10 +75,13 @@ document.getElementById("quiz-form").addEventListener("submit", async (e) => {
   const totalQuestions = fieldsets.length;
   const percent = Math.round((totalCorrect / totalQuestions) * 10000) / 100; // 2 decimals
 
+  // --- Use the anonymized, persistent user id ---
+  const user_id = getAnonUserId();
+
   // POST to Supabase REST
   const payload = {
     quiz_id: QUIZ_ID,
-    user_id: "", // optionally fill from your site (email, hash, cohort tag)
+    user_id:  user_id, // anonymized & unique per user
     total_questions: totalQuestions,
     total_correct: totalCorrect,
     percent: percent,
