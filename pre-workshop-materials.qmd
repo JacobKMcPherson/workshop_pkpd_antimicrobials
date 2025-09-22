@@ -13,11 +13,15 @@ editor: visual
 2.  Log in to [**RStudio Cloud**](https://rstudio.cloud/) using your GitHub account
 3.  Familiarize yourself with the [**workshop agenda**](index.qmd)
 4.  Interact with this website using **Discussions** (bottom of every page)
-5.  Take the **pre-workshop evaluation** survey below
+5.  Take the [**pre-workshop evaluation**](content/pre-workshop-survey.qmd) survey below
+
+## Pre-Workshop Slides
+
+🖥️ [Slides](content/pre-workshop-slides.html)
 
 ## Pre-Workshop Evaluation
 
-[Survey](content/pre-workshop-survey.qmd){.btn .btn-primary target="_blank"}
+📝 [Survey](content/pre-workshop-survey.qmd){.btn .btn-primary target="_blank"}
 
 <br><br>
 
