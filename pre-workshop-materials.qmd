@@ -21,7 +21,7 @@ editor: visual
 
 ## Pre-Workshop Evaluation
 
-📝 [Survey](content/pre-workshop-survey.qmd){.btn .btn-primary target="_blank"}
+[📝 Take Survey](content/pre-workshop-survey.qmd){.btn .btn-primary target="_blank"}
 
 <br><br>
 
