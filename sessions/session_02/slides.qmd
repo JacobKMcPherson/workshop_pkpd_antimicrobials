@@ -8,10 +8,10 @@ format:
 author:
   - name: Jacob K. McPherson
     orcid: 0000-0001-5486-4945
-    email: jacobmcpherson@utexas.edu
+    email: jkmcpherson@uh.edu, jacobmcpherson@utexas.edu
     affiliations: University of Houston College of Pharmacy
 date: last-modified
-footer: '<a href="https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/sessions/session_02/page.html" target="_blank">🔗 Return</a>'
+footer: '<a href="https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/sessions/session_02/" target="_blank">🔗 Return</a>'
 ---
 
 # Welcome to Session 2!

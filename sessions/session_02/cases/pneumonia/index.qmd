@@ -6,13 +6,13 @@ format: html
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← Osteomyelitis](../session_02/cases/osteomyelitis/index.qmd){.btn .btn-outline-primary}
+[← 🦴 Osteomyelitis](../osteomyelitis/index.qmd){.btn .btn-outline-primary}
 
 </div>
 
 <div>
 
-[Pneumonia →](../session_03/cases/pneumonia/index.qmd){.btn .btn-outline-primary}
+[🚽 Urinary Tract Infection →](../urinary-tract-infection/index.qmd){.btn .btn-outline-primary}
 
 </div>
 :::::

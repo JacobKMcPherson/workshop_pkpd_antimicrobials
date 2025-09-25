@@ -3,19 +3,16 @@ title: "Urinary Tract Infection"
 format: html
 ---
 
-
-
-
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← Pneumonia](../session_02/cases/pneumonia/index.qmd){.btn .btn-outline-primary}
+[← 🫁 Pneumonia](../pneumonia/index.qmd){.btn .btn-outline-primary}
 
 </div>
 
 <div>
 
-[Bacteremia →](../session_03/cases/bacteremia/index.qmd){.btn .btn-outline-primary}
+[🩸 Bacteremia →](../bacteremia/index.qmd){.btn .btn-outline-primary}
 
 </div>
 :::::
