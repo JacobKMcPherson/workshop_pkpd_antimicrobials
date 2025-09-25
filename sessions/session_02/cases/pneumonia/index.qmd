@@ -3,6 +3,17 @@ title: "Pneumonia"
 format: html
 ---
 
+Age: 
+Sex: 
+Height: 
+Weight: 
+Creatinine: 
+
+Offending Agent: *ampC*+ Pseudomonas aeruginosa
+
+Drug of Choice: Cefepime
+
+
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
