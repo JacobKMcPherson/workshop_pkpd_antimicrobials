@@ -9,7 +9,7 @@ Height:
 Weight:
 Creatinine: 
 
-Offending agent: **Penicillin-resistant** *Strep. pneumonia* **(PRSP)**
+Offending Agent: **Penicillin-resistant** *Strep. pneumonia* **(PRSP)**
 
 Drug of Choice: Vancomycin + ceftriaxone (or cefotaxime)
 
