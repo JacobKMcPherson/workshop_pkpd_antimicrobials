@@ -3,6 +3,18 @@ title: "Bacteremia"
 format: html
 ---
 
+Age:
+Sex: 
+Height:
+Weight:
+Creatinine: 
+
+Offending agent: **Methicillin-resistant** *Staph. aureus* *(MRSA)*
+
+Drug of Choice: Vancomycin
+
+PK/PD Target: AUC/MIC >= 400 
+
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
