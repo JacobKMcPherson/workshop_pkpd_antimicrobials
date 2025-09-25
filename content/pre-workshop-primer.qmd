@@ -1,0 +1,46 @@
+---
+title: "Pre-Workshop Primer"
+format: html
+editor: visual
+---
+
+Welcome! This workshop was inspired by a conversation between between Dr. **Cesar Arias**, MD, PhD, and Dr. **Brad spellberg**, MD, at the 2025 American Society for microbiology **(ASM) Microbe** conference in Los Angeles, California, USA.
+
+Their discussion highlights the critical need for enhanced education in **pharmacokinetics/pharmacodynamics (PK/PD)** among clinicians and researchers, particularly in the context of **antimicrobial resistance (AMR)** and **clinical outcomes (CO)**. Together, PK/PD/CO principles form the foundation for understanding how drugs behave in the body, how they exert their effects on pathogens, and ultimately, how these factors influence patient outcomes.
+
+<!-- this is a comment in the Quarto document, hidden from render -->
+
+::: {style="text-align: center;"}
+<iframe src="https://www.youtube.com/embed/3z4BItBrzbk?si=WMiGwvZnvsreN57v" width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" allowfullscreen>
+
+</iframe>
+:::
+
+## Learning Objectives
+
+{{< include ../info/learning-objectives.qmd >}}
+
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+<div>
+
+[← Pre-Workshop Materials](../../pre-workshop-materials.qmd){.btn .btn-outline-primary}
+
+</div>
+
+<div>
+
+[Pre-Workshop Survey →](content/pre-workshop-survey.qmd){.btn .btn-outline-primary}
+
+</div>
+:::::
+
+## Additional Resources
+
+**Similar Workshops**:
+
+{{< include ../info/similar-workshops.qmd >}}
+
+**Video Lectures**:
+
+{{< include ../info/video-lectures.qmd >}}
+

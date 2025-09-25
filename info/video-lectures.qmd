@@ -1,0 +1,73 @@
+---
+format: html
+---
+
+[NIH Clinical Center YouTube](https://www.youtube.com/NIHClinicalCenter) (below)
+
+
+#### Animal Scale Up and First-in-Human Studies
+
+by Dr. Jerry Collins, PhD
+
+<!-- this is a comment in the Quarto document, hidden from render -->
+
+::: {style="text-align: center;"}
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/IFGcMrOHlVk?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
+</iframe>
+:::
+
+#### Dose Selection and Optimization
+
+by Dr. Yaning Wang, PhD
+
+::: {style="text-align: center;"}
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/zqLkBeGp8g8?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
+</iframe>
+:::
+
+#### Drub Absorption and Bioavailability
+
+by Dr. Jan H. Beumer, PharmD, PhD
+
+<!-- this is a comment in the Quarto document, hidden from render -->
+
+::: {style="text-align: center;"}
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/bqKHy2xeIkw?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
+</iframe>
+:::
+
+#### Multicompartment Pharmacokinetic Modeling
+
+by Dr. Scott r. Penzak, PharmD, FCP
+
+<!-- this is a comment in the Quarto document, hidden from render -->
+
+::: {style="text-align: center;"}
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/H8d7MoNM6t0?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
+</iframe>
+:::
+
+#### Population Pharmacokinetics
+
+by Dr. Robert R. Bies, PharmD, PhD
+
+::: {style="text-align: center;"}
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/TozOUOj2YvI?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
+</iframe>
+:::
+
+#### Pharmacodynamics in Drug Development
+
+by Dr. James Doroshow, MD
+
+::: {style="text-align: center;"}
+<iframe width="800" height="450" style="max-width: 80vw; aspect-ratio: 16/9; border: none;" src="https://www.youtube.com/embed/1qvfSMJJpQU?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt" allowfullscreen>
+
+</iframe>
+:::
+

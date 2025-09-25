@@ -1,0 +1,7 @@
+---
+format: html
+---
+
+-   [NIAID 2017 Workshop](https://amr.solutions/wp-content/uploads/99/niaid_june2017_pkpdworkshopsummary.pdf)
+-   [SIDP 2025 Workshop](https://sidp.org/PKPD)
+-   [ESCMID 2026 Workshop](https://www.escmid.org/event-detail/optimised-dosing-of-antibiotics-understanding-pkpd-clinical-breakpoints-and-therapeutic-drug-monitoring-2026/)

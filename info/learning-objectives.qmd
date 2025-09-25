@@ -1,0 +1,10 @@
+---
+format: html
+---
+
+Upon completion of this course, the participant should be able to:
+
+1.  Describe the **fundamental concepts** of pharmacokinetics and pharmacodynamics (PK/PD).
+2.  Discuss the **design** and **utility** of PK/PD studies, including *hands-on applications* using R programming.
+3.  **Translate** clinical PK/PD to dose optimization using *R programming*.
+4.  Identify PK/PD **considerations** for new drug development.

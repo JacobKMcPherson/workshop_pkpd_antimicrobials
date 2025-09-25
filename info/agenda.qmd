@@ -2,12 +2,12 @@
 format: html
 ---
 
-|    Start   |  Duration  |   Session                                       |        Description        |      Objective    |                 Speaker                |
-|:----------:|:----------:|:-----------------------------------------------:|:-------------------------:|:-----------------:|:--------------------------------------:|
-| **10:00**  |   30 min.  |  [**Session 1**](sessions/session_01/page.html) | *Fundamentals of PK/PD*   |         One       | Jacob K. McPherson, Pharm.D.           |
-| **10:30**  |   30 min.  |  [**Session 2**](sessions/session_02/page.html) | *Clinical Applications*   |         Two       |                    "                   |
-| **11:00**  |   15 min.  |  *Break*                                        |            —              |         —         |                    —                   |
-| **11:15**  |   45 min.  |  [**Session 3**](sessions/session_03/page.html) |   *Advanced Modeling*     |        Three      |                    "                   |
-| **12:00**  |   45 min.  |  **Panel Discussion & Lunch**                   |            —              |         —         |  Taryn A. Eubank, Pharm.D., SC, JKM    |
-| **12:45**  |   30 min.  |  Patient presentations                          |      5 min/group          |        Bonus      |                    —                   |
-| **13:15**  |   45 min.  |  **Special Guest Lecture**                      |*PK/PD Considerations for Innovative Drug Discovery and Development* |       Bonus       |        Srinivas Chamakuri, Ph.D.       |
+| Start | Duration | Session | Description | Objective | Speaker |
+|:----------:|:----------:|:-------------:|:----------:|:----------:|:----------:|
+| **10:00** | 30 min. | [**Session 1**](sessions/session_01/page.html) | *Fundamentals of PK/PD* | One | Jacob K. McPherson, Pharm.D. |
+| **10:30** | 30 min. | [**Session 2**](sessions/session_02/page.html) | *Clinical Applications* | Two | " |
+| **11:00** | 15 min. | *Break* | — | — | — |
+| **11:15** | 45 min. | [**Session 3**](sessions/session_03/page.html) | *Advanced Modeling* | Three | " |
+| **12:00** | 45 min. | **Panel Discussion & Lunch** | — | — | Taryn A. Eubank, Pharm.D., SC, JKM |
+| **12:45** | 30 min. | Patient presentations | 5 min/group | Bonus | — |
+| **13:15** | 45 min. | **Special Guest Lecture** | *PK/PD Considerations for Innovative Drug Discovery and Development* | Bonus | Srinivas Chamakuri, Ph.D. |

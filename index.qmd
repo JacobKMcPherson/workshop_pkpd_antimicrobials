@@ -20,7 +20,7 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 
 ### [**Pre-Workshop: Materials and Instructions**](pre-workshop-materials.html)
 
-[📺 View Introduction](content/pre-workshop-slides.html){.btn .btn-primary .btn-lg target="_blank"}
+[📺 View Primer](content/pre-workshop-primer.html){.btn .btn-primary .btn-lg target="_blank"}
 
 [📝 Take Survey](content/pre-workshop-survey.html){.btn .btn-primary .btn-lg target="_blank"}
 
@@ -68,20 +68,15 @@ Advanced modeling and optimization strategies.
 
 ## Event Description
 
-This **interactive** workshop provides trainees the opportunities to learn the fundamental principles of pharmacokinetics and pharmacodynamics (PK/PD), with a particular emphasis on antimicrobial agents. Participants will gain hands-on experience with the analysis of pharmacokinetic data using the open-source, free-forever *r* programming language. By highlighting the role of PK/PD as a bridge between laboratory research and clinical drug development, the workshop will illustrate how these principles guide decision-making across the drug development pipeline—from candidate selection to regulatory approval.
+{{< include info/event-description.qmd >}}
 
 ## Intended Audience
 
-Graduate students, pharmacy students, and postdoctoral fellows of microbiology, immunology, pharmaceutical sciences, and translational sciences.
+{{< include info/intended-audience.qmd >}}
 
 ## Learning Objectives
 
-Upon completion of this course, the participant should be able to:
-
-1.  Describe the fundamental concepts of pharmacokinetics and pharmacodynamics (PK/PD).
-2.  Discuss the design and utility of PK/PD studies, including hands-on applications using R programming.
-3.  translate clinical PK/PD to dose optimization using R programming.
-4.  Identify PK/PD considerations for new drug development.
+{{< include info/learning-objectives.qmd >}}
 
 ## Resources
 
