@@ -28,7 +28,7 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 
 :::::: grid
 ::: {.g-col-md-4 .g-col-12}
-### [**Session 1: Fundamentals**](sessions/session_01/page.html)
+### [**Session 1: Fundamentals**](sessions/session_01/index.qmd)
 
 [📊 View Presentation](sessions/session_01/slides.html){.btn .btn-primary .btn-lg target="_blank"}
 
@@ -38,7 +38,7 @@ Introduction to PK/PD concepts and antimicrobial mechanisms.
 :::
 
 ::: {.g-col-md-4 .g-col-12}
-### [**Session 2: Applications**](sessions/session_02/page.html)
+### [**Session 2: Applications**](sessions/session_02/index.qmd)
 
 [📊 View Presentation](sessions/session_02/slides.html){.btn .btn-primary .btn-lg target="_blank"}
 
@@ -48,7 +48,7 @@ Practical applications and clinical considerations.
 :::
 
 ::: {.g-col-md-4 .g-col-12}
-### [**Session 3: Advanced Topics**](sessions/session_03/page.html)
+### [**Session 3: Advanced Topics**](sessions/session_03/index.qmd)
 
 [📊 View Presentation](sessions/session_03/slides.html){.btn .btn-primary .btn-lg target="_blank"}
 
