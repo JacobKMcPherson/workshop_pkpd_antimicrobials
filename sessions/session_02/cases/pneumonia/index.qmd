@@ -13,6 +13,7 @@ Offending Agent: *ampC*+ Pseudomonas aeruginosa
 
 Drug of Choice: Cefepime
 
+PK/PD Target: 
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
