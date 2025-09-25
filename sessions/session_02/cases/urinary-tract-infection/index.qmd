@@ -3,6 +3,20 @@ title: "Urinary Tract Infection"
 format: html
 ---
 
+Age:
+Sex: 
+Height:
+Weight:
+Creatinine: 
+
+Offending Agent: **Fluoroquinolone-resistant uropathogenic** *E. coli* **(UPEC)**
+
+Drug of Choice: Vancomycin + ceftriaxone (or cefotaxime)
+
+PK/PD Target: 
+
+
+
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
