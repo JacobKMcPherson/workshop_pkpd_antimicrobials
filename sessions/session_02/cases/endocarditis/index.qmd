@@ -3,6 +3,19 @@ title: "Endocarditis"
 format: html
 ---
 
+Age:
+Sex: 
+Height:
+Weight:
+Creatinine: 
+
+Offending agent: **Vancomycin-resistant** *Enterococcus faecium* **(VRE)**
+
+Drug of Choice: Daptomycin
+
+PK/PD Target: 
+
+
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
