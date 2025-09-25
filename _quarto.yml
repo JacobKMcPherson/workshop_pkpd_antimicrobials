@@ -15,11 +15,11 @@ website:
         menu:
           - href: pre-workshop-materials.qmd
             text: Pre-Workshop Materials
-          - href: sessions/session_01/page.html
+          - href: sessions/session_01/index.qmd
             text: Session 1
-          - href: sessions/session_02/page.html
+          - href: sessions/session_02/index.qmd
             text: Session 2
-          - href: sessions/session_03/page.html
+          - href: sessions/session_03/index.qmd
             text: Session 3
           - href: content/post-workshop-survey.qmd
             text: Post-Workshop Survey

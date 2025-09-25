@@ -25,7 +25,7 @@ editor: visual
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← Session 2](../session_02/page.qmd){.btn .btn-outline-primary}
+[← Session 2](../session_02/index.qmd){.btn .btn-outline-primary}
 
 </div>
 

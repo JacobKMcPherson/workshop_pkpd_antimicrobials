@@ -11,8 +11,8 @@ editor: visual
 
 1.  Create a free [**GitHub**](https://github.com) account
 2.  Log in to [**RStudio Cloud**](https://rstudio.cloud/) or [**VSCode.dev**](https://vscode.dev/) using your GitHub account
-3.  Familiarize yourself with the [**workshop agenda**](index.qmd)
-4.  Interact with this website using **Discussions** (bottom of every page)
+3.  Familiarize yourself with the [**workshop agenda**](https://jacobkmcpherson.github.io/workshop_pkpd_antimicrobials/#agenda.html)
+4.  Interact with this website using [**Discussions**](https://github.com/JacobKMcPherson/workshop_pkpd_antimicrobials/discussions) (bottom of every page)
 5.  Take the [**pre-workshop evaluation**](content/pre-workshop-survey.qmd) survey below
 
 ## Pre-Workshop Slides
@@ -37,7 +37,7 @@ editor: visual
 
 <div>
 
-[Session 1 →](sessions/session_01/page.qmd){.btn .btn-outline-primary}
+[Session 1 →](sessions/session_01/index.qmd){.btn .btn-outline-primary}
 
 </div>
 :::::

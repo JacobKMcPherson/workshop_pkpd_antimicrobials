@@ -1,5 +1,5 @@
 ---
-title: "Session 01"
+title: "Session 02"
 format: html
 editor: visual
 ---
@@ -25,13 +25,13 @@ editor: visual
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← Pre-Workshop Materials](../../pre-workshop-materials.qmd){.btn .btn-outline-primary}
+[← Session 1](../session_01/index.qmd){.btn .btn-outline-primary}
 
 </div>
 
 <div>
 
-[Session 2 →](../session_02/page.qmd){.btn .btn-outline-primary}
+[Session 3 →](../session_03/index.qmd){.btn .btn-outline-primary}
 
 </div>
 :::::

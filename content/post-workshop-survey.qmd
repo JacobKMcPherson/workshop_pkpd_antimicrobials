@@ -131,13 +131,13 @@ document.getElementById("quiz-form").addEventListener("submit", async (e) => {
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← Session 3](../sessions/session_03/page.html){.btn .btn-outline-primary}
+[← Session 3](../sessions/session_03/index.qmd){.btn .btn-outline-primary}
 
 </div>
 
 <div>
 
-[Home](../index.html){.btn .btn-outline-primary}
+[Home](../index.qmd){.btn .btn-outline-primary}
 
 </div>
 :::::
