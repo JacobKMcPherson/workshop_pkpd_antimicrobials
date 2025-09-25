@@ -9,9 +9,9 @@ Height:
 Weight:
 Creatinine: 
 
-Offending Agent: **Fluoroquinolone-resistant uropathogenic** *E. coli* **(UPEC)**
+Offending Agent: **Fluoroquinolone-resistant, ESBL+ uropathogenic** *E. coli* **(UPEC)**
 
-Drug of Choice: Vancomycin + ceftriaxone (or cefotaxime)
+Drug of Choice: Ertapenem
 
 PK/PD Target: 
 
