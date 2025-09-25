@@ -3,6 +3,18 @@ title: "Meningitis"
 format: html
 ---
 
+Age:
+Sex: 
+Height:
+Weight:
+Creatinine: 
+
+Offending agent: **Penicillin-resistant** *Strep. pneumonia* **(PRSP)**
+
+Drug of Choice: Vancomycin + ceftriaxone (or cefotaxime)
+
+PK/PD Target: 
+
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
