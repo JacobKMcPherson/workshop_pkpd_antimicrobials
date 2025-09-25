@@ -7,11 +7,11 @@ for the fully rendered, **interactive** website
 
 ## Agenda
 
-<table>
+<table style="width:100%;">
 <colgroup>
 <col style="width: 16%" />
 <col style="width: 16%" />
-<col style="width: 20%" />
+<col style="width: 16%" />
 <col style="width: 16%" />
 <col style="width: 16%" />
 <col style="width: 16%" />
@@ -31,7 +31,7 @@ for the fully rendered, **interactive** website
 <td style="text-align: center;"><strong>10:00</strong></td>
 <td style="text-align: center;">30 min.</td>
 <td style="text-align: center;"><a
-href="sessions/session_01/page.html"><strong>Session 1</strong></a></td>
+href="sessions/session_01/index.qmd"><strong>Session 1</strong></a></td>
 <td style="text-align: center;"><em>Fundamentals of PK/PD</em></td>
 <td style="text-align: center;">One</td>
 <td style="text-align: center;">Jacob K. McPherson, Pharm.D.</td>
@@ -40,7 +40,7 @@ href="sessions/session_01/page.html"><strong>Session 1</strong></a></td>
 <td style="text-align: center;"><strong>10:30</strong></td>
 <td style="text-align: center;">30 min.</td>
 <td style="text-align: center;"><a
-href="sessions/session_02/page.html"><strong>Session 2</strong></a></td>
+href="sessions/session_02/index.qmd"><strong>Session 2</strong></a></td>
 <td style="text-align: center;"><em>Clinical Applications</em></td>
 <td style="text-align: center;">Two</td>
 <td style="text-align: center;">”</td>
@@ -57,7 +57,7 @@ href="sessions/session_02/page.html"><strong>Session 2</strong></a></td>
 <td style="text-align: center;"><strong>11:15</strong></td>
 <td style="text-align: center;">45 min.</td>
 <td style="text-align: center;"><a
-href="sessions/session_03/page.html"><strong>Session 3</strong></a></td>
+href="sessions/session_03/index.qmd"><strong>Session 3</strong></a></td>
 <td style="text-align: center;"><em>Advanced Modeling</em></td>
 <td style="text-align: center;">Three</td>
 <td style="text-align: center;">”</td>
