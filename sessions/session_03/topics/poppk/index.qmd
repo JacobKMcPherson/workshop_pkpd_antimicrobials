@@ -1,5 +1,18 @@
 ---
-title: "index"
+title: "Population Pharmacokinetics (PopPK)"
 format: html
 ---
 
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+<div>
+
+[← Session 3](../../index.qmd){.btn .btn-outline-primary}
+
+</div>
+
+<div>
+
+[Noncompartmental Analysis →](../nca/index.qmd){.btn .btn-outline-primary}
+
+</div>
+:::::

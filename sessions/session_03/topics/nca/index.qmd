@@ -1,13 +1,12 @@
 ---
-title: "index"
+title: "Non-Compartmental Analysis"
 format: html
 ---
-
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← Session 3](../index.qmd){.btn .btn-outline-primary}
+[← Session 3](../../index.qmd){.btn .btn-outline-primary}
 
 </div>
 
