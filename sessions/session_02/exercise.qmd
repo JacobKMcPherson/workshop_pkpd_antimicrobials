@@ -2,44 +2,30 @@
 format: html
 ---
 
+#### Clinical Case Scenarios
+
 ::::::::: grid
 ::: {.g-col-md-4 .g-col-12}
-[🩸 Bacteremia](cases/bacteremia.qmd){.btn .btn-outline-primary}
+[🩸 Bacteremia](cases/bacteremia/index.qmd){.btn .btn-outline-primary}
 :::
 
 ::: {.g-col-md-4 .g-col-12}
-[🫀 Endocarditis](cases/endocarditis.qmd){.btn .btn-outline-primary}
+[🫀 Endocarditis](cases/endocarditis/index.qmd){.btn .btn-outline-primary}
 :::
 
 ::: {.g-col-md-4 .g-col-12}
-[🧠 Meningitis](cases/meningitis.qmd){.btn .btn-outline-primary}
+[🧠 Meningitis](cases/meningitis/index.qmd){.btn .btn-outline-primary}
 :::
 
 ::: {.g-col-md-4 .g-col-12}
-[🦴 Osteomyelitis](cases/osteomyelitis.qmd){.btn .btn-outline-primary}
+[🦴 Osteomyelitis](cases/osteomyelitis/index.qmd){.btn .btn-outline-primary}
 :::
 
 ::: {.g-col-md-4 .g-col-12}
-[🫁 Pneumonia](cases/pneumonia.qmd){.btn .btn-outline-primary}
+[🫁 Pneumonia](cases/pneumonia/index.qmd){.btn .btn-outline-primary}
 :::
 
 ::: {.g-col-md-4 .g-col-12}
-[🚽 Urinary Tract Infection](cases/urinary-tract-infection.qmd){.btn .btn-outline-primary}
+[🚽 Urinary Tract Infection](cases/urinary-tract-infection/index.qmd){.btn .btn-outline-primary}
 :::
 :::::::::
-
-<br><br>
-
-::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
-<div>
-
-[← Session 2](index.qmd){.btn .btn-outline-primary}
-
-</div>
-
-<div>
-
-[Session 3 →](../session_03/index.qmd){.btn .btn-outline-primary}
-
-</div>
-:::::

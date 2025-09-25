@@ -15,10 +15,12 @@ editor: visual
 
 💪🏻[Exercise](exercise.html)
 
-<br><br>
-
 ::: {style="font-size: 0.875em;"}
 :::
+
+<br>
+
+{{< include exercise.qmd >}}
 
 ------------------------------------------------------------------------
 

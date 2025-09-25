@@ -3,16 +3,18 @@ title: "exercise"
 format: html
 ---
 
-::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
-<div>
 
-[← Session 3](index.qmd){.btn .btn-outline-primary}
+::::::::: grid
+::: {.g-col-md-4 .g-col-12}
+[Noncompartmental Analysis (NCA)](topics/nca/index.qmd){.btn .btn-outline-primary}
+:::
 
-</div>
+::: {.g-col-md-4 .g-col-12}
+[Population Pharmacokinetics (PopPK)](topics/poppk/index.qmd){.btn .btn-outline-primary}
+:::
 
-<div>
+::: {.g-col-md-4 .g-col-12}
+[PK/PD/Clinical Outcomes (PK/PD/CO)](topics/pkpdco/index.qmd){.btn .btn-outline-primary}
+:::
 
-[Post-Workshop-Survey →](../../content/post-workshop-survey.qmd){.btn .btn-outline-primary}
-
-</div>
-:::::
+:::::::::
