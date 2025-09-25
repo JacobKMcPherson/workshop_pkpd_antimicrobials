@@ -1,0 +1,18 @@
+---
+title: "Endocarditis"
+format: html
+---
+
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+<div>
+
+[← Bacteremia](../session_02/cases/bacteremia/index.qmd){.btn .btn-outline-primary}
+
+</div>
+
+<div>
+
+[Meningitis →](../session_03/cases/meningitis/index.qmd){.btn .btn-outline-primary}
+
+</div>
+:::::

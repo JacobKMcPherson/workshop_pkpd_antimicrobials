@@ -1,0 +1,18 @@
+---
+title: "Bacteremia"
+format: html
+---
+
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+<div>
+
+[← Urinary Tract Infection](../session_02/cases/urinary-tract-infection/index.qmd){.btn .btn-outline-primary}
+
+</div>
+
+<div>
+
+[Endocarditis →](../session_03/cases/endocarditis/index.qmd){.btn .btn-outline-primary}
+
+</div>
+:::::

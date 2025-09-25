@@ -1,0 +1,19 @@
+---
+title: "index"
+format: html
+---
+
+
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+<div>
+
+[← Meningitis](../session_02/cases/meningitis/index.qmd){.btn .btn-outline-primary}
+
+</div>
+
+<div>
+
+[Pneumonia →](../session_03/cases/pneumonia/index.qmd){.btn .btn-outline-primary}
+
+</div>
+:::::

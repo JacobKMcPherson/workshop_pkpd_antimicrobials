@@ -9,16 +9,41 @@ editor: visual
 
 ## Slides
 
-🖥️ [Slides](slides.html)
+🖥️ [Slides](slides.qmd)
 
 ## Exercise
-
-💪🏻[Exercise](exercise.html)
-
-<br><br>
+💪🏻[Exercise](exercise.qmd) (see cases below)
 
 ::: {style="font-size: 0.875em;"}
 :::
+
+#### Cases
+:::::: grid
+::: {.g-col-md-4 .g-col-12}
+
+[🩸 Bacteremia](cases/bacteremia/index.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.g-col-md-4 .g-col-12}
+[🫀 Endocarditis](cases/endocarditis/index.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.g-col-md-4 .g-col-12}
+[🧠 Meningitis](cases/meningitis/index.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.g-col-md-4 .g-col-12}
+[🦴 Osteomyelitis](cases/osteomyelitis/index.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.g-col-md-4 .g-col-12}
+[🫁 Pneumonia](cases/pneumonia/index.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.g-col-md-4 .g-col-12}
+[🚽 Urinary Tract Infection](cases/urinary-tract-infection/index.qmd){.btn .btn-outline-primary}
+:::
+::::::
 
 ------------------------------------------------------------------------
 

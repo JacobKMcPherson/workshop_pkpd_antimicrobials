@@ -1,7 +1,34 @@
 ---
-title: "exercise"
 format: html
 ---
+
+::::::::: grid
+::: {.g-col-md-4 .g-col-12}
+[🩸 Bacteremia](cases/bacteremia.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.g-col-md-4 .g-col-12}
+[🫀 Endocarditis](cases/endocarditis.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.g-col-md-4 .g-col-12}
+[🧠 Meningitis](cases/meningitis.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.g-col-md-4 .g-col-12}
+[🦴 Osteomyelitis](cases/osteomyelitis.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.g-col-md-4 .g-col-12}
+[🫁 Pneumonia](cases/pneumonia.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.g-col-md-4 .g-col-12}
+[🚽 Urinary Tract Infection](cases/urinary-tract-infection.qmd){.btn .btn-outline-primary}
+:::
+:::::::::
+
+<br><br>
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
