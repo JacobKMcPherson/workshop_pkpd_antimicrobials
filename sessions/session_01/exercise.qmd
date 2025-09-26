@@ -7,8 +7,494 @@ execute:
   shinylive: true
 ---
 
+# Interactive Pharmacokinetics Simulation
 
+This interactive module demonstrates the pharmacokinetics of ten subjects administered ten daily doses of an orally bioavailable tablet. You can explore how different pharmacokinetic parameters affect drug concentration over time.
 
+## Simulation Parameters
+
+::: {.panel-tabset}
+
+### Controls
+
+::: {.pk-controls}
+::: {.control-group}
+<label for="dose-slider">Dose (mg):</label>
+<input type="range" id="dose-slider" min="50" max="500" value="250" step="25">
+<span id="dose-value">250</span> mg
+:::
+
+::: {.control-group}
+<label for="bioavailability-slider">Bioavailability (F):</label>
+<input type="range" id="bioavailability-slider" min="0.3" max="1.0" value="0.8" step="0.05">
+<span id="bioavailability-value">0.8</span>
+:::
+
+::: {.control-group}
+<label for="clearance-cv-slider">Clearance CV (%):</label>
+<input type="range" id="clearance-cv-slider" min="10" max="50" value="25" step="5">
+<span id="clearance-cv-value">25</span>%
+:::
+
+::: {.control-group}
+<label for="volume-cv-slider">Volume CV (%):</label>
+<input type="range" id="volume-cv-slider" min="10" max="50" value="20" step="5">
+<span id="volume-cv-value">20</span>%
+:::
+:::
+
+::: {.simulation-buttons}
+<button id="simulate-btn" onclick="runSimulation()">Run Simulation</button>
+<button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
+:::
+
+### Plot
+
+::: {#concentration-plot style="width: 100%; height: 500px;"}
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="800" height="400"></canvas>
+</div>
+:::
+
+### Subject Data
+
+::: {#subject-table}
+#### Individual Subject Parameters
+
+<table id="pk-table" class="table table-striped">
+<thead>
+<tr>
+<th>Subject</th>
+<th>Clearance (L/h)</th>
+<th>Volume (L)</th>
+<th>Half-life (h)</th>
+<th>AUC<sub>0-24h</sub> (mg*h/L)</th>
+<th>C<sub>max</sub> (mg/L)</th>
+</tr>
+</thead>
+<tbody id="pk-table-body">
+</tbody>
+</table>
+:::
+
+:::
+
+## Educational Content
+
+### Key Pharmacokinetic Concepts
+
+**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
+
+**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+
+**Volume of Distribution (Vd)**: The theoretical volume that would be necessary to contain the total amount of an administered drug at the same concentration observed in plasma.
+
+**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+
+**Multiple Dosing**: With repeated dosing every 24 hours, steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life.
+
+### Variability in Pharmacokinetics
+
+Individual subjects show variability in pharmacokinetic parameters due to:
+- Genetic polymorphisms in drug-metabolizing enzymes
+- Age-related changes in organ function
+- Body composition differences
+- Concomitant medications
+- Disease states
+
+This simulation demonstrates how this variability translates into different concentration-time profiles, which has important implications for dosing and therapeutic outcomes.
+
+<style>
+.pk-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.control-group label {
+  font-weight: bold;
+  color: #495057;
+}
+
+.control-group input[type="range"] {
+  width: 100%;
+}
+
+.simulation-buttons {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.simulation-buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.simulation-buttons button:hover {
+  background-color: #0056b3;
+}
+
+#reset-btn {
+  background-color: #6c757d;
+}
+
+#reset-btn:hover {
+  background-color: #545b62;
+}
+
+.table {
+  font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+  .pk-controls {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<script>
+// Global variables
+let subjects = [];
+let timePoints = [];
+let canvas = null;
+let ctx = null;
+
+// PK Model parameters
+const baseParams = {
+  clearance: 5.0,      // L/h
+  volume: 50.0,        // L
+  ka: 1.2,             // absorption rate constant (1/h)
+  dose: 250,           // mg
+  bioavailability: 0.8,
+  interval: 24,        // dosing interval (h)
+  numDoses: 10
+};
+
+// Initialize the simulation
+function initializeSimulation() {
+  // Generate time points (0 to 240 hours, every 0.5 hours)
+  timePoints = [];
+  for (let t = 0; t <= 240; t += 0.5) {
+    timePoints.push(t);
+  }
+  
+  // Initialize canvas
+  canvas = document.getElementById('pk-chart');
+  if (canvas) {
+    ctx = canvas.getContext('2d');
+    canvas.width = 800;
+    canvas.height = 400;
+  }
+  
+  // Run initial simulation
+  runSimulation();
+}
+
+// Generate subjects with variability
+function generateSubjects() {
+  const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
+  const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8);
+  const clearanceCV = parseFloat(document.getElementById('clearance-cv-slider')?.value || 25) / 100;
+  const volumeCV = parseFloat(document.getElementById('volume-cv-slider')?.value || 20) / 100;
+  
+  subjects = [];
+  
+  for (let i = 1; i <= 10; i++) {
+    // Generate individual parameters with log-normal distribution
+    const clearance = baseParams.clearance * Math.exp(randomNormal() * clearanceCV);
+    const volume = baseParams.volume * Math.exp(randomNormal() * volumeCV);
+    const halfLife = 0.693 * volume / clearance;
+    
+    subjects.push({
+      id: i,
+      clearance: clearance,
+      volume: volume,
+      halfLife: halfLife,
+      dose: dose,
+      bioavailability: bioavailability,
+      concentrations: [],
+      auc: 0,
+      cmax: 0
+    });
+  }
+}
+
+// Box-Muller transformation for normal random numbers
+function randomNormal() {
+  let u = 0, v = 0;
+  while(u === 0) u = Math.random();
+  while(v === 0) v = Math.random();
+  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+
+// One-compartment PK model with first-order absorption and multiple dosing
+function calculateConcentration(subject, time) {
+  const { clearance, volume, dose, bioavailability } = subject;
+  const ke = clearance / volume;  // elimination rate constant
+  const ka = baseParams.ka;
+  const tau = baseParams.interval;
+  
+  let concentration = 0;
+  
+  // Calculate contribution from each dose
+  for (let n = 0; n < baseParams.numDoses; n++) {
+    const doseTime = n * tau;
+    if (time >= doseTime) {
+      const timeSinceDose = time - doseTime;
+      // One-compartment model with first-order absorption
+      const conc = (dose * bioavailability * ka / volume) * 
+                   (Math.exp(-ke * timeSinceDose) - Math.exp(-ka * timeSinceDose)) / 
+                   (ka - ke);
+      concentration += conc;
+    }
+  }
+  
+  return Math.max(0, concentration);
+}
+
+// Run the simulation
+function runSimulation() {
+  generateSubjects();
+  
+  // Calculate concentrations for each subject
+  subjects.forEach(subject => {
+    subject.concentrations = timePoints.map(time => calculateConcentration(subject, time));
+    
+    // Calculate AUC for first 24 hours (steady-state)
+    const startIdx = timePoints.findIndex(t => t >= 216); // Day 9 start
+    const endIdx = timePoints.findIndex(t => t >= 240);   // Day 10 end
+    if (startIdx !== -1 && endIdx !== -1) {
+      subject.auc = trapezoidalRule(
+        timePoints.slice(startIdx, endIdx), 
+        subject.concentrations.slice(startIdx, endIdx)
+      );
+    }
+    
+    // Find Cmax in steady-state period
+    if (startIdx !== -1 && endIdx !== -1) {
+      subject.cmax = Math.max(...subject.concentrations.slice(startIdx, endIdx));
+    }
+  });
+  
+  // Update chart and table
+  drawChart();
+  updateTable();
+}
+
+// Trapezoidal rule for AUC calculation
+function trapezoidalRule(timeArray, concArray) {
+  let auc = 0;
+  for (let i = 1; i < timeArray.length; i++) {
+    const dt = timeArray[i] - timeArray[i-1];
+    const avgConc = (concArray[i] + concArray[i-1]) / 2;
+    auc += dt * avgConc;
+  }
+  return auc;
+}
+
+// Simple canvas-based chart drawing
+function drawChart() {
+  if (!ctx || !canvas) return;
+  
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Chart dimensions
+  const margin = { top: 40, right: 40, bottom: 60, left: 80 };
+  const width = canvas.width - margin.left - margin.right;
+  const height = canvas.height - margin.top - margin.bottom;
+  
+  // Find scales
+  const maxTime = Math.max(...timePoints);
+  const maxConc = Math.max(...subjects.flatMap(s => s.concentrations));
+  
+  // Draw background
+  ctx.fillStyle = '#f8f9fa';
+  ctx.fillRect(margin.left, margin.top, width, height);
+  
+  // Draw grid lines
+  ctx.strokeStyle = '#e9ecef';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 10; i++) {
+    const x = margin.left + (i / 10) * width;
+    const y = margin.top + (i / 10) * height;
+    
+    // Vertical lines
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, margin.top + height);
+    ctx.stroke();
+    
+    // Horizontal lines
+    ctx.beginPath();
+    ctx.moveTo(margin.left, y);
+    ctx.lineTo(margin.left + width, y);
+    ctx.stroke();
+  }
+  
+  // Draw axes
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(margin.left, margin.top);
+  ctx.lineTo(margin.left, margin.top + height);
+  ctx.lineTo(margin.left + width, margin.top + height);
+  ctx.stroke();
+  
+  // Draw concentration profiles
+  const colors = [
+    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+    '#FF9F40', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'
+  ];
+  
+  subjects.forEach((subject, subjectIndex) => {
+    ctx.strokeStyle = colors[subjectIndex % colors.length];
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    
+    let firstPoint = true;
+    for (let i = 0; i < timePoints.length; i++) {
+      const x = margin.left + (timePoints[i] / maxTime) * width;
+      const y = margin.top + height - (subject.concentrations[i] / maxConc) * height;
+      
+      if (firstPoint) {
+        ctx.moveTo(x, y);
+        firstPoint = false;
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+    ctx.stroke();
+  });
+  
+  // Add labels
+  ctx.fillStyle = '#000';
+  ctx.font = '14px Arial';
+  
+  // X-axis label
+  ctx.textAlign = 'center';
+  ctx.fillText('Time (hours)', margin.left + width/2, canvas.height - 10);
+  
+  // Y-axis label
+  ctx.save();
+  ctx.translate(20, margin.top + height/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.textAlign = 'center';
+  ctx.fillText('Concentration (mg/L)', 0, 0);
+  ctx.restore();
+  
+  // Title
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 16px Arial';
+  ctx.fillText('Plasma Concentration-Time Profiles for 10 Subjects', canvas.width/2, 25);
+  
+  // Add axis ticks and values
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  
+  // X-axis ticks
+  for (let i = 0; i <= 10; i++) {
+    const x = margin.left + (i / 10) * width;
+    const timeValue = (i / 10) * maxTime;
+    ctx.fillText(Math.round(timeValue), x, margin.top + height + 20);
+  }
+  
+  // Y-axis ticks
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= 5; i++) {
+    const y = margin.top + height - (i / 5) * height;
+    const concValue = (i / 5) * maxConc;
+    ctx.fillText(concValue.toFixed(1), margin.left - 10, y + 4);
+  }
+}
+
+// Update the subjects table
+function updateTable() {
+  const tbody = document.getElementById('pk-table-body');
+  if (!tbody) return;
+  
+  tbody.innerHTML = '';
+  
+  subjects.forEach(subject => {
+    const row = tbody.insertRow();
+    row.innerHTML = `
+      <td>${subject.id}</td>
+      <td>${subject.clearance.toFixed(2)}</td>
+      <td>${subject.volume.toFixed(1)}</td>
+      <td>${subject.halfLife.toFixed(1)}</td>
+      <td>${subject.auc.toFixed(1)}</td>
+      <td>${subject.cmax.toFixed(2)}</td>
+    `;
+  });
+}
+
+// Reset parameters to defaults
+function resetSimulation() {
+  const elements = ['dose-slider', 'bioavailability-slider', 'clearance-cv-slider', 'volume-cv-slider'];
+  const defaults = [250, 0.8, 25, 20];
+  
+  elements.forEach((id, index) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.value = defaults[index];
+    }
+  });
+  
+  updateSliderValues();
+  runSimulation();
+}
+
+// Update slider value displays
+function updateSliderValues() {
+  const updates = [
+    { slider: 'dose-slider', display: 'dose-value' },
+    { slider: 'bioavailability-slider', display: 'bioavailability-value' },
+    { slider: 'clearance-cv-slider', display: 'clearance-cv-value' },
+    { slider: 'volume-cv-slider', display: 'volume-cv-value' }
+  ];
+  
+  updates.forEach(update => {
+    const slider = document.getElementById(update.slider);
+    const display = document.getElementById(update.display);
+    if (slider && display) {
+      display.textContent = slider.value;
+    }
+  });
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Add event listeners to sliders
+  ['dose-slider', 'bioavailability-slider', 'clearance-cv-slider', 'volume-cv-slider'].forEach(id => {
+    const slider = document.getElementById(id);
+    if (slider) {
+      slider.addEventListener('input', updateSliderValues);
+    }
+  });
+  
+  // Initialize the simulation
+  updateSliderValues();
+  setTimeout(initializeSimulation, 100);  // Small delay to ensure DOM is ready
+});
+</script>
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
