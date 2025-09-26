@@ -1,5 +1,5 @@
 ---
-title: "Interactive Pharmacokinetic Modeling Exercise"
+title: "exercise"
 format: html
 editor: visual
 execute:
@@ -7,212 +7,56 @@ execute:
   shinylive: true
 ---
 
-## Introduction to Pharmacokinetic Modeling
-
-Pharmacokinetic (PK) modeling is essential for understanding drug behavior in the body and optimizing dosing regimens. This interactive module allows you to explore how different patient characteristics and dosing parameters affect drug concentrations over time.
-
-### Key Learning Objectives
-
-- Understand the relationship between PK parameters and concentration-time profiles
-- Explore the impact of different routes of administration
-- Analyze steady-state achievement and accumulation
-- Apply pharmacodynamic principles to optimize therapeutic outcomes
-- Practice therapeutic drug monitoring concepts
-
-### Before You Begin
-
-This simulation uses a one-compartment pharmacokinetic model with first-order elimination. While simplified, this model captures the essential features of many drugs and provides excellent educational value for understanding fundamental PK/PD principles.
-
-## Interactive Pharmacokinetic Modeling Module
+## Interactive Pharmacokinetic Simulation
 
 ```{r setup, include=FALSE}
 library(shiny)
 library(ggplot2)
 library(dplyr)
-library(plotly)
-library(DT)
-library(stringr)
 ```
 
 ::: {.panel-tabset}
 
-### PK/PD Simulation
+### Simulation
 
 ```{r}
 ui <- fluidPage(
-  titlePanel("Advanced Pharmacokinetic/Pharmacodynamic Modeling Module"),
-  
+  titlePanel("PK Simulation: Oral Multiple Dosing"),
   sidebarLayout(
     sidebarPanel(
-      width = 4,
-      
-      # Patient Generation
-      h4("Patient Characteristics"),
-      actionButton("new_patient", "Generate Random Patient", class = "btn-primary"),
-      br(), br(),
-      
-      # Dosing Parameters
-      h4("Dosing Regimen"),
-      selectInput("route", "Route of Administration:", 
-                  choices = list("Oral" = "oral", "IV Bolus" = "iv_bolus", "IV Infusion" = "iv_infusion"),
-                  selected = "oral"),
+      actionButton("new_patient", "Generate Random Patient"),
       numericInput("dose", "Dose (mg):", value = 500, min = 50, max = 2000, step = 50),
-      conditionalPanel(
-        condition = "input.route == 'iv_infusion'",
-        numericInput("infusion_time", "Infusion Duration (hr):", value = 1, min = 0.25, max = 24, step = 0.25)
-      ),
       numericInput("tau", "Dosing Interval (hr):", value = 12, min = 6, max = 48),
       numericInput("n_doses", "Number of Doses:", value = 10, min = 1, max = 30),
-      
       hr(),
-      
-      # PK Parameters (Advanced)
-      h4("PK Parameters (Advanced)"),
-      checkboxInput("advanced_pk", "Enable Manual PK Parameter Control", FALSE),
-      conditionalPanel(
-        condition = "input.advanced_pk == true",
-        numericInput("manual_CL", "Clearance (L/hr):", value = 6, min = 1, max = 20, step = 0.1),
-        numericInput("manual_Vd", "Volume of Distribution (L):", value = 50, min = 10, max = 100, step = 1),
-        numericInput("manual_ka", "Absorption Rate Constant (1/hr):", value = 1, min = 0.1, max = 5, step = 0.1),
-        numericInput("manual_F", "Bioavailability (fraction):", value = 0.8, min = 0.1, max = 1, step = 0.05)
-      ),
-      
-      hr(),
-      
-      # Patient Info Display
-      h4("Current Patient:"),
-      verbatimTextOutput("patient_info"),
-      
-      hr(),
-      
-      # PD Parameters
-      h4("Pharmacodynamic Modeling"),
-      checkboxInput("enable_pd", "Enable PD Simulation", FALSE),
-      conditionalPanel(
-        condition = "input.enable_pd == true",
-        numericInput("ec50", "EC50 (mg/L):", value = 2, min = 0.1, max = 10, step = 0.1),
-        numericInput("emax", "Emax (% effect):", value = 100, min = 10, max = 100, step = 5),
-        numericInput("mic", "MIC (mg/L):", value = 1, min = 0.1, max = 8, step = 0.1)
-      )
+      h4("Patient Info:"),
+      verbatimTextOutput("patient_info")
     ),
-    
     mainPanel(
-      width = 8,
-      tabsetPanel(
-        tabPanel("Concentration-Time Plot", 
-                 plotlyOutput("pk_plot", height = "500px"),
-                 br(),
-                 h5("Plot Interpretation:"),
-                 textOutput("plot_interpretation")
-        ),
-        tabPanel("PK/PD Analysis",
-                 conditionalPanel(
-                   condition = "input.enable_pd == true",
-                   plotlyOutput("pd_plot", height = "400px"),
-                   br(),
-                   h5("PK/PD Metrics:"),
-                   tableOutput("pkpd_metrics")
-                 ),
-                 conditionalPanel(
-                   condition = "input.enable_pd == false",
-                   div(style = "text-align: center; margin-top: 100px;",
-                       h4("Enable PD Simulation to view pharmacodynamic analysis"),
-                       p("Check the 'Enable PD Simulation' option in the sidebar to access PK/PD modeling features.")
-                   )
-                 )
-        ),
-        tabPanel("Simulation Data", 
-                 h4("Complete Simulation Dataset"),
-                 DT::dataTableOutput("sim_data_table")
-        ),
-        tabPanel("Parameter Explanations",
-                 div(
-                   h4("Pharmacokinetic Parameters"),
-                   tags$ul(
-                     tags$li(strong("Clearance (CL):"), " The volume of plasma cleared of drug per unit time (L/hr)"),
-                     tags$li(strong("Volume of Distribution (Vd):"), " Apparent volume in which the drug is distributed (L)"),
-                     tags$li(strong("Absorption Rate Constant (ka):"), " Rate at which drug is absorbed from dosing site (1/hr)"),
-                     tags$li(strong("Bioavailability (F):"), " Fraction of administered dose that reaches systemic circulation"),
-                     tags$li(strong("Half-life (t½):"), " Time required for drug concentration to decrease by 50%"),
-                     tags$li(strong("Elimination Rate Constant (ke):"), " Rate at which drug is eliminated from the body (1/hr)")
-                   ),
-                   br(),
-                   h4("Pharmacodynamic Parameters"),
-                   tags$ul(
-                     tags$li(strong("EC50:"), " Concentration producing 50% of maximum pharmacological effect"),
-                     tags$li(strong("Emax:"), " Maximum achievable pharmacological effect"),
-                     tags$li(strong("MIC:"), " Minimum Inhibitory Concentration - lowest concentration that inhibits bacterial growth")
-                   ),
-                   br(),
-                   h4("Clinical Relevance"),
-                   p("This simulation helps understand how different dosing regimens achieve therapeutic concentrations while minimizing toxicity. 
-                     Key considerations include:"),
-                   tags$ul(
-                     tags$li("Steady-state achievement (typically after 5 half-lives)"),
-                     tags$li("Peak and trough concentrations for therapeutic drug monitoring"),
-                     tags$li("Time above MIC for antimicrobial efficacy"),
-                     tags$li("AUC/MIC ratio for concentration-dependent killing")
-                   )
-                 )
-        )
-      )
+      plotOutput("pk_plot"),
+      hr(),
+      h4("Simulation Data (first 10 rows):"),
+      tableOutput("sim_data")
     )
   )
 )
 
 server <- function(input, output, session) {
-  # Generate a random patient with realistic PK parameters
+  # Generate a random patient
   patient <- reactiveVal()
-  
   observeEvent(input$new_patient, {
-    # Generate correlated PK parameters based on patient characteristics
-    weight <- round(runif(1, 60, 100), 1)
-    age <- sample(18:80, 1)
-    
-    # Weight-based scaling for CL and Vd with some variability
-    CL_base <- 0.08 * weight * runif(1, 0.8, 1.2)  # Typical: 0.08 L/hr/kg
-    Vd_base <- 0.6 * weight * runif(1, 0.7, 1.3)   # Typical: 0.6 L/kg
-    
-    # Age effects on clearance (reduced in elderly)
-    if (age > 65) {
-      CL_base <- CL_base * runif(1, 0.7, 0.9)
-    }
-    
     patient(list(
-      weight = weight,
-      age = age,
-      CL = round(CL_base, 2),
-      Vd = round(Vd_base, 2),
-      ka = round(runif(1, 0.5, 2.5), 2),
-      F = round(runif(1, 0.6, 0.95), 2),
-      ke = round(CL_base / Vd_base, 3),
-      half_life = round(0.693 * Vd_base / CL_base, 1)
+      weight = round(runif(1, 60, 100), 1),         # kg
+      age = sample(18:80, 1),
+      CL = round(runif(1, 4, 10), 2),               # Clearance (L/hr)
+      Vd = round(runif(1, 30, 80), 2),              # Volume of distribution (L)
+      ka = round(runif(1, 0.5, 2), 2),              # Absorption rate constant (1/hr)
+      F = round(runif(1, 0.5, 0.95), 2)             # Bioavailability (fraction)
     ))
-  }, ignoreInit = FALSE)
-
-  # Get current PK parameters (either from patient or manual inputs)
-  current_pk <- reactive({
-    p <- patient()
-    if (is.null(p)) return(NULL)
-    
-    if (input$advanced_pk) {
-      list(
-        CL = input$manual_CL,
-        Vd = input$manual_Vd,
-        ka = input$manual_ka,
-        F = input$manual_F,
-        ke = input$manual_CL / input$manual_Vd,
-        half_life = 0.693 * input$manual_Vd / input$manual_CL,
-        weight = p$weight,
-        age = p$age
-      )
-    } else {
-      p
-    }
-  })
+  }, ignoreInit = FALSE) # generate patient at startup
 
   output$patient_info <- renderPrint({
-    p <- current_pk()
+    p <- patient()
     if (!is.null(p)) {
       cat(
         paste0(
@@ -221,246 +65,63 @@ server <- function(input, output, session) {
           "CL: ", p$CL, " L/hr\n",
           "Vd: ", p$Vd, " L\n",
           "ka: ", p$ka, " 1/hr\n",
-          "F: ", p$F, "\n",
-          "ke: ", round(p$ke, 3), " 1/hr\n",
-          "Half-life: ", round(p$half_life, 1), " hr"
+          "F (bioavailability): ", p$F
         )
       )
     }
   })
 
-  # Enhanced simulation data with multiple routes
   sim_data <- reactive({
-    req(current_pk())
-    p <- current_pk()
-    
+    req(patient())
+    p <- patient()
     dose <- input$dose
     tau <- input$tau
     n_doses <- input$n_doses
-    route <- input$route
-    
     CL <- p$CL
     Vd <- p$Vd
     ka <- p$ka
     F <- p$F
-    ke <- p$ke
-    
-    # Time grid: simulate up to last dose + 3 half-lives
-    tmax <- tau * (n_doses-1) + 3 * p$half_life
-    time <- seq(0, tmax, by = 0.1)
+    ke <- CL / Vd
+
+    # Time grid: simulate up to last dose + 2 intervals
+    tmax <- tau * (n_doses-1) + tau*2
+    time <- seq(0, tmax, by = 0.25)
     conc <- rep(0, length(time))
-    
-    # Route-specific calculations
-    if (route == "oral") {
-      # Oral multiple dosing with first-order absorption
-      for (i in 0:(n_doses-1)) {
-        t_dose <- time - i*tau
-        idx <- which(t_dose >= 0)
-        conc[idx] <- conc[idx] + 
-          (F*dose*ka)/(Vd*(ka-ke)) * (exp(-ke*t_dose[idx]) - exp(-ka*t_dose[idx]))
-      }
-    } else if (route == "iv_bolus") {
-      # IV bolus multiple dosing
-      for (i in 0:(n_doses-1)) {
-        t_dose <- time - i*tau
-        idx <- which(t_dose >= 0)
-        conc[idx] <- conc[idx] + (dose/Vd) * exp(-ke*t_dose[idx])
-      }
-    } else if (route == "iv_infusion") {
-      # IV infusion multiple dosing
-      tinf <- input$infusion_time
-      for (i in 0:(n_doses-1)) {
-        t_dose <- time - i*tau
-        idx_during <- which(t_dose >= 0 & t_dose <= tinf)
-        idx_after <- which(t_dose > tinf)
-        
-        # During infusion
-        if (length(idx_during) > 0) {
-          conc[idx_during] <- conc[idx_during] + 
-            (dose/(CL*tinf)) * (1 - exp(-ke*t_dose[idx_during]))
-        }
-        
-        # After infusion
-        if (length(idx_after) > 0) {
-          conc[idx_after] <- conc[idx_after] + 
-            (dose/(CL*tinf)) * (1 - exp(-ke*tinf)) * exp(-ke*(t_dose[idx_after]-tinf))
-        }
-      }
+
+    # Multiple dosing solution, Bateman function with accumulation (no lag)
+    for (i in 0:(n_doses-1)) {
+      t_dose <- time - i*tau
+      idx <- which(t_dose >= 0)
+      conc[idx] <- conc[idx] + 
+        (F*dose*ka)/(Vd*(ka-ke)) * (exp(-ke*t_dose[idx]) - exp(-ka*t_dose[idx]))
     }
-    
-    # Calculate PD effect if enabled
-    if (input$enable_pd) {
-      ec50 <- input$ec50
-      emax <- input$emax
-      effect <- emax * conc / (ec50 + conc)  # Emax model
-    } else {
-      effect <- rep(NA, length(conc))
-    }
-    
+
     tibble(
       time = time,
-      concentration = pmax(conc, 0),  # Ensure non-negative
-      effect = effect,
-      above_mic = ifelse(input$enable_pd, conc > input$mic, NA)
+      concentration = conc
     )
   })
 
-  # Enhanced concentration-time plot
-  output$pk_plot <- renderPlotly({
+  output$pk_plot <- renderPlot({
     sim <- sim_data()
-    p <- plot_ly(sim, x = ~time, y = ~concentration, type = 'scatter', mode = 'lines',
-                 line = list(color = 'blue', width = 2),
-                 name = 'Concentration') %>%
-      layout(
-        title = paste("Pharmacokinetic Profile:", str_to_title(input$route), "Administration"),
-        xaxis = list(title = "Time (hr)"),
-        yaxis = list(title = "Concentration (mg/L)"),
-        showlegend = TRUE
-      )
-    
-    # Add MIC line if PD is enabled
-    if (input$enable_pd) {
-      p <- p %>% add_trace(y = rep(input$mic, nrow(sim)), type = 'scatter', mode = 'lines',
-                          line = list(color = 'red', dash = 'dash', width = 2),
-                          name = 'MIC')
-    }
-    
-    p
+    ggplot(sim, aes(x = time, y = concentration)) +
+      geom_line(color = "blue", size = 1) +
+      labs(
+        x = "Time (hr)",
+        y = "Concentration (mg/L)",
+        title = "Simulated Plasma Concentration-Time Curve"
+      ) +
+      theme_minimal()
   })
 
-  # Pharmacodynamic plot
-  output$pd_plot <- renderPlotly({
-    if (!input$enable_pd) return(NULL)
-    
-    sim <- sim_data()
-    
-    plot_ly(sim, x = ~time, y = ~effect, type = 'scatter', mode = 'lines',
-            line = list(color = 'green', width = 2),
-            name = 'Pharmacological Effect') %>%
-      layout(
-        title = "Pharmacodynamic Effect Over Time",
-        xaxis = list(title = "Time (hr)"),
-        yaxis = list(title = "Effect (%)", range = c(0, 100)),
-        showlegend = FALSE
-      )
-  })
-
-  # PK/PD metrics table
-  output$pkpd_metrics <- renderTable({
-    if (!input$enable_pd) return(NULL)
-    
-    sim <- sim_data()
-    p <- current_pk()
-    
-    # Calculate key metrics
-    cmax <- max(sim$concentration, na.rm = TRUE)
-    tmax <- sim$time[which.max(sim$concentration)]
-    auc <- sum(diff(sim$time) * (sim$concentration[-1] + sim$concentration[-nrow(sim)])) / 2
-    time_above_mic <- sum(sim$above_mic, na.rm = TRUE) * 0.1  # time step = 0.1 hr
-    
-    metrics <- data.frame(
-      Metric = c("Cmax (mg/L)", "Tmax (hr)", "AUC (mg⋅hr/L)", 
-                 "Time > MIC (hr)", "AUC/MIC ratio", "Half-life (hr)"),
-      Value = c(
-        round(cmax, 2),
-        round(tmax, 1),
-        round(auc, 1),
-        round(time_above_mic, 1),
-        round(auc / input$mic, 1),
-        round(p$half_life, 1)
-      ),
-      stringsAsFactors = FALSE
-    )
-    
-    metrics
-  }, striped = TRUE, hover = TRUE)
-
-  # Complete simulation data table
-  output$sim_data_table <- DT::renderDataTable({
-    sim <- sim_data()
-    DT::datatable(
-      sim %>% 
-        mutate(
-          time = round(time, 1),
-          concentration = round(concentration, 3),
-          effect = round(effect, 1)
-        ) %>%
-        filter(row_number() %% 10 == 1),  # Show every 10th row for performance
-      options = list(pageLength = 15, scrollX = TRUE)
-    )
-  })
-
-  # Plot interpretation
-  output$plot_interpretation <- renderText({
-    p <- current_pk()
-    if (is.null(p)) return("")
-    
-    route_text <- switch(input$route,
-      "oral" = "oral absorption phase followed by elimination",
-      "iv_bolus" = "immediate peak followed by first-order elimination", 
-      "iv_infusion" = "gradual increase during infusion, then elimination"
-    )
-    
-    paste("This plot shows the", route_text, "pattern. The half-life is", 
-          round(p$half_life, 1), "hours, and steady-state is typically achieved after",
-          round(5 * p$half_life, 1), "hours of repeated dosing.")
+  output$sim_data <- renderTable({
+    head(sim_data(), 10)
   })
 }
 
 shinyApp(ui, server)
 ```
 :::
-
-## Guided Learning Exercises
-
-Use the interactive module above to complete these exercises:
-
-### Exercise 1: Route of Administration Comparison
-1. Generate a random patient and note their PK parameters
-2. Set up a dosing regimen: 500 mg every 12 hours for 5 doses
-3. Compare the concentration-time profiles for:
-   - Oral administration
-   - IV bolus
-   - IV infusion (1-hour duration)
-4. **Questions:**
-   - Which route achieves the highest peak concentration?
-   - Which route shows the most gradual concentration changes?
-   - How does bioavailability affect the oral vs IV comparison?
-
-### Exercise 2: Steady-State Analysis
-1. Generate a new patient
-2. Use oral dosing: 250 mg every 8 hours for 15 doses
-3. Observe the concentration-time profile
-4. **Questions:**
-   - At approximately what time is steady-state achieved?
-   - How does this relate to the patient's half-life?
-   - What happens to peak and trough concentrations over time?
-
-### Exercise 3: Pharmacodynamic Modeling
-1. Enable PD simulation with default parameters (EC50 = 2 mg/L, MIC = 1 mg/L)
-2. Try different dosing regimens to optimize:
-   - Time above MIC
-   - AUC/MIC ratio
-3. **Questions:**
-   - Which metric is more important for antimicrobial efficacy?
-   - How do you balance efficacy with potential toxicity?
-
-### Exercise 4: Patient Variability
-1. Generate multiple patients and compare their PK parameters
-2. Use the same dosing regimen for different patients
-3. Enable advanced PK controls and manually adjust parameters
-4. **Questions:**
-   - How does clearance variability affect dosing requirements?
-   - Why might elderly patients require dose adjustments?
-   - What role does body weight play in PK parameter scaling?
-
-### Key Takeaways
-
-- **Steady-state** is achieved after approximately 5 half-lives
-- **Route of administration** significantly impacts concentration-time profiles
-- **Patient characteristics** (age, weight) influence PK parameters
-- **PK/PD modeling** helps optimize dosing for both efficacy and safety
-- **Therapeutic drug monitoring** uses peak and trough measurements to guide dosing
 
 
 
