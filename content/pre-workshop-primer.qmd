@@ -23,13 +23,13 @@ Their discussion highlights the critical need for enhanced education in **pharma
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← Pre-Workshop Materials](../../pre-workshop-materials.qmd){.btn .btn-outline-primary}
+[← Pre-Workshop Materials](../pre-workshop-materials.qmd){.btn .btn-outline-primary}
 
 </div>
 
 <div>
 
-[Pre-Workshop Survey →](content/pre-workshop-survey.qmd){.btn .btn-outline-primary}
+[Pre-Workshop Survey →](pre-workshop-survey.qmd){.btn .btn-outline-primary}
 
 </div>
 :::::
@@ -43,4 +43,3 @@ Their discussion highlights the critical need for enhanced education in **pharma
 **Video Lectures**:
 
 {{< include ../info/video-lectures.qmd >}}
-
