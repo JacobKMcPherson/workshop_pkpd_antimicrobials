@@ -19,22 +19,42 @@ format: html
 
 <script>
   function generatePatient() {
-    // Age: 18-90 years
+    // Generate random values
     var age = Math.floor(Math.random() * (90 - 18 + 1)) + 18;
-    // Sex: Male or Female
     var sex = Math.random() < 0.5 ? "Male" : "Female";
-    // Height: 140-200 cm
     var height = Math.floor(Math.random() * (200 - 140 + 1)) + 140;
-    // Weight: 40-140 kg
     var weight = Math.floor(Math.random() * (140 - 40 + 1)) + 40;
-    // Creatinine: 0.5-2.0 mg/dL (rounded to 2 decimals)
     var creatinine = (Math.random() * (2.0 - 0.5) + 0.5).toFixed(2);
 
+    // Update the UI
     document.getElementById('random-age').innerText = age;
     document.getElementById('random-sex').innerText = sex;
     document.getElementById('random-height').innerText = height;
     document.getElementById('random-weight').innerText = weight;
     document.getElementById('random-creatinine').innerText = creatinine;
+
+    // Store in localStorage
+    var patient = {
+      age: age,
+      sex: sex,
+      height: height,
+      weight: weight,
+      creatinine: creatinine
+    };
+    localStorage.setItem('randomPatient', JSON.stringify(patient));
+  }
+
+  // On page load, check if there's a saved patient and display it
+  window.onload = function() {
+    var savedPatient = localStorage.getItem('randomPatient');
+    if (savedPatient) {
+      var patient = JSON.parse(savedPatient);
+      document.getElementById('random-age').innerText = patient.age;
+      document.getElementById('random-sex').innerText = patient.sex;
+      document.getElementById('random-height').innerText = patient.height;
+      document.getElementById('random-weight').innerText = patient.weight;
+      document.getElementById('random-creatinine').innerText = patient.creatinine;
+    }
   }
 </script>
 :::
@@ -42,7 +62,7 @@ format: html
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← 🧠 Meningitis](../meningitis/index.qmd){.btn .btn-outline-primary}
+[← Session 2](../../index.qmd){.btn .btn-outline-primary}
 
 </div>
 
