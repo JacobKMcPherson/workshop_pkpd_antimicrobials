@@ -3,17 +3,47 @@ title: "Meningitis"
 format: html
 ---
 
-Age:
-Sex: 
-Height:
-Weight:
-Creatinine: 
+::: {.panel}
+### Random Patient Generator
 
-Offending Agent: **Penicillin-resistant** *Strep. pneumonia* **(PRSP)**
+<div>
+  <button onclick="generatePatient()">Generate Random Patient</button>
+  <ul>
+    <li><strong>Age:</strong> <u><span id="random-age"></span></u></li>
+    <li><strong>Sex:</strong> <u><span id="random-sex"></span></u></li>
+    <li><strong>Height (cm):</strong> <u><span id="random-height"></span></u></li>
+    <li><strong>Weight (kg):</strong> <u><span id="random-weight"></span></u></li>
+    <li><strong>Creatinine (mg/dL):</strong> <u><span id="random-creatinine"></span></u></li>
+  </ul>
+</div>
 
-Drug of Choice: Vancomycin + ceftriaxone (or cefotaxime)
+<script>
+  function generatePatient() {
+    // Age: 18-90 years
+    var age = Math.floor(Math.random() * (90 - 18 + 1)) + 18;
+    // Sex: Male or Female
+    var sex = Math.random() < 0.5 ? "Male" : "Female";
+    // Height: 140-200 cm
+    var height = Math.floor(Math.random() * (200 - 140 + 1)) + 140;
+    // Weight: 40-140 kg
+    var weight = Math.floor(Math.random() * (140 - 40 + 1)) + 40;
+    // Creatinine: 0.5-2.0 mg/dL (rounded to 2 decimals)
+    var creatinine = (Math.random() * (2.0 - 0.5) + 0.5).toFixed(2);
 
-PK/PD Target: 
+    document.getElementById('random-age').innerText = age;
+    document.getElementById('random-sex').innerText = sex;
+    document.getElementById('random-height').innerText = height;
+    document.getElementById('random-weight').innerText = weight;
+    document.getElementById('random-creatinine').innerText = creatinine;
+  }
+</script>
+:::
+
+**Offending Agent**: **Penicillin-resistant** *Strep. pneumonia* **(PRSP)**
+
+**Drug of Choice**: Vancomycin + ceftriaxone (or cefotaxime)
+
+**PK/PD Target**:
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
