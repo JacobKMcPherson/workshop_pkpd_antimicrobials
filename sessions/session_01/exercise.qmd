@@ -9,7 +9,7 @@ execute:
 
 # Interactive Pharmacokinetics Simulation
 
-This interactive module demonstrates the pharmacokinetics of ten subjects administered ten daily doses of an orally bioavailable tablet. You can explore how different pharmacokinetic parameters affect drug concentration over time.
+This interactive module demonstrates the pharmacokinetics of one subject administered ten daily doses of an orally bioavailable tablet with blood samples taken every four hours. You can explore how different pharmacokinetic parameters affect drug concentration over time.
 
 ## Simulation Parameters
 
@@ -28,18 +28,6 @@ This interactive module demonstrates the pharmacokinetics of ten subjects admini
 <label for="bioavailability-slider">Bioavailability (F):</label>
 <input type="range" id="bioavailability-slider" min="0.3" max="1.0" value="0.8" step="0.05">
 <span id="bioavailability-value">0.8</span>
-:::
-
-::: {.control-group}
-<label for="clearance-cv-slider">Clearance CV (%):</label>
-<input type="range" id="clearance-cv-slider" min="10" max="50" value="25" step="5">
-<span id="clearance-cv-value">25</span>%
-:::
-
-::: {.control-group}
-<label for="volume-cv-slider">Volume CV (%):</label>
-<input type="range" id="volume-cv-slider" min="10" max="50" value="20" step="5">
-<span id="volume-cv-value">20</span>%
 :::
 :::
 
@@ -60,7 +48,7 @@ This interactive module demonstrates the pharmacokinetics of ten subjects admini
 ### Subject Data
 
 ::: {#subject-table}
-#### Individual Subject Parameters
+#### Subject Parameters
 
 <table id="pk-table" class="table table-striped">
 <thead>
@@ -94,16 +82,22 @@ This interactive module demonstrates the pharmacokinetics of ten subjects admini
 
 **Multiple Dosing**: With repeated dosing every 24 hours, steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life.
 
-### Variability in Pharmacokinetics
+### Blood Sampling Strategy
 
-Individual subjects show variability in pharmacokinetic parameters due to:
-- Genetic polymorphisms in drug-metabolizing enzymes
-- Age-related changes in organ function
-- Body composition differences
-- Concomitant medications
-- Disease states
+In this simulation, blood samples are collected every 4 hours to provide a more realistic view of how pharmacokinetic data is collected in clinical practice. This sampling frequency allows us to:
 
-This simulation demonstrates how this variability translates into different concentration-time profiles, which has important implications for dosing and therapeutic outcomes.
+- Capture both peak and trough concentrations
+- Observe the full absorption and elimination phases
+- Reduce the burden on patients compared to more frequent sampling
+- Provide sufficient data points for pharmacokinetic analysis
+
+### Single Subject Analysis
+
+This focused approach to studying one subject allows for:
+- Clear visualization of concentration-time relationships
+- Better understanding of fundamental PK principles
+- Simplified interpretation without inter-subject variability
+- Focus on the impact of dose and bioavailability changes
 
 <style>
 .pk-controls {
@@ -190,9 +184,9 @@ const baseParams = {
 
 // Initialize the simulation
 function initializeSimulation() {
-  // Generate time points (0 to 240 hours, every 0.5 hours)
+  // Generate time points (0 to 240 hours, every 4 hours)
   timePoints = [];
-  for (let t = 0; t <= 240; t += 0.5) {
+  for (let t = 0; t <= 240; t += 4) {
     timePoints.push(t);
   }
   
@@ -217,24 +211,22 @@ function generateSubjects() {
   
   subjects = [];
   
-  for (let i = 1; i <= 10; i++) {
-    // Generate individual parameters with log-normal distribution
-    const clearance = baseParams.clearance * Math.exp(randomNormal() * clearanceCV);
-    const volume = baseParams.volume * Math.exp(randomNormal() * volumeCV);
-    const halfLife = 0.693 * volume / clearance;
-    
-    subjects.push({
-      id: i,
-      clearance: clearance,
-      volume: volume,
-      halfLife: halfLife,
-      dose: dose,
-      bioavailability: bioavailability,
-      concentrations: [],
-      auc: 0,
-      cmax: 0
-    });
-  }
+  // Generate single subject with base parameters (no variability since we have only one subject)
+  const clearance = baseParams.clearance;
+  const volume = baseParams.volume;
+  const halfLife = 0.693 * volume / clearance;
+  
+  subjects.push({
+    id: 1,
+    clearance: clearance,
+    volume: volume,
+    halfLife: halfLife,
+    dose: dose,
+    bioavailability: bioavailability,
+    concentrations: [],
+    auc: 0,
+    cmax: 0
+  });
 }
 
 // Box-Muller transformation for normal random numbers
@@ -359,15 +351,12 @@ function drawChart() {
   ctx.lineTo(margin.left + width, margin.top + height);
   ctx.stroke();
   
-  // Draw concentration profiles
-  const colors = [
-    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-    '#FF9F40', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'
-  ];
+  // Draw concentration profile for single subject
+  const singleSubjectColor = '#007bff'; // Blue color for single subject
   
   subjects.forEach((subject, subjectIndex) => {
-    ctx.strokeStyle = colors[subjectIndex % colors.length];
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = singleSubjectColor;
+    ctx.lineWidth = 3; // Thicker line for better visibility
     ctx.beginPath();
     
     let firstPoint = true;
@@ -383,6 +372,17 @@ function drawChart() {
       }
     }
     ctx.stroke();
+    
+    // Draw data points to show 4-hour sampling
+    ctx.fillStyle = singleSubjectColor;
+    for (let i = 0; i < timePoints.length; i++) {
+      const x = margin.left + (timePoints[i] / maxTime) * width;
+      const y = margin.top + height - (subject.concentrations[i] / maxConc) * height;
+      
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, 2 * Math.PI);
+      ctx.fill();
+    }
   });
   
   // Add labels
@@ -404,7 +404,7 @@ function drawChart() {
   // Title
   ctx.textAlign = 'center';
   ctx.font = 'bold 16px Arial';
-  ctx.fillText('Plasma Concentration-Time Profiles for 10 Subjects', canvas.width/2, 25);
+  ctx.fillText('Plasma Concentration-Time Profile (Blood Samples Every 4 Hours)', canvas.width/2, 25);
   
   // Add axis ticks and values
   ctx.font = '12px Arial';
@@ -448,8 +448,8 @@ function updateTable() {
 
 // Reset parameters to defaults
 function resetSimulation() {
-  const elements = ['dose-slider', 'bioavailability-slider', 'clearance-cv-slider', 'volume-cv-slider'];
-  const defaults = [250, 0.8, 25, 20];
+  const elements = ['dose-slider', 'bioavailability-slider'];
+  const defaults = [250, 0.8];
   
   elements.forEach((id, index) => {
     const element = document.getElementById(id);
@@ -466,9 +466,7 @@ function resetSimulation() {
 function updateSliderValues() {
   const updates = [
     { slider: 'dose-slider', display: 'dose-value' },
-    { slider: 'bioavailability-slider', display: 'bioavailability-value' },
-    { slider: 'clearance-cv-slider', display: 'clearance-cv-value' },
-    { slider: 'volume-cv-slider', display: 'volume-cv-value' }
+    { slider: 'bioavailability-slider', display: 'bioavailability-value' }
   ];
   
   updates.forEach(update => {
@@ -483,7 +481,7 @@ function updateSliderValues() {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
   // Add event listeners to sliders
-  ['dose-slider', 'bioavailability-slider', 'clearance-cv-slider', 'volume-cv-slider'].forEach(id => {
+  ['dose-slider', 'bioavailability-slider'].forEach(id => {
     const slider = document.getElementById(id);
     if (slider) {
       slider.addEventListener('input', updateSliderValues);
