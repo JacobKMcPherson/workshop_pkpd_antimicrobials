@@ -18,6 +18,9 @@ This interactive module demonstrates the pharmacokinetics of one subject adminis
 ### Controls
 
 ::: {.pk-controls}
+
+### Drug-Intrinsic Properties
+::: {.drug-properties}
 ::: {.control-group}
 <label for="dose-slider">Dose (mg):</label>
 <input type="range" id="dose-slider" min="50" max="500" value="250" step="25">
@@ -25,16 +28,102 @@ This interactive module demonstrates the pharmacokinetics of one subject adminis
 :::
 
 ::: {.control-group}
-<label for="bioavailability-slider">Bioavailability (F):</label>
-<input type="range" id="bioavailability-slider" min="0.3" max="1.0" value="0.8" step="0.05">
-<span id="bioavailability-value">0.8</span>
+<label for="pka-slider">pKa:</label>
+<input type="range" id="pka-slider" min="2" max="12" value="7.4" step="0.2">
+<span id="pka-value">7.4</span>
 :::
 
+::: {.control-group}
+<label for="logp-slider">LogP (Lipophilicity):</label>
+<input type="range" id="logp-slider" min="-2" max="6" value="2.5" step="0.1">
+<span id="logp-value">2.5</span>
+:::
+
+::: {.control-group}
+<label for="fu-slider">Protein Binding (fu):</label>
+<input type="range" id="fu-slider" min="0.01" max="1.0" value="0.1" step="0.01">
+<span id="fu-value">0.1</span>
+:::
+
+::: {.control-group}
+<label for="vd-slider">Volume of Distribution (L/kg):</label>
+<input type="range" id="vd-slider" min="0.1" max="10" value="0.7" step="0.1">
+<span id="vd-value">0.7</span> L/kg
+:::
+
+::: {.control-group}
+<label for="fa-slider">Fraction Absorbed (fa):</label>
+<input type="range" id="fa-slider" min="0.1" max="1.0" value="0.9" step="0.05">
+<span id="fa-value">0.9</span>
+:::
+
+::: {.control-group}
+<label for="bioavailability-slider">Bioavailability (F):</label>
+<input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05">
+<span id="bioavailability-value">0.8</span>
+:::
+:::
+
+### Patient-Specific Properties
+::: {.patient-properties}
+::: {.control-group}
+<label for="age-slider">Age (years):</label>
+<input type="range" id="age-slider" min="18" max="90" value="35" step="1">
+<span id="age-value">35</span> years
+:::
+
+::: {.control-group}
+<label for="weight-slider">Weight (kg):</label>
+<input type="range" id="weight-slider" min="40" max="150" value="70" step="5">
+<span id="weight-value">70</span> kg
+:::
+
+::: {.control-group}
+<label for="height-slider">Height (cm):</label>
+<input type="range" id="height-slider" min="140" max="200" value="170" step="5">
+<span id="height-value">170</span> cm
+:::
+
+::: {.control-group}
+<label for="sex-select">Sex:</label>
+<select id="sex-select">
+  <option value="male">Male</option>
+  <option value="female">Female</option>
+</select>
+:::
+
+::: {.control-group}
+<label for="creatinine-slider">Creatinine Clearance (mL/min):</label>
+<input type="range" id="creatinine-slider" min="30" max="150" value="120" step="5">
+<span id="creatinine-value">120</span> mL/min
+:::
+
+::: {.control-group}
+<label for="albumin-slider">Albumin (g/L):</label>
+<input type="range" id="albumin-slider" min="20" max="50" value="40" step="2">
+<span id="albumin-value">40</span> g/L
+:::
+
+::: {.control-group}
+<label for="pregnancy-select">Pregnancy Status:</label>
+<select id="pregnancy-select">
+  <option value="none">Not Pregnant</option>
+  <option value="first">First Trimester</option>
+  <option value="second">Second Trimester</option>
+  <option value="third">Third Trimester</option>
+</select>
+:::
+:::
+
+### Dosing Parameters
+::: {.dosing-properties}
 ::: {.control-group}
 <label for="interval-slider">Dosing Interval (h):</label>
 <input type="range" id="interval-slider" min="8" max="48" value="24" step="4">
 <span id="interval-value">24</span> h
 :::
+:::
+
 :::
 
 ::: {.simulation-buttons}
@@ -60,11 +149,15 @@ This interactive module demonstrates the pharmacokinetics of one subject adminis
 <thead>
 <tr>
 <th>Subject</th>
+<th>Age</th>
+<th>Weight (kg)</th>
+<th>Sex</th>
 <th>Clearance (L/h)</th>
 <th>Volume (L)</th>
 <th>Half-life (h)</th>
-<th>AUC<sub>0-24h</sub> (mg*h/L)</th>
-<th>C<sub>max</sub> (mg/L)</th>
+<th>Eff. F</th>
+<th>AUC<sub>0-24h</sub></th>
+<th>C<sub>max</sub></th>
 </tr>
 </thead>
 <tbody id="pk-table-body">
@@ -107,13 +200,35 @@ This focused approach to studying one subject allows for:
 
 <style>
 .pk-controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
   margin: 20px 0;
   padding: 20px;
   background-color: #f8f9fa;
   border-radius: 8px;
+}
+
+.pk-controls h3 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 1.1em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+.drug-properties, .patient-properties, .dosing-properties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.control-group select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: white;
 }
 
 .control-group {
@@ -164,7 +279,7 @@ This focused approach to studying one subject allows for:
 }
 
 @media (max-width: 768px) {
-  .pk-controls {
+  .drug-properties, .patient-properties, .dosing-properties {
     grid-template-columns: 1fr;
   }
 }
@@ -210,24 +325,84 @@ function initializeSimulation() {
 
 // Generate subjects with variability
 function generateSubjects() {
+  // Drug-intrinsic properties
   const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
+  const pka = parseFloat(document.getElementById('pka-slider')?.value || 7.4);
+  const logp = parseFloat(document.getElementById('logp-slider')?.value || 2.5);
+  const fu = parseFloat(document.getElementById('fu-slider')?.value || 0.1);
+  const vd_per_kg = parseFloat(document.getElementById('vd-slider')?.value || 0.7);
+  const fa = parseFloat(document.getElementById('fa-slider')?.value || 0.9);
   const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8);
+  
+  // Patient-specific properties
+  const age = parseFloat(document.getElementById('age-slider')?.value || 35);
+  const weight = parseFloat(document.getElementById('weight-slider')?.value || 70);
+  const height = parseFloat(document.getElementById('height-slider')?.value || 170);
+  const sex = document.getElementById('sex-select')?.value || 'male';
+  const creatinine_cl = parseFloat(document.getElementById('creatinine-slider')?.value || 120);
+  const albumin = parseFloat(document.getElementById('albumin-slider')?.value || 40);
+  const pregnancy = document.getElementById('pregnancy-select')?.value || 'none';
+  
+  // Dosing parameters
   const interval = parseFloat(document.getElementById('interval-slider')?.value || 24);
   
   subjects = [];
   
-  // Generate single subject with base parameters (no variability since we have only one subject)
-  const clearance = baseParams.clearance;
-  const volume = baseParams.volume;
-  const halfLife = 0.693 * volume / clearance;
+  // Calculate derived parameters based on patient characteristics
+  const vd_total = vd_per_kg * weight; // Total volume of distribution
+  
+  // Age-adjusted clearance (simplified model: 20% decrease per decade after 40)
+  let age_factor = 1.0;
+  if (age > 40) {
+    age_factor = 1.0 - ((age - 40) / 10) * 0.2;
+  }
+  
+  // Sex-adjusted clearance (females typically 15% lower)
+  const sex_factor = sex === 'female' ? 0.85 : 1.0;
+  
+  // Renal function adjustment for clearance
+  const renal_factor = creatinine_cl / 120; // Normalized to normal CrCl of 120 mL/min
+  
+  // Protein binding adjustment (lower albumin = higher free fraction)
+  const protein_factor = (40 / albumin); // Normalized to normal albumin of 40 g/L
+  const adjusted_fu = Math.min(1.0, fu * protein_factor);
+  
+  // Pregnancy adjustments (simplified)
+  let pregnancy_factor = 1.0;
+  if (pregnancy === 'second' || pregnancy === 'third') {
+    pregnancy_factor = 1.3; // Increased clearance in 2nd/3rd trimester
+  }
+  
+  // Calculate final clearance
+  const base_clearance = 5.0; // L/h baseline
+  const clearance = base_clearance * age_factor * sex_factor * renal_factor * pregnancy_factor * adjusted_fu;
+  
+  // Calculate effective bioavailability (affected by fa and first-pass metabolism)
+  const effective_bioavailability = fa * bioavailability;
+  
+  const halfLife = 0.693 * vd_total / clearance;
   
   subjects.push({
     id: 1,
-    clearance: clearance,
-    volume: volume,
-    halfLife: halfLife,
+    // Drug properties
     dose: dose,
-    bioavailability: bioavailability,
+    pka: pka,
+    logp: logp,
+    fu: adjusted_fu,
+    fa: fa,
+    bioavailability: effective_bioavailability,
+    // Patient properties
+    age: age,
+    weight: weight,
+    height: height,
+    sex: sex,
+    creatinine_cl: creatinine_cl,
+    albumin: albumin,
+    pregnancy: pregnancy,
+    // Calculated PK parameters
+    clearance: clearance,
+    volume: vd_total,
+    halfLife: halfLife,
     interval: interval,
     concentrations: [],
     auc: 0,
@@ -443,9 +618,13 @@ function updateTable() {
     const row = tbody.insertRow();
     row.innerHTML = `
       <td>${subject.id}</td>
+      <td>${subject.age}</td>
+      <td>${subject.weight}</td>
+      <td>${subject.sex.charAt(0).toUpperCase() + subject.sex.slice(1)}</td>
       <td>${subject.clearance.toFixed(2)}</td>
       <td>${subject.volume.toFixed(1)}</td>
       <td>${subject.halfLife.toFixed(1)}</td>
+      <td>${subject.bioavailability.toFixed(2)}</td>
       <td>${subject.auc.toFixed(1)}</td>
       <td>${subject.cmax.toFixed(2)}</td>
     `;
@@ -454,15 +633,35 @@ function updateTable() {
 
 // Reset parameters to defaults
 function resetSimulation() {
-  const elements = ['dose-slider', 'bioavailability-slider', 'interval-slider'];
-  const defaults = [250, 0.8, 24];
+  const sliderDefaults = {
+    'dose-slider': 250,
+    'pka-slider': 7.4,
+    'logp-slider': 2.5,
+    'fu-slider': 0.1,
+    'vd-slider': 0.7,
+    'fa-slider': 0.9,
+    'bioavailability-slider': 0.8,
+    'age-slider': 35,
+    'weight-slider': 70,
+    'height-slider': 170,
+    'creatinine-slider': 120,
+    'albumin-slider': 40,
+    'interval-slider': 24
+  };
   
-  elements.forEach((id, index) => {
+  Object.entries(sliderDefaults).forEach(([id, value]) => {
     const element = document.getElementById(id);
     if (element) {
-      element.value = defaults[index];
+      element.value = value;
     }
   });
+  
+  // Reset select elements
+  const sexSelect = document.getElementById('sex-select');
+  if (sexSelect) sexSelect.value = 'male';
+  
+  const pregnancySelect = document.getElementById('pregnancy-select');
+  if (pregnancySelect) pregnancySelect.value = 'none';
   
   updateSliderValues();
   runSimulation();
@@ -472,7 +671,17 @@ function resetSimulation() {
 function updateSliderValues() {
   const updates = [
     { slider: 'dose-slider', display: 'dose-value' },
+    { slider: 'pka-slider', display: 'pka-value' },
+    { slider: 'logp-slider', display: 'logp-value' },
+    { slider: 'fu-slider', display: 'fu-value' },
+    { slider: 'vd-slider', display: 'vd-value' },
+    { slider: 'fa-slider', display: 'fa-value' },
     { slider: 'bioavailability-slider', display: 'bioavailability-value' },
+    { slider: 'age-slider', display: 'age-value' },
+    { slider: 'weight-slider', display: 'weight-value' },
+    { slider: 'height-slider', display: 'height-value' },
+    { slider: 'creatinine-slider', display: 'creatinine-value' },
+    { slider: 'albumin-slider', display: 'albumin-value' },
     { slider: 'interval-slider', display: 'interval-value' }
   ];
   
@@ -488,10 +697,25 @@ function updateSliderValues() {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
   // Add event listeners to sliders
-  ['dose-slider', 'bioavailability-slider', 'interval-slider'].forEach(id => {
+  const sliderIds = [
+    'dose-slider', 'pka-slider', 'logp-slider', 'fu-slider', 'vd-slider', 
+    'fa-slider', 'bioavailability-slider', 'age-slider', 'weight-slider', 
+    'height-slider', 'creatinine-slider', 'albumin-slider', 'interval-slider'
+  ];
+  
+  sliderIds.forEach(id => {
     const slider = document.getElementById(id);
     if (slider) {
       slider.addEventListener('input', updateSliderValues);
+    }
+  });
+  
+  // Add event listeners to select elements
+  const selectIds = ['sex-select', 'pregnancy-select'];
+  selectIds.forEach(id => {
+    const select = document.getElementById(id);
+    if (select) {
+      select.addEventListener('change', runSimulation);
     }
   });
   
