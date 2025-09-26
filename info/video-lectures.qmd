@@ -4,7 +4,6 @@ format: html
 
 [NIH Clinical Center YouTube](https://www.youtube.com/NIHClinicalCenter) (below)
 
-
 #### Animal Scale Up and First-in-Human Studies
 
 by Dr. Jerry Collins, PhD
@@ -70,4 +69,3 @@ by Dr. James Doroshow, MD
 
 </iframe>
 :::
-
