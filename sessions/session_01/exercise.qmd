@@ -15,6 +15,21 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 
 ::: {.pk-controls}
 
+### Random Patient Generator
+::: {.patient-generator}
+<div style="margin-bottom: 20px;">
+  <button id="generate-patient-btn" onclick="generateRandomPatient()">Generate Random Patient</button>
+  <div id="patient-info" style="margin-top: 15px;">
+    <ul style="list-style-type: none; padding-left: 0;">
+      <li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
+      <li><strong>Sex:</strong> <u><span id="patient-sex">-</span></u></li>
+      <li><strong>Height:</strong> <u><span id="patient-height">-</span></u> cm</li>
+      <li><strong>Weight:</strong> <u><span id="patient-weight">-</span></u> kg</li>
+    </ul>
+  </div>
+</div>
+:::
+
 ### Core PK Parameters
 ::: {.pk-properties}
 ::: {.control-group}
@@ -40,13 +55,24 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 ::: {.dosing-properties}
 ::: {.control-group}
 <label for="dose-slider">Dose (mg):</label>
-<input type="range" id="dose-slider" min="50" max="1000" value="250" step="25">
+<input type="range" id="dose-slider" min="1" max="1000" value="250" step="1">
 <span id="dose-value">250</span> mg
 :::
 
 ::: {.control-group}
 <label for="interval-slider">Dosing Interval (h):</label>
-<input type="range" id="interval-slider" min="2" max="48" value="24" step="4">
+<select id="interval-slider">
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="4">4</option>
+  <option value="6">6</option>
+  <option value="8">8</option>
+  <option value="12">12</option>
+  <option value="18">18</option>
+  <option value="24" selected>24</option>
+  <option value="36">36</option>
+  <option value="48">48</option>
+</select>
 <span id="interval-value">24</span> h
 :::
 
@@ -101,6 +127,10 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 <thead>
 <tr>
 <th>Subject</th>
+<th>Age</th>
+<th>Sex</th>
+<th>Wt (kg)</th>
+<th>BSA (m²)</th>
 <th>Dose (mg)</th>
 <th>Interval (h)</th>
 <th>Duration (days)</th>
@@ -175,6 +205,38 @@ This approach eliminates complex patient-specific calculations (age, sex, renal 
   font-size: 1.1em;
   border-bottom: 2px solid #007bff;
   padding-bottom: 5px;
+}
+
+.patient-generator {
+  background-color: #fff;
+  border: 2px solid #28a745;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.patient-generator button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.patient-generator button:hover {
+  background-color: #218838;
+}
+
+#patient-info ul {
+  margin-top: 15px;
+}
+
+#patient-info li {
+  margin: 5px 0;
+  font-size: 14px;
 }
 
 .pk-properties, .dosing-properties, .reference-properties {
@@ -260,6 +322,14 @@ let timePoints = [];
 let canvas = null;
 let ctx = null;
 
+// Patient data
+let currentPatient = {
+  age: 35,
+  sex: 'Male',
+  height: 170,
+  weight: 70
+};
+
 // PK Model parameters
 const baseParams = {
   clearance: 5.0,      // L/h
@@ -291,12 +361,44 @@ function initializeSimulation() {
   runSimulation();
 }
 
-// Generate subjects with simplified parameters
+// Generate subjects with patient-specific parameters
 function generateSubjects() {
-  // Core PK parameters
-  const clearance = parseFloat(document.getElementById('clearance-slider')?.value || 5.0);
-  const volume = parseFloat(document.getElementById('volume-slider')?.value || 50.0);
+  // Base PK parameters from sliders
+  const baseClearance = parseFloat(document.getElementById('clearance-slider')?.value || 5.0);
+  const baseVolume = parseFloat(document.getElementById('volume-slider')?.value || 50.0);
   const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8);
+  
+  // Calculate patient-specific clearance based on demographics
+  // Using Cockcroft-Gault-like equation principles for clearance scaling
+  const { age, sex, height, weight } = currentPatient;
+  
+  // Clearance adjustment factors
+  let clearanceAdjustment = 1.0;
+  
+  // Age factor (decreases with age)
+  if (age > 65) {
+    clearanceAdjustment *= (1 - (age - 65) * 0.01); // 1% decrease per year over 65
+  }
+  
+  // Sex factor (males typically have ~15% higher clearance)
+  if (sex === 'Male') {
+    clearanceAdjustment *= 1.15;
+  }
+  
+  // Weight factor (normalized to 70kg)
+  const weightFactor = weight / 70;
+  clearanceAdjustment *= Math.pow(weightFactor, 0.75); // Allometric scaling
+  
+  const clearance = baseClearance * clearanceAdjustment;
+  
+  // Volume of distribution as ratio incorporating patient parameters
+  // Using body surface area and lean body mass concepts
+  const bsa = Math.sqrt((height * weight) / 3600); // Mosteller formula for BSA
+  const standardBsa = 1.73; // Standard BSA in m²
+  const bsaRatio = bsa / standardBsa;
+  
+  // Volume adjustment based on body size
+  const volume = baseVolume * bsaRatio;
   
   // Dosing parameters
   const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
@@ -313,7 +415,13 @@ function generateSubjects() {
   
   subjects.push({
     id: 1,
-    // Core PK parameters
+    // Patient demographics
+    age: age,
+    sex: sex,
+    height: height,
+    weight: weight,
+    bsa: bsa,
+    // Core PK parameters (patient-adjusted)
     dose: dose,
     clearance: clearance,
     volume: volume,
@@ -336,6 +444,30 @@ function randomNormal() {
   while(u === 0) u = Math.random();
   while(v === 0) v = Math.random();
   return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+
+// Generate random patient with demographics
+function generateRandomPatient() {
+  // Generate random values
+  const age = Math.floor(Math.random() * (90 - 18 + 1)) + 18;
+  const sex = Math.random() < 0.5 ? "Male" : "Female";
+  const height = Math.floor(Math.random() * (200 - 140 + 1)) + 140;
+  const weight = Math.floor(Math.random() * (140 - 40 + 1)) + 40;
+
+  // Update global patient data
+  currentPatient = { age, sex, height, weight };
+
+  // Update the UI
+  document.getElementById('patient-age').innerText = age;
+  document.getElementById('patient-sex').innerText = sex;
+  document.getElementById('patient-height').innerText = height;
+  document.getElementById('patient-weight').innerText = weight;
+
+  // Store in localStorage
+  localStorage.setItem('currentPatient', JSON.stringify(currentPatient));
+  
+  // Recalculate and update simulation with new patient-specific parameters
+  runSimulation();
 }
 
 // One-compartment PK model with first-order absorption and multiple dosing
@@ -581,6 +713,10 @@ function updateTable() {
     const row = tbody.insertRow();
     row.innerHTML = `
       <td>${subject.id}</td>
+      <td>${subject.age}</td>
+      <td>${subject.sex}</td>
+      <td>${subject.weight}</td>
+      <td>${subject.bsa ? subject.bsa.toFixed(2) : 'N/A'}</td>
       <td>${subject.dose}</td>
       <td>${subject.interval}</td>
       <td>${subject.duration}</td>
@@ -738,7 +874,6 @@ function updateSliderValues() {
     { slider: 'bioavailability-slider', display: 'bioavailability-value' },
     // Dosing parameters
     { slider: 'dose-slider', display: 'dose-value' },
-    { slider: 'interval-slider', display: 'interval-value' },
     { slider: 'duration-slider', display: 'duration-value' },
     // Reference lines
     { slider: 'toxicity-slider', display: 'toxicity-value' },
@@ -752,16 +887,35 @@ function updateSliderValues() {
       display.textContent = slider.value;
     }
   });
+  
+  // Handle interval dropdown separately
+  const intervalSelect = document.getElementById('interval-slider');
+  const intervalDisplay = document.getElementById('interval-value');
+  if (intervalSelect && intervalDisplay) {
+    intervalDisplay.textContent = intervalSelect.value;
+  }
 }
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize patient data from localStorage or defaults
+  const savedPatient = localStorage.getItem('currentPatient');
+  if (savedPatient) {
+    currentPatient = JSON.parse(savedPatient);
+  }
+  
+  // Update patient display
+  document.getElementById('patient-age').innerText = currentPatient.age;
+  document.getElementById('patient-sex').innerText = currentPatient.sex;
+  document.getElementById('patient-height').innerText = currentPatient.height;
+  document.getElementById('patient-weight').innerText = currentPatient.weight;
+  
   // Add event listeners to sliders
   const sliderIds = [
     // Core PK parameters
     'clearance-slider', 'volume-slider', 'bioavailability-slider',
     // Dosing parameters
-    'dose-slider', 'interval-slider', 'duration-slider',
+    'dose-slider', 'duration-slider',
     // Reference lines
     'toxicity-slider', 'efficacy-slider'
   ];
@@ -774,10 +928,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Redraw chart when reference line sliders change
         if (id === 'toxicity-slider' || id === 'efficacy-slider') {
           drawChart();
+        } else {
+          // Recalculate simulation for PK parameter changes
+          runSimulation();
         }
       });
     }
   });
+  
+  // Handle interval dropdown separately (it already has onchange attribute)
+  const intervalSelect = document.getElementById('interval-slider');
+  if (intervalSelect) {
+    intervalSelect.addEventListener('change', function() {
+      updateSliderValues();
+      runSimulation();
+    });
+  }
   
   // Initialize the simulation
   updateSliderValues();
