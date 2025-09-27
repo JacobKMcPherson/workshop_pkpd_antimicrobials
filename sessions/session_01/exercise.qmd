@@ -61,13 +61,13 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 ::: {.reference-properties}
 ::: {.control-group}
 <label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
-<input type="range" id="toxicity-slider" min="0" max="50" value="20" step="1">
+<input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1">
 <span id="toxicity-value">20</span> mg/L
 :::
 
 ::: {.control-group}
 <label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
-<input type="range" id="efficacy-slider" min="0" max="20" value="5" step="0.5">
+<input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5">
 <span id="efficacy-value">5</span> mg/L
 :::
 :::
@@ -418,8 +418,8 @@ function drawChart() {
   // Find scales
   const maxTime = Math.max(...timePoints);
   const rawMaxConc = Math.max(...subjects.flatMap(s => s.concentrations));
-  // Add 20% more space to the y-axis for better visualization
-  const maxConc = rawMaxConc * 1.2;
+  // Fixed y-axis range: always 0 to 100 mg/L
+  const maxConc = 100;
   
   // Draw background
   ctx.fillStyle = '#f8f9fa';
@@ -711,12 +711,12 @@ function randomizeParameters() {
   
   // Generate reference lines ensuring toxicity > efficacy
   const efficacyMin = 2;
-  const efficacyMax = 15;
+  const efficacyMax = 50;  // Increased to allow higher efficacy thresholds
   const efficacyThreshold = Math.round((Math.random() * (efficacyMax - efficacyMin) + efficacyMin) * 2) / 2; // Round to 0.5
   
-  // Toxicity should be at least 5 mg/L higher than efficacy, up to 40 mg/L
+  // Toxicity should be at least 5 mg/L higher than efficacy, up to 100 mg/L
   const toxicityMin = efficacyThreshold + 5;
-  const toxicityMax = 40;
+  const toxicityMax = 100;  // Increased to match new maximum
   const toxicityThreshold = Math.round(Math.random() * (toxicityMax - toxicityMin) + toxicityMin);
   
   const efficacyElement = document.getElementById('efficacy-slider');
