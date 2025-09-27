@@ -11,11 +11,7 @@ execute:
 
 This interactive module demonstrates the pharmacokinetics of multiple dosing using essential parameters only. You can explore how key pharmacokinetic parameters directly affect drug concentration over time without the complexity of patient-specific adjustments.
 
-## Simulation Parameters
-
-::: {.panel-tabset}
-
-### Controls
+## Controls
 
 ::: {.pk-controls}
 
@@ -61,12 +57,32 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 :::
 :::
 
+### Reference Lines
+::: {.reference-properties}
+::: {.control-group}
+<label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
+<input type="range" id="toxicity-slider" min="0" max="50" value="20" step="1">
+<span id="toxicity-value">20</span> mg/L
+:::
+
+::: {.control-group}
+<label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
+<input type="range" id="efficacy-slider" min="0" max="20" value="5" step="0.5">
+<span id="efficacy-value">5</span> mg/L
+:::
 :::
 
 ::: {.simulation-buttons}
 <button id="simulate-btn" onclick="runSimulation()">Run Simulation</button>
 <button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
+<button id="download-btn" onclick="downloadData()">Download Data</button>
 :::
+
+:::
+
+## Plot and Subject Data
+
+::: {.panel-tabset}
 
 ### Plot
 
@@ -80,8 +96,6 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 ### Subject Data
 
 ::: {#subject-table}
-#### Subject Parameters
-
 <table id="pk-table" class="table table-striped">
 <thead>
 <tr>
@@ -162,7 +176,7 @@ This approach eliminates complex patient-specific calculations (age, sex, renal 
   padding-bottom: 5px;
 }
 
-.pk-properties, .dosing-properties {
+.pk-properties, .dosing-properties, .reference-properties {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 15px;
@@ -224,7 +238,7 @@ This approach eliminates complex patient-specific calculations (age, sex, renal 
 }
 
 @media (max-width: 768px) {
-  .pk-properties, .dosing-properties {
+  .pk-properties, .dosing-properties, .reference-properties {
     grid-template-columns: 1fr;
   }
 }
@@ -429,6 +443,47 @@ function drawChart() {
   ctx.lineTo(margin.left + width, margin.top + height);
   ctx.stroke();
   
+  // Draw reference lines (toxicity and efficacy thresholds)
+  const toxicityThreshold = parseFloat(document.getElementById('toxicity-slider')?.value || 20);
+  const efficacyThreshold = parseFloat(document.getElementById('efficacy-slider')?.value || 5);
+  
+  if (toxicityThreshold > 0 && toxicityThreshold <= maxConc) {
+    const toxicityY = margin.top + height - (toxicityThreshold / maxConc) * height;
+    ctx.strokeStyle = '#dc3545'; // Red for toxicity
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]); // Dashed line
+    ctx.beginPath();
+    ctx.moveTo(margin.left, toxicityY);
+    ctx.lineTo(margin.left + width, toxicityY);
+    ctx.stroke();
+    
+    // Label for toxicity line
+    ctx.fillStyle = '#dc3545';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Toxicity (${toxicityThreshold} mg/L)`, margin.left + 10, toxicityY - 5);
+  }
+  
+  if (efficacyThreshold > 0 && efficacyThreshold <= maxConc) {
+    const efficacyY = margin.top + height - (efficacyThreshold / maxConc) * height;
+    ctx.strokeStyle = '#28a745'; // Green for efficacy
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]); // Dashed line
+    ctx.beginPath();
+    ctx.moveTo(margin.left, efficacyY);
+    ctx.lineTo(margin.left + width, efficacyY);
+    ctx.stroke();
+    
+    // Label for efficacy line
+    ctx.fillStyle = '#28a745';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Efficacy (${efficacyThreshold} mg/L)`, margin.left + 10, efficacyY - 5);
+  }
+  
+  // Reset line dash for other drawings
+  ctx.setLineDash([]);
+  
   // Draw concentration profile for single subject
   const singleSubjectColor = '#007bff'; // Blue color for single subject
   
@@ -528,6 +583,64 @@ function updateTable() {
   });
 }
 
+// Download data functionality
+function downloadData() {
+  // Prepare the data for download
+  const data = {
+    timestamp: new Date().toISOString(),
+    parameters: {
+      clearance: parseFloat(document.getElementById('clearance-slider')?.value || 5.0),
+      volume: parseFloat(document.getElementById('volume-slider')?.value || 50.0),
+      bioavailability: parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8),
+      dose: parseFloat(document.getElementById('dose-slider')?.value || 250),
+      interval: parseFloat(document.getElementById('interval-slider')?.value || 24),
+      duration: parseFloat(document.getElementById('duration-slider')?.value || 10),
+      toxicityThreshold: parseFloat(document.getElementById('toxicity-slider')?.value || 20),
+      efficacyThreshold: parseFloat(document.getElementById('efficacy-slider')?.value || 5)
+    },
+    timePoints: timePoints,
+    subjects: subjects.map(subject => ({
+      id: subject.id,
+      concentrations: subject.concentrations,
+      halfLife: subject.halfLife,
+      auc: subject.auc,
+      cmax: subject.cmax
+    }))
+  };
+  
+  // Create downloadable file
+  const dataStr = JSON.stringify(data, null, 2);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  
+  // Create download link
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(dataBlob);
+  link.download = `pk_simulation_data_${new Date().toISOString().split('T')[0]}.json`;
+  
+  // Trigger download
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  // Also download plot as image
+  downloadPlotImage();
+}
+
+// Download plot as image
+function downloadPlotImage() {
+  if (!canvas) return;
+  
+  // Create download link for canvas image
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL('image/png');
+  link.download = `pk_simulation_plot_${new Date().toISOString().split('T')[0]}.png`;
+  
+  // Trigger download
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 // Reset parameters to defaults
 function resetSimulation() {
   const sliderDefaults = {
@@ -538,7 +651,10 @@ function resetSimulation() {
     // Dosing parameters
     'dose-slider': 250,
     'interval-slider': 24,
-    'duration-slider': 10
+    'duration-slider': 10,
+    // Reference lines
+    'toxicity-slider': 20,
+    'efficacy-slider': 5
   };
   
   Object.entries(sliderDefaults).forEach(([id, value]) => {
@@ -562,7 +678,10 @@ function updateSliderValues() {
     // Dosing parameters
     { slider: 'dose-slider', display: 'dose-value' },
     { slider: 'interval-slider', display: 'interval-value' },
-    { slider: 'duration-slider', display: 'duration-value' }
+    { slider: 'duration-slider', display: 'duration-value' },
+    // Reference lines
+    { slider: 'toxicity-slider', display: 'toxicity-value' },
+    { slider: 'efficacy-slider', display: 'efficacy-value' }
   ];
   
   updates.forEach(update => {
@@ -581,13 +700,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Core PK parameters
     'clearance-slider', 'volume-slider', 'bioavailability-slider',
     // Dosing parameters
-    'dose-slider', 'interval-slider', 'duration-slider'
+    'dose-slider', 'interval-slider', 'duration-slider',
+    // Reference lines
+    'toxicity-slider', 'efficacy-slider'
   ];
   
   sliderIds.forEach(id => {
     const slider = document.getElementById(id);
     if (slider) {
-      slider.addEventListener('input', updateSliderValues);
+      slider.addEventListener('input', function() {
+        updateSliderValues();
+        // Redraw chart when reference line sliders change
+        if (id === 'toxicity-slider' || id === 'efficacy-slider') {
+          drawChart();
+        }
+      });
     }
   });
   
