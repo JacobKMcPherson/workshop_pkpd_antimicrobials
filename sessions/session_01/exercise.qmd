@@ -15,6 +15,8 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 
 ::: {.pk-controls}
 
+::: {.patient-and-pk-section}
+::: {.patient-section}
 ### Random Patient Generator
 ::: {.patient-generator}
 <div style="margin-bottom: 20px;">
@@ -30,31 +32,35 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 </div>
 </div>
 :::
-
-::: {.simulation-buttons}
-<button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
-<button id="random-btn" onclick="randomizeParameters()">Random Simulation</button>
 :::
 
+::: {.pk-section}
 ### Core PK Parameters
-::: {.pk-properties}
-::: {.control-group}
-<label for="f-renal-slider">Fraction Renally Cleared (f_renal):</label>
+::: {.pk-properties-compact}
+::: {.control-group-compact}
+<label for="f-renal-slider">Fraction Renally Cleared:</label>
 <input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
 <span id="f-renal-value">0.8</span>
 :::
 
-::: {.control-group}
+::: {.control-group-compact}
 <label for="volume-slider">Volume of Distribution (L/kg):</label>
 <input type="range" id="volume-slider" min="0.1" max="2.0" value="0.7" step="0.1">
 <span id="volume-value">0.7</span> L/kg
 :::
 
-::: {.control-group}
+::: {.control-group-compact}
 <label for="bioavailability-slider">Bioavailability (F):</label>
 <input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05">
 <span id="bioavailability-value">0.8</span>
 :::
+:::
+:::
+:::
+
+::: {.simulation-buttons}
+<button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
+<button id="random-btn" onclick="randomizeParameters()">Random Simulation</button>
 :::
 
 ### Dosing Parameters
@@ -134,7 +140,7 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 <th>Sex</th>
 <th>Wt (kg)</th>
 <th>Creatinine (mg/dL)</th>
-<th>CrCl (L/h)</th>
+<th>CrCl (mL/min)</th>
 <th>Dose (mg)</th>
 <th>Interval (h)</th>
 <th>Duration (days)</th>
@@ -142,8 +148,12 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 <th>Volume (L)</th>
 <th>Bioavailability</th>
 <th>Half-life (h)</th>
+<th>C<sub>ss,avg</sub></th>
 <th>AUC<sub>0-24h</sub></th>
 <th>C<sub>max</sub></th>
+<th>AUC/Efficacy</th>
+<th>C<sub>max</sub>/Efficacy</th>
+<th>Time>Efficacy (%)</th>
 </tr>
 </thead>
 <tbody id="pk-table-body">
@@ -202,7 +212,7 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
 .pk-controls {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
   margin: 20px 0;
   padding: 20px;
   background-color: #f8f9fa;
@@ -210,11 +220,27 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
 }
 
 .pk-controls h3 {
-  margin: 0 0 15px 0;
+  margin: 0 0 10px 0;
   color: #495057;
   font-size: 1.1em;
   border-bottom: 2px solid #007bff;
   padding-bottom: 5px;
+}
+
+.patient-and-pk-section {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.patient-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.pk-section {
+  flex: 1;
+  min-width: 250px;
 }
 
 .patient-generator {
@@ -222,7 +248,6 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
   border: 2px solid #28a745;
   border-radius: 8px;
   padding: 20px;
-  margin-bottom: 25px;
 }
 
 .patient-generator button {
@@ -253,6 +278,40 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 15px;
+}
+
+.pk-properties-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.control-group-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
+
+.control-group-compact label {
+  font-weight: bold;
+  color: #495057;
+  font-size: 0.9em;
+  margin-bottom: 2px;
+}
+
+.control-group-compact input[type="range"] {
+  width: 100%;
+  margin: 2px 0;
+}
+
+.control-group-compact span {
+  font-size: 0.9em;
+  color: #6c757d;
+  text-align: center;
 }
 
 .control-group select {
@@ -335,12 +394,47 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
 }
 
 .table {
-  font-size: 0.9em;
+  font-size: 0.8em;
+  white-space: nowrap;
+}
+
+.table th, .table td {
+  padding: 0.4rem;
+  text-align: center;
+}
+
+.table th {
+  font-size: 0.75em;
+  background-color: #f8f9fa;
+}
+
+#pk-table {
+  overflow-x: auto;
+  display: block;
+  white-space: nowrap;
+}
+
+#pk-table thead, #pk-table tbody, #pk-table tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+#pk-table thead {
+  width: calc(100% - 1em);
 }
 
 @media (max-width: 768px) {
   .pk-properties, .dosing-properties, .reference-properties {
     grid-template-columns: 1fr;
+  }
+  
+  .patient-and-pk-section {
+    flex-direction: column;
+  }
+  
+  .patient-section, .pk-section {
+    min-width: auto;
   }
 }
 </style>
@@ -410,7 +504,10 @@ function generateSubjects() {
     creatinineClearance *= 0.85;
   }
   
-  // Convert creatinine clearance from mL/min to L/h for consistency with clearance units
+  // Store creatinine clearance in mL/min for display purposes
+  const creatinineClearanceMlMin = creatinineClearance;
+  
+  // Convert creatinine clearance from mL/min to L/h for PK calculations
   creatinineClearance = creatinineClearance * 0.06; // mL/min to L/h conversion
   
   // Calculate clearance using new formula: clearance_patient = base_clearance × (1 - f_renal) + base_clearance × f_renal × (CrCl_patient / CrCl_normal)
@@ -443,6 +540,7 @@ function generateSubjects() {
     weight: weight,
     creatinine: creatinine,
     creatinineClearance: creatinineClearance,
+    creatinineClearanceMlMin: creatinineClearanceMlMin,
     // Core PK parameters (patient-adjusted)
     dose: dose,
     clearance: clearance,
@@ -456,7 +554,11 @@ function generateSubjects() {
     halfLife: halfLife,
     concentrations: [],
     auc: 0,
-    cmax: 0
+    cmax: 0,
+    cssAvg: 0,
+    aucEfficacyRatio: 0,
+    cmaxEfficacyRatio: 0,
+    timeAboveEfficacy: 0
   });
 }
 
@@ -523,6 +625,9 @@ function calculateConcentration(subject, time) {
 function runSimulation() {
   generateSubjects();
   
+  // Get efficacy threshold for calculations
+  const efficacyThreshold = parseFloat(document.getElementById('efficacy-slider')?.value || 5);
+  
   // Calculate concentrations for each subject
   subjects.forEach(subject => {
     subject.concentrations = timePoints.map(time => calculateConcentration(subject, time));
@@ -535,11 +640,28 @@ function runSimulation() {
         timePoints.slice(startIdx, endIdx), 
         subject.concentrations.slice(startIdx, endIdx)
       );
+      
+      // Calculate Css,avg (average steady-state concentration)
+      const steadyStateConcentrations = subject.concentrations.slice(startIdx, endIdx);
+      subject.cssAvg = steadyStateConcentrations.reduce((sum, conc) => sum + conc, 0) / steadyStateConcentrations.length;
+      
+      // Calculate time above efficacy as percentage
+      const timePointsAboveEfficacy = steadyStateConcentrations.filter(conc => conc >= efficacyThreshold).length;
+      subject.timeAboveEfficacy = (timePointsAboveEfficacy / steadyStateConcentrations.length) * 100;
     }
     
     // Find Cmax in steady-state period
     if (startIdx !== -1 && endIdx !== -1) {
       subject.cmax = Math.max(...subject.concentrations.slice(startIdx, endIdx));
+    }
+    
+    // Calculate efficacy ratios
+    if (efficacyThreshold > 0) {
+      subject.aucEfficacyRatio = subject.auc / efficacyThreshold;
+      subject.cmaxEfficacyRatio = subject.cmax / efficacyThreshold;
+    } else {
+      subject.aucEfficacyRatio = 0;
+      subject.cmaxEfficacyRatio = 0;
     }
   });
   
@@ -751,7 +873,7 @@ function updateTable() {
       <td>${subject.sex}</td>
       <td>${subject.weight}</td>
       <td>${subject.creatinine ? subject.creatinine.toFixed(2) : 'N/A'}</td>
-      <td>${subject.creatinineClearance ? subject.creatinineClearance.toFixed(2) : 'N/A'}</td>
+      <td>${subject.creatinineClearanceMlMin ? subject.creatinineClearanceMlMin.toFixed(1) : 'N/A'}</td>
       <td>${subject.dose}</td>
       <td>${subject.interval}</td>
       <td>${subject.duration}</td>
@@ -759,8 +881,12 @@ function updateTable() {
       <td>${subject.volume.toFixed(1)}</td>
       <td>${subject.bioavailability.toFixed(2)}</td>
       <td>${subject.halfLife.toFixed(1)}</td>
+      <td>${subject.cssAvg.toFixed(2)}</td>
       <td>${subject.auc.toFixed(1)}</td>
       <td>${subject.cmax.toFixed(2)}</td>
+      <td>${subject.aucEfficacyRatio.toFixed(1)}</td>
+      <td>${subject.cmaxEfficacyRatio.toFixed(1)}</td>
+      <td>${subject.timeAboveEfficacy.toFixed(1)}</td>
     `;
   });
 }
@@ -972,9 +1098,33 @@ document.addEventListener('DOMContentLoaded', function() {
     if (slider) {
       slider.addEventListener('input', function() {
         updateSliderValues();
-        // Redraw chart when reference line sliders change
-        if (id === 'toxicity-slider' || id === 'efficacy-slider') {
+        // Redraw chart when reference line sliders change, but also recalculate ratios for efficacy
+        if (id === 'toxicity-slider') {
           drawChart();
+        } else if (id === 'efficacy-slider') {
+          // Recalculate efficacy ratios and time above efficacy
+          const efficacyThreshold = parseFloat(this.value);
+          subjects.forEach(subject => {
+            if (efficacyThreshold > 0) {
+              subject.aucEfficacyRatio = subject.auc / efficacyThreshold;
+              subject.cmaxEfficacyRatio = subject.cmax / efficacyThreshold;
+              
+              // Recalculate time above efficacy
+              const startIdx = timePoints.findIndex(t => t >= 216); // Day 9 start
+              const endIdx = timePoints.findIndex(t => t >= 240);   // Day 10 end
+              if (startIdx !== -1 && endIdx !== -1) {
+                const steadyStateConcentrations = subject.concentrations.slice(startIdx, endIdx);
+                const timePointsAboveEfficacy = steadyStateConcentrations.filter(conc => conc >= efficacyThreshold).length;
+                subject.timeAboveEfficacy = (timePointsAboveEfficacy / steadyStateConcentrations.length) * 100;
+              }
+            } else {
+              subject.aucEfficacyRatio = 0;
+              subject.cmaxEfficacyRatio = 0;
+              subject.timeAboveEfficacy = 0;
+            }
+          });
+          drawChart();
+          updateTable();
         } else {
           // Recalculate simulation for PK parameter changes
           runSimulation();
