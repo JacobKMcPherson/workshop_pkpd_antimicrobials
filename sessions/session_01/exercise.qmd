@@ -9,7 +9,7 @@ execute:
 
 # Interactive Pharmacokinetics Simulation
 
-This interactive module demonstrates the pharmacokinetics of one subject administered ten daily doses of an orally bioavailable tablet with blood samples taken every four hours. You can explore how different pharmacokinetic parameters affect drug concentration over time.
+This interactive module demonstrates the pharmacokinetics of multiple dosing using essential parameters only. You can explore how key pharmacokinetic parameters directly affect drug concentration over time without the complexity of patient-specific adjustments.
 
 ## Simulation Parameters
 
@@ -19,63 +19,28 @@ This interactive module demonstrates the pharmacokinetics of one subject adminis
 
 ::: {.pk-controls}
 
-### Patient-Specific Parameters
-::: {.patient-properties}
+### Core PK Parameters
+::: {.pk-properties}
 ::: {.control-group}
-<label for="age-slider">Age (years):</label>
-<input type="range" id="age-slider" min="18" max="90" value="35" step="1">
-<span id="age-value">35</span> years
+<label for="clearance-slider">Clearance (L/h):</label>
+<input type="range" id="clearance-slider" min="0.5" max="10.0" value="5.0" step="0.1">
+<span id="clearance-value">5.0</span> L/h
 :::
 
 ::: {.control-group}
-<label for="sex-select">Sex:</label>
-<select id="sex-select">
-  <option value="male">Male</option>
-  <option value="female">Female</option>
-</select>
+<label for="volume-slider">Volume of Distribution (L):</label>
+<input type="range" id="volume-slider" min="10" max="100" value="50" step="5">
+<span id="volume-value">50</span> L
 :::
 
 ::: {.control-group}
-<label for="height-slider">Height (cm):</label>
-<input type="range" id="height-slider" min="140" max="200" value="170" step="5">
-<span id="height-value">170</span> cm
-:::
-
-::: {.control-group}
-<label for="weight-slider">Weight (kg):</label>
-<input type="range" id="weight-slider" min="40" max="150" value="70" step="5">
-<span id="weight-value">70</span> kg
-:::
-
-::: {.control-group}
-<label for="creatinine-slider">Serum Creatinine (mg/dL):</label>
-<input type="range" id="creatinine-slider" min="0.5" max="3.0" value="1.0" step="0.1">
-<span id="creatinine-value">1.0</span> mg/dL
-:::
-
-::: {.control-group}
-<label for="albumin-slider">Serum Albumin (g/dL):</label>
-<input type="range" id="albumin-slider" min="2.0" max="5.0" value="4.0" step="0.1">
-<span id="albumin-value">4.0</span> g/dL
+<label for="bioavailability-slider">Bioavailability (F):</label>
+<input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05">
+<span id="bioavailability-value">0.8</span>
 :::
 :::
 
-### Drug-Specific Parameters
-::: {.drug-properties}
-::: {.control-group}
-<label for="fa-slider">Fraction Absorbed (fa):</label>
-<input type="range" id="fa-slider" min="0.1" max="1.0" value="0.9" step="0.05">
-<span id="fa-value">0.9</span>
-:::
-
-::: {.control-group}
-<label for="vd-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="vd-slider" min="0.1" max="10" value="0.7" step="0.1">
-<span id="vd-value">0.7</span> L/kg
-:::
-:::
-
-### Dosing-Specific Parameters
+### Dosing Parameters
 ::: {.dosing-properties}
 ::: {.control-group}
 <label for="dose-slider">Dose (mg):</label>
@@ -121,14 +86,12 @@ This interactive module demonstrates the pharmacokinetics of one subject adminis
 <thead>
 <tr>
 <th>Subject</th>
-<th>Age</th>
-<th>Sex</th>
-<th>Weight (kg)</th>
-<th>Creatinine (mg/dL)</th>
-<th>Albumin (g/dL)</th>
-<th>CrCl (mL/min)</th>
+<th>Dose (mg)</th>
+<th>Interval (h)</th>
+<th>Duration (days)</th>
 <th>Clearance (L/h)</th>
 <th>Volume (L)</th>
+<th>Bioavailability</th>
 <th>Half-life (h)</th>
 <th>AUC<sub>0-24h</sub></th>
 <th>C<sub>max</sub></th>
@@ -164,13 +127,21 @@ In this simulation, blood samples are collected every 4 hours to provide a more 
 - Reduce the burden on patients compared to more frequent sampling
 - Provide sufficient data points for pharmacokinetic analysis
 
-### Single Subject Analysis
+### Simplified Pharmacokinetic Model
 
-This focused approach to studying one subject allows for:
-- Clear visualization of concentration-time relationships
-- Better understanding of fundamental PK principles
-- Simplified interpretation without inter-subject variability
-- Focus on the impact of dose and bioavailability changes
+This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
+
+**Essential PK Parameters:**
+- **Clearance (CL)**: Direct control of drug elimination rate
+- **Volume of Distribution (Vd)**: Direct control of drug distribution
+- **Bioavailability (F)**: Fraction of dose reaching systemic circulation
+
+**Dosing Parameters:**
+- **Dose**: Amount of drug administered per dose
+- **Dosing Interval**: Time between doses
+- **Treatment Duration**: Total length of treatment
+
+This approach eliminates complex patient-specific calculations (age, sex, renal function, protein binding) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics.
 
 <style>
 .pk-controls {
@@ -191,7 +162,7 @@ This focused approach to studying one subject allows for:
   padding-bottom: 5px;
 }
 
-.patient-properties, .drug-properties, .dosing-properties {
+.pk-properties, .dosing-properties {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 15px;
@@ -253,7 +224,7 @@ This focused approach to studying one subject allows for:
 }
 
 @media (max-width: 768px) {
-  .patient-properties, .drug-properties, .dosing-properties {
+  .pk-properties, .dosing-properties {
     grid-template-columns: 1fr;
   }
 }
@@ -297,85 +268,38 @@ function initializeSimulation() {
   runSimulation();
 }
 
-// Generate subjects with variability
+// Generate subjects with simplified parameters
 function generateSubjects() {
-  // Patient-specific properties
-  const age = parseFloat(document.getElementById('age-slider')?.value || 35);
-  const sex = document.getElementById('sex-select')?.value || 'male';
-  const height = parseFloat(document.getElementById('height-slider')?.value || 170);
-  const weight = parseFloat(document.getElementById('weight-slider')?.value || 70);
-  const creatinine = parseFloat(document.getElementById('creatinine-slider')?.value || 1.0); // mg/dL
-  const albumin = parseFloat(document.getElementById('albumin-slider')?.value || 4.0); // g/dL
+  // Core PK parameters
+  const clearance = parseFloat(document.getElementById('clearance-slider')?.value || 5.0);
+  const volume = parseFloat(document.getElementById('volume-slider')?.value || 50.0);
+  const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8);
   
-  // Drug-specific properties
-  const fa = parseFloat(document.getElementById('fa-slider')?.value || 0.9);
-  const vd_per_kg = parseFloat(document.getElementById('vd-slider')?.value || 0.7);
-  
-  // Dosing-specific properties
+  // Dosing parameters
   const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
   const interval = parseFloat(document.getElementById('interval-slider')?.value || 24);
   const duration = parseFloat(document.getElementById('duration-slider')?.value || 10);
   
   subjects = [];
   
-  // Calculate derived parameters based on patient characteristics
-  const vd_total = vd_per_kg * weight; // Total volume of distribution
-  
-  // Calculate creatinine clearance from serum creatinine (Cockcroft-Gault equation)
-  const creatinine_cl = ((140 - age) * weight) / (72 * creatinine);
-  const creatinine_cl_adjusted = sex === 'female' ? creatinine_cl * 0.85 : creatinine_cl;
-  
-  // Age-adjusted clearance (simplified model: 20% decrease per decade after 40)
-  let age_factor = 1.0;
-  if (age > 40) {
-    age_factor = 1.0 - ((age - 40) / 10) * 0.2;
-  }
-  
-  // Sex-adjusted clearance (females typically 15% lower)
-  const sex_factor = sex === 'female' ? 0.85 : 1.0;
-  
-  // Renal function adjustment for clearance
-  const renal_factor = creatinine_cl_adjusted / 120; // Normalized to normal CrCl of 120 mL/min
-  
-  // Protein binding adjustment (lower albumin = higher free fraction)
-  const protein_factor = (4.0 / albumin); // Normalized to normal albumin of 4.0 g/dL
-  const base_fu = 0.1; // Base free fraction
-  const adjusted_fu = Math.min(1.0, base_fu * protein_factor);
-  
-  // Calculate final clearance
-  const base_clearance = 5.0; // L/h baseline
-  const clearance = base_clearance * age_factor * sex_factor * renal_factor * adjusted_fu;
-  
-  // Calculate effective bioavailability (simplified to just fa for drug-specific)
-  const effective_bioavailability = fa * 0.8; // Assume 80% bioavailability factor
-  
   // Calculate number of doses based on duration
   const numDoses = Math.ceil((duration * 24) / interval);
   
-  const halfLife = 0.693 * vd_total / clearance;
+  // Calculate half-life
+  const halfLife = 0.693 * volume / clearance;
   
   subjects.push({
     id: 1,
-    // Drug properties
+    // Core PK parameters
     dose: dose,
-    fa: fa,
-    vd_per_kg: vd_per_kg,
-    bioavailability: effective_bioavailability,
-    // Patient properties
-    age: age,
-    sex: sex,
-    height: height,
-    weight: weight,
-    creatinine: creatinine,
-    albumin: albumin,
-    creatinine_cl: creatinine_cl_adjusted,
-    // Dosing properties
+    clearance: clearance,
+    volume: volume,
+    bioavailability: bioavailability,
+    // Dosing parameters
     interval: interval,
     duration: duration,
     numDoses: numDoses,
-    // Calculated PK parameters
-    clearance: clearance,
-    volume: vd_total,
+    // Calculated parameters
     halfLife: halfLife,
     concentrations: [],
     auc: 0,
@@ -591,14 +515,12 @@ function updateTable() {
     const row = tbody.insertRow();
     row.innerHTML = `
       <td>${subject.id}</td>
-      <td>${subject.age}</td>
-      <td>${subject.sex.charAt(0).toUpperCase() + subject.sex.slice(1)}</td>
-      <td>${subject.weight}</td>
-      <td>${subject.creatinine.toFixed(1)}</td>
-      <td>${subject.albumin.toFixed(1)}</td>
-      <td>${subject.creatinine_cl.toFixed(0)}</td>
+      <td>${subject.dose}</td>
+      <td>${subject.interval}</td>
+      <td>${subject.duration}</td>
       <td>${subject.clearance.toFixed(2)}</td>
       <td>${subject.volume.toFixed(1)}</td>
+      <td>${subject.bioavailability.toFixed(2)}</td>
       <td>${subject.halfLife.toFixed(1)}</td>
       <td>${subject.auc.toFixed(1)}</td>
       <td>${subject.cmax.toFixed(2)}</td>
@@ -609,16 +531,11 @@ function updateTable() {
 // Reset parameters to defaults
 function resetSimulation() {
   const sliderDefaults = {
-    // Patient-specific
-    'age-slider': 35,
-    'height-slider': 170,
-    'weight-slider': 70,
-    'creatinine-slider': 1.0,
-    'albumin-slider': 4.0,
-    // Drug-specific
-    'fa-slider': 0.9,
-    'vd-slider': 0.7,
-    // Dosing-specific
+    // Core PK parameters
+    'clearance-slider': 5.0,
+    'volume-slider': 50,
+    'bioavailability-slider': 0.8,
+    // Dosing parameters
     'dose-slider': 250,
     'interval-slider': 24,
     'duration-slider': 10
@@ -631,10 +548,6 @@ function resetSimulation() {
     }
   });
   
-  // Reset select elements
-  const sexSelect = document.getElementById('sex-select');
-  if (sexSelect) sexSelect.value = 'male';
-  
   updateSliderValues();
   runSimulation();
 }
@@ -642,16 +555,11 @@ function resetSimulation() {
 // Update slider value displays
 function updateSliderValues() {
   const updates = [
-    // Patient-specific
-    { slider: 'age-slider', display: 'age-value' },
-    { slider: 'height-slider', display: 'height-value' },
-    { slider: 'weight-slider', display: 'weight-value' },
-    { slider: 'creatinine-slider', display: 'creatinine-value' },
-    { slider: 'albumin-slider', display: 'albumin-value' },
-    // Drug-specific
-    { slider: 'fa-slider', display: 'fa-value' },
-    { slider: 'vd-slider', display: 'vd-value' },
-    // Dosing-specific
+    // Core PK parameters
+    { slider: 'clearance-slider', display: 'clearance-value' },
+    { slider: 'volume-slider', display: 'volume-value' },
+    { slider: 'bioavailability-slider', display: 'bioavailability-value' },
+    // Dosing parameters
     { slider: 'dose-slider', display: 'dose-value' },
     { slider: 'interval-slider', display: 'interval-value' },
     { slider: 'duration-slider', display: 'duration-value' }
@@ -670,11 +578,9 @@ function updateSliderValues() {
 document.addEventListener('DOMContentLoaded', function() {
   // Add event listeners to sliders
   const sliderIds = [
-    // Patient-specific
-    'age-slider', 'height-slider', 'weight-slider', 'creatinine-slider', 'albumin-slider',
-    // Drug-specific
-    'fa-slider', 'vd-slider',
-    // Dosing-specific
+    // Core PK parameters
+    'clearance-slider', 'volume-slider', 'bioavailability-slider',
+    // Dosing parameters
     'dose-slider', 'interval-slider', 'duration-slider'
   ];
   
@@ -682,15 +588,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const slider = document.getElementById(id);
     if (slider) {
       slider.addEventListener('input', updateSliderValues);
-    }
-  });
-  
-  // Add event listeners to select elements
-  const selectIds = ['sex-select'];
-  selectIds.forEach(id => {
-    const select = document.getElementById(id);
-    if (select) {
-      select.addEventListener('change', runSimulation);
     }
   });
   
