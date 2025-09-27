@@ -680,7 +680,7 @@ function drawChart() {
   // Title
   ctx.textAlign = 'center';
   ctx.font = 'bold 16px Arial';
-  ctx.fillText('Plasma Concentration-Time Profile (Blood Samples Every 4 Hours)', canvas.width/2, 25);
+  ctx.fillText('Plasma Concentration-Time Profile (Blood Samples Every Hour)', canvas.width/2, 25);
   
   // Add axis ticks and values
   ctx.font = '12px Arial';
@@ -817,7 +817,7 @@ function resetSimulation() {
 
 // Randomize parameters for interesting simulations
 function randomizeParameters() {
-  // Define parameter ranges for randomization
+  // Define parameter ranges for randomization (aligned with HTML constraints)
   const randomParams = {
     // Core PK parameters - reasonable clinical ranges
     'clearance-slider': { min: 1.0, max: 8.0 },
@@ -825,7 +825,6 @@ function randomizeParameters() {
     'bioavailability-slider': { min: 0.4, max: 1.0 },
     // Dosing parameters
     'dose-slider': { min: 100, max: 400 },
-    'interval-slider': { min: 8, max: 36 },
     'duration-slider': { min: 3, max: 14 }
   };
   
@@ -844,6 +843,14 @@ function randomizeParameters() {
       element.value = finalValue;
     }
   });
+  
+  // Handle interval dropdown separately - pick from available options
+  const intervalOptions = [1, 2, 4, 6, 8, 12, 18, 24, 36, 48];
+  const randomInterval = intervalOptions[Math.floor(Math.random() * intervalOptions.length)];
+  const intervalElement = document.getElementById('interval-slider');
+  if (intervalElement) {
+    intervalElement.value = randomInterval;
+  }
   
   // Generate reference lines ensuring toxicity > efficacy
   const efficacyMin = 2;
