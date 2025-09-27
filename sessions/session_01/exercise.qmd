@@ -18,15 +18,15 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 ### Random Patient Generator
 ::: {.patient-generator}
 <div style="margin-bottom: 20px;">
-  <button id="generate-patient-btn" onclick="generateRandomPatient()">Generate Random Patient</button>
-  <div id="patient-info" style="margin-top: 15px;">
-    <ul style="list-style-type: none; padding-left: 0;">
-      <li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
-      <li><strong>Sex:</strong> <u><span id="patient-sex">-</span></u></li>
-      <li><strong>Height:</strong> <u><span id="patient-height">-</span></u> cm</li>
-      <li><strong>Weight:</strong> <u><span id="patient-weight">-</span></u> kg</li>
-    </ul>
-  </div>
+<button id="generate-patient-btn" onclick="generateRandomPatient()">Generate Random Patient</button>
+<div id="patient-info" style="margin-top: 15px;">
+<ul style="list-style-type: none; padding-left: 0;">
+<li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
+<li><strong>Sex:</strong> <u><span id="patient-sex">-</span></u></li>
+<li><strong>Height:</strong> <u><span id="patient-height">-</span></u> cm</li>
+<li><strong>Weight:</strong> <u><span id="patient-weight">-</span></u> kg</li>
+</ul>
+</div>
 </div>
 :::
 
@@ -538,6 +538,16 @@ function trapezoidalRule(timeArray, concArray) {
 // Simple canvas-based chart drawing
 function drawChart() {
   if (!ctx || !canvas) return;
+  
+  // Hide the loading message and show the canvas
+  const chartFallback = document.getElementById('chart-fallback');
+  if (chartFallback) {
+    const loadingText = chartFallback.querySelector('p');
+    if (loadingText) {
+      loadingText.style.display = 'none';
+    }
+    canvas.style.display = 'block';
+  }
   
   // Clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
