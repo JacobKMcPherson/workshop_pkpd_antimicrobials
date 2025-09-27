@@ -40,13 +40,13 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 ::: {.dosing-properties}
 ::: {.control-group}
 <label for="dose-slider">Dose (mg):</label>
-<input type="range" id="dose-slider" min="50" max="500" value="250" step="25">
+<input type="range" id="dose-slider" min="50" max="1000" value="250" step="25">
 <span id="dose-value">250</span> mg
 :::
 
 ::: {.control-group}
 <label for="interval-slider">Dosing Interval (h):</label>
-<input type="range" id="interval-slider" min="8" max="48" value="24" step="4">
+<input type="range" id="interval-slider" min="2" max="48" value="24" step="4">
 <span id="interval-value">24</span> h
 :::
 
@@ -135,7 +135,7 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 
 ### Blood Sampling Strategy
 
-In this simulation, blood samples are collected every 4 hours to provide a more realistic view of how pharmacokinetic data is collected in clinical practice. This sampling frequency allows us to:
+In this simulation, blood samples are collected every 1 hour to provide a detailed view of how pharmacokinetic data is collected in clinical practice. This sampling frequency allows us to:
 
 - Capture both peak and trough concentrations
 - Observe the full absorption and elimination phases
@@ -273,9 +273,9 @@ const baseParams = {
 
 // Initialize the simulation
 function initializeSimulation() {
-  // Generate time points (0 to 240 hours, every 4 hours)
+  // Generate time points (0 to 240 hours, every 1 hour)
   timePoints = [];
-  for (let t = 0; t <= 240; t += 4) {
+  for (let t = 0; t <= 240; t += 1) {
     timePoints.push(t);
   }
   
@@ -517,7 +517,7 @@ function drawChart() {
     }
     ctx.stroke();
     
-    // Draw data points to show 4-hour sampling
+    // Draw data points to show 1-hour sampling
     ctx.fillStyle = singleSubjectColor;
     for (let i = 0; i < timePoints.length; i++) {
       const x = margin.left + (timePoints[i] / maxTime) * width;
