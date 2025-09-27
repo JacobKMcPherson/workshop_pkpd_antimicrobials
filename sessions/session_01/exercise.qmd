@@ -75,6 +75,7 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 ::: {.simulation-buttons}
 <button id="simulate-btn" onclick="runSimulation()">Run Simulation</button>
 <button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
+<button id="random-btn" onclick="randomizeParameters()">Random Simulation</button>
 <button id="download-btn" onclick="downloadData()">Download Data</button>
 :::
 
@@ -231,6 +232,14 @@ This approach eliminates complex patient-specific calculations (age, sex, renal 
 
 #reset-btn:hover {
   background-color: #545b62;
+}
+
+#random-btn {
+  background-color: #17a2b8;
+}
+
+#random-btn:hover {
+  background-color: #138496;
 }
 
 .table {
@@ -408,7 +417,9 @@ function drawChart() {
   
   // Find scales
   const maxTime = Math.max(...timePoints);
-  const maxConc = Math.max(...subjects.flatMap(s => s.concentrations));
+  const rawMaxConc = Math.max(...subjects.flatMap(s => s.concentrations));
+  // Add 20% more space to the y-axis for better visualization
+  const maxConc = rawMaxConc * 1.2;
   
   // Draw background
   ctx.fillStyle = '#f8f9fa';
@@ -663,6 +674,56 @@ function resetSimulation() {
       element.value = value;
     }
   });
+  
+  updateSliderValues();
+  runSimulation();
+}
+
+// Randomize parameters for interesting simulations
+function randomizeParameters() {
+  // Define parameter ranges for randomization
+  const randomParams = {
+    // Core PK parameters - reasonable clinical ranges
+    'clearance-slider': { min: 1.0, max: 8.0 },
+    'volume-slider': { min: 20, max: 80 },
+    'bioavailability-slider': { min: 0.4, max: 1.0 },
+    // Dosing parameters
+    'dose-slider': { min: 100, max: 400 },
+    'interval-slider': { min: 8, max: 36 },
+    'duration-slider': { min: 3, max: 14 }
+  };
+  
+  // Randomize core PK and dosing parameters
+  Object.entries(randomParams).forEach(([id, range]) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const randomValue = Math.random() * (range.max - range.min) + range.min;
+      // Round to appropriate precision based on parameter type
+      let finalValue;
+      if (id === 'clearance-slider' || id === 'bioavailability-slider') {
+        finalValue = Math.round(randomValue * 10) / 10; // 1 decimal place
+      } else {
+        finalValue = Math.round(randomValue); // integers
+      }
+      element.value = finalValue;
+    }
+  });
+  
+  // Generate reference lines ensuring toxicity > efficacy
+  const efficacyMin = 2;
+  const efficacyMax = 15;
+  const efficacyThreshold = Math.round((Math.random() * (efficacyMax - efficacyMin) + efficacyMin) * 2) / 2; // Round to 0.5
+  
+  // Toxicity should be at least 5 mg/L higher than efficacy, up to 40 mg/L
+  const toxicityMin = efficacyThreshold + 5;
+  const toxicityMax = 40;
+  const toxicityThreshold = Math.round(Math.random() * (toxicityMax - toxicityMin) + toxicityMin);
+  
+  const efficacyElement = document.getElementById('efficacy-slider');
+  const toxicityElement = document.getElementById('toxicity-slider');
+  
+  if (efficacyElement) efficacyElement.value = efficacyThreshold;
+  if (toxicityElement) toxicityElement.value = toxicityThreshold;
   
   updateSliderValues();
   runSimulation();
