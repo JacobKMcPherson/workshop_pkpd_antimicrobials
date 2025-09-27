@@ -31,12 +31,17 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 </div>
 :::
 
+::: {.simulation-buttons}
+<button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
+<button id="random-btn" onclick="randomizeParameters()">Random Simulation</button>
+:::
+
 ### Core PK Parameters
 ::: {.pk-properties}
 ::: {.control-group}
-<label for="clearance-slider">Clearance (L/h):</label>
-<input type="range" id="clearance-slider" min="0.5" max="10.0" value="5.0" step="0.1">
-<span id="clearance-value">5.0</span> L/h
+<label for="f-renal-slider">Fraction Renally Cleared (f_renal):</label>
+<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
+<span id="f-renal-value">0.8</span>
 :::
 
 ::: {.control-group}
@@ -99,9 +104,7 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 :::
 :::
 
-::: {.simulation-buttons}
-<button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
-<button id="random-btn" onclick="randomizeParameters()">Random Simulation</button>
+::: {.download-section}
 <button id="download-btn" onclick="downloadData()">Download Data</button>
 :::
 
@@ -295,6 +298,26 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
   background-color: #0056b3;
 }
 
+.download-section {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.download-section button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.download-section button:hover {
+  background-color: #0056b3;
+}
+
 #reset-btn {
   background-color: #6c757d;
 }
@@ -372,11 +395,12 @@ function initializeSimulation() {
 // Generate subjects with patient-specific parameters
 function generateSubjects() {
   // Base PK parameters from sliders
-  const baseClearance = parseFloat(document.getElementById('clearance-slider')?.value || 5.0);
+  const baseClearance = 5.0; // Fixed base clearance (L/h)
+  const fRenal = parseFloat(document.getElementById('f-renal-slider')?.value || 0.8);
   const baseVolumePerKg = parseFloat(document.getElementById('volume-slider')?.value || 0.7);
   const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8);
   
-  // Calculate patient-specific clearance using Cockcroft-Gault equation
+  // Calculate patient-specific clearance using new formula
   const { age, sex, height, weight, creatinine } = currentPatient;
   
   // Cockcroft-Gault equation for creatinine clearance (mL/min)
@@ -389,10 +413,10 @@ function generateSubjects() {
   // Convert creatinine clearance from mL/min to L/h for consistency with clearance units
   creatinineClearance = creatinineClearance * 0.06; // mL/min to L/h conversion
   
-  // Use creatinine clearance to adjust the base clearance
+  // Calculate clearance using new formula: clearance_patient = base_clearance × (1 - f_renal) + base_clearance × f_renal × (CrCl_patient / CrCl_normal)
   // Assuming a typical creatinine clearance of ~120 mL/min (7.2 L/h) for normalization
   const normalCrCl = 7.2; // L/h
-  const clearance = baseClearance * (creatinineClearance / normalCrCl);
+  const clearance = baseClearance * (1 - fRenal) + baseClearance * fRenal * (creatinineClearance / normalCrCl);
   
   // Calculate volume of distribution using drug-specific L/kg value multiplied by patient weight
   const volume = baseVolumePerKg * weight;
@@ -747,8 +771,8 @@ function downloadData() {
   const data = {
     timestamp: new Date().toISOString(),
     parameters: {
-      clearance: parseFloat(document.getElementById('clearance-slider')?.value || 5.0),
-      volume: parseFloat(document.getElementById('volume-slider')?.value || 50.0),
+      fRenal: parseFloat(document.getElementById('f-renal-slider')?.value || 0.8),
+      volume: parseFloat(document.getElementById('volume-slider')?.value || 0.7),
       bioavailability: parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8),
       dose: parseFloat(document.getElementById('dose-slider')?.value || 250),
       interval: parseFloat(document.getElementById('interval-slider')?.value || 24),
@@ -803,7 +827,7 @@ function downloadPlotImage() {
 function resetSimulation() {
   const sliderDefaults = {
     // Core PK parameters
-    'clearance-slider': 5.0,
+    'f-renal-slider': 0.8,
     'volume-slider': 0.7,
     'bioavailability-slider': 0.8,
     // Dosing parameters
@@ -831,7 +855,7 @@ function randomizeParameters() {
   // Define parameter ranges for randomization (aligned with HTML constraints)
   const randomParams = {
     // Core PK parameters - reasonable clinical ranges
-    'clearance-slider': { min: 1.0, max: 8.0 },
+    'f-renal-slider': { min: 0.1, max: 1.0 },
     'volume-slider': { min: 0.2, max: 1.5 },
     'bioavailability-slider': { min: 0.4, max: 1.0 },
     // Dosing parameters
@@ -846,7 +870,7 @@ function randomizeParameters() {
       const randomValue = Math.random() * (range.max - range.min) + range.min;
       // Round to appropriate precision based on parameter type
       let finalValue;
-      if (id === 'clearance-slider' || id === 'bioavailability-slider' || id === 'volume-slider') {
+      if (id === 'f-renal-slider' || id === 'bioavailability-slider' || id === 'volume-slider') {
         finalValue = Math.round(randomValue * 10) / 10; // 1 decimal place
       } else {
         finalValue = Math.round(randomValue); // integers
@@ -887,7 +911,7 @@ function randomizeParameters() {
 function updateSliderValues() {
   const updates = [
     // Core PK parameters
-    { slider: 'clearance-slider', display: 'clearance-value' },
+    { slider: 'f-renal-slider', display: 'f-renal-value' },
     { slider: 'volume-slider', display: 'volume-value' },
     { slider: 'bioavailability-slider', display: 'bioavailability-value' },
     // Dosing parameters
@@ -936,7 +960,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add event listeners to sliders
   const sliderIds = [
     // Core PK parameters
-    'clearance-slider', 'volume-slider', 'bioavailability-slider',
+    'f-renal-slider', 'volume-slider', 'bioavailability-slider',
     // Dosing parameters
     'dose-slider', 'duration-slider',
     // Reference lines
