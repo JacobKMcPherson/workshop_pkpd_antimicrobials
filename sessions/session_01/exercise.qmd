@@ -741,27 +741,53 @@ function drawChart() {
   const maxTime = Math.max(...timePoints);
   const rawMaxConc = Math.max(...subjects.flatMap(s => s.concentrations));
   
+  // Get reference line values for dynamic scaling
+  const toxicityThreshold = parseFloat(document.getElementById('toxicity-slider')?.value || 20);
+  const efficacyThreshold = parseFloat(document.getElementById('efficacy-slider')?.value || 5);
+  const maxReferenceValue = Math.max(toxicityThreshold, efficacyThreshold);
+  
   let minConc, maxConc, valueToY, gridValues, axisLabel;
   
   if (isLogScale) {
-    // Log scale y-axis range: 0.1 to 100 mg/L
+    // Log scale y-axis range: dynamically scaled to 20% above the greater reference line
     minConc = 0.1;
-    maxConc = 100;
+    maxConc = Math.max(maxReferenceValue * 1.2, 10); // Minimum of 10 mg/L for reasonable scale
     axisLabel = 'Concentration (mg/L, log scale)';
     
     // Helper functions for log scale
     const logScale = (value) => Math.log10(Math.max(value, minConc));
     valueToY = (value) => margin.top + height - ((logScale(value) - logScale(minConc)) / (logScale(maxConc) - logScale(minConc))) * height;
-    gridValues = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100];
+    
+    // Generate logarithmic grid values based on the scale
+    gridValues = [];
+    let currentValue = 0.1;
+    while (currentValue <= maxConc) {
+      gridValues.push(currentValue);
+      if (currentValue < 1) {
+        currentValue = Math.round((currentValue + 0.1) * 10) / 10;
+      } else if (currentValue < 10) {
+        currentValue += 1;
+      } else if (currentValue < 100) {
+        currentValue += 10;
+      } else {
+        currentValue += 100;
+      }
+    }
   } else {
-    // Linear scale y-axis range: 0 to 100 mg/L
+    // Linear scale y-axis range: dynamically scaled to 20% above the greater reference line
     minConc = 0;
-    maxConc = 100;
+    maxConc = Math.max(maxReferenceValue * 1.2, 10); // Minimum of 10 mg/L for reasonable scale
     axisLabel = 'Concentration (mg/L)';
     
     // Helper function for linear scale
     valueToY = (value) => margin.top + height - (value / maxConc) * height;
-    gridValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    
+    // Generate linear grid values based on the scale
+    const interval = Math.ceil(maxConc / 10);
+    gridValues = [];
+    for (let i = 0; i <= Math.ceil(maxConc / interval); i++) {
+      gridValues.push(i * interval);
+    }
   }
   
   // Draw background
@@ -802,9 +828,6 @@ function drawChart() {
   ctx.stroke();
   
   // Draw reference lines (toxicity and efficacy thresholds)
-  const toxicityThreshold = parseFloat(document.getElementById('toxicity-slider')?.value || 20);
-  const efficacyThreshold = parseFloat(document.getElementById('efficacy-slider')?.value || 5);
-  
   if (toxicityThreshold > 0 && toxicityThreshold >= minConc && toxicityThreshold <= maxConc) {
     const toxicityY = valueToY(toxicityThreshold);
     ctx.strokeStyle = '#dc3545'; // Red for toxicity
