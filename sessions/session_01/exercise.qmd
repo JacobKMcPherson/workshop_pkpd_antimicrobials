@@ -12,7 +12,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.main-layout}
 
-::: {.sidebar-left}
+<!--- ::: {.sidebar-left} --->
 
 ## Controls
 
