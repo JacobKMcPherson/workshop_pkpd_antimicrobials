@@ -7,180 +7,11 @@ execute:
   shinylive: true
 ---
 
-# Interactive Pharmacokinetics Simulation
+This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
-This interactive module demonstrates the pharmacokinetics of multiple dosing using patient-specific parameters. You can explore how drug clearance calculated from creatinine clearance (Cockcroft-Gault equation) and weight-based volume of distribution affect drug concentration over time. The simulation updates in real-time as you adjust parameters.
+::: {.main-layout}
 
-## Controls
-
-::: {.pk-controls}
-
-::: {.patient-and-pk-section}
-::: {.patient-section}
-### Random Patient Generator
-::: {.patient-generator}
-<div style="margin-bottom: 20px;">
-<button id="generate-patient-btn" onclick="generateRandomPatient()">Generate Random Patient</button>
-<div id="patient-info" style="margin-top: 15px;">
-<ul style="list-style-type: none; padding-left: 0;">
-<li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
-<li><strong>Sex:</strong> <u><span id="patient-sex">-</span></u></li>
-<li><strong>Height:</strong> <u><span id="patient-height">-</span></u> cm</li>
-<li><strong>Weight:</strong> <u><span id="patient-weight">-</span></u> kg</li>
-<li><strong>Creatinine:</strong> <u><span id="patient-creatinine">-</span></u> mg/dL</li>
-</ul>
-</div>
-<div class="small-buttons" style="margin-top: 15px;">
-<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
-<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
-</div>
-</div>
-:::
-
-### Drug Name
-::: {.drug-name-section}
-<div style="margin-bottom: 20px;">
-<label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
-<input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
-</div>
-:::
-:::
-
-::: {.pk-section}
-### Core PK Parameters
-::: {.pk-properties-compact}
-::: {.control-group-compact}
-<label for="f-renal-slider">Fraction Renally Cleared:</label>
-<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
-<span id="f-renal-value">0.8</span>
-:::
-
-::: {.control-group-compact}
-<label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.1" max="10" value="0.7" step="0.1">
-<span id="volume-value">0.7</span> L/kg
-:::
-
-::: {.control-group-compact}
-<label for="bioavailability-slider">Bioavailability (F):</label>
-<input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05">
-<span id="bioavailability-value">0.8</span>
-:::
-
-::: {.control-group-compact}
-<label for="fraction-unbound-slider">Fraction Unbound:</label>
-<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.1" step="0.01">
-<span id="fraction-unbound-value">0.1</span>
-:::
-:::
-:::
-
-### Dosing Parameters
-::: {.pk-properties-compact}
-::: {.control-group-compact}
-<label for="dose-slider">Dose (mg):</label>
-<input type="range" id="dose-slider" min="0" max="3000" value="250" step="50">
-<span id="dose-value">250</span> mg
-:::
-
-::: {.control-group-compact}
-<label for="interval-slider">Dosing Interval (h):</label>
-<input type="range" id="interval-slider" min="1" max="48" value="24" step="1">
-<span id="interval-value">24</span> h
-:::
-
-::: {.control-group-compact}
-<label for="duration-slider">Treatment Duration (days):</label>
-<input type="range" id="duration-slider" min="1" max="14" value="10" step="1">
-<span id="duration-value">10</span> days
-:::
-
-::: {.control-group-compact}
-<label for="formulation-select">Formulation:</label>
-<select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
-<option value="slow">Slow (Extended Release)</option>
-<option value="medium" selected>Medium (Standard Oral)</option>
-<option value="fast">Fast (IV Bolus)</option>
-</select>
-<span id="formulation-value">Medium (Standard Oral)</span>
-:::
-:::
-
-:::
-
-## Plot and Subject Data
-
-::: {.panel-tabset}
-
-### Plot
-
-::: {#concentration-plot style="width: 100%; height: 500px;"}
-<div id="chart-fallback">
-  <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="800" height="400"></canvas>
-</div>
-:::
-
-::: {.simulation-buttons}
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-<button id="download-btn" onclick="downloadData()">Download Data</button>
-:::
-
-### Reference Lines
-::: {.reference-properties}
-::: {.control-group}
-<label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
-<input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1">
-<span id="toxicity-value">20</span> mg/L
-:::
-
-::: {.control-group}
-<label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
-<input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5">
-<span id="efficacy-value">5</span> mg/L
-:::
-:::
-
-### Subject Data
-
-::: {#subject-table}
-<table id="pk-table" class="table table-striped">
-<thead>
-<tr>
-<th>Subject</th>
-<th>Age</th>
-<th>Sex</th>
-<th>Ht (cm)</th>
-<th>Wt (kg)</th>
-<th>BMI</th>
-<th>IBW (kg)</th>
-<th>Adj IBW (kg)</th>
-<th>Creatinine (mg/dL)</th>
-<th>CrCl (mL/min)</th>
-<th>Dose (mg)</th>
-<th>Interval (h)</th>
-<th>Duration (days)</th>
-<th>Clearance (L/h)</th>
-<th>Volume (L)</th>
-<th>Fraction Unbound</th>
-<th>V<sub>ss,u</sub> (L)</th>
-<th>Bioavailability</th>
-<th>Half-life (h)</th>
-<th>C<sub>ss,avg</sub></th>
-<th>AUC<sub>0-24h</sub></th>
-<th>C<sub>max</sub></th>
-<th>AUC/Efficacy</th>
-<th>C<sub>max</sub>/Efficacy</th>
-<th>Time>Efficacy (%)</th>
-</tr>
-</thead>
-<tbody id="pk-table-body">
-</tbody>
-</table>
-:::
-
-:::
-
+::: {.sidebar-left}
 ## Educational Content
 
 ### Key Pharmacokinetic Concepts
@@ -226,41 +57,355 @@ This simulation uses a simplified one-compartment model with first-order absorpt
 
 This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
 
+### Knowledge Check Quiz
+
+Test your understanding by calculating the following parameters for the current patient:
+
+::: {.quiz-section}
+::: {.quiz-question}
+**1. Creatinine Clearance (mL/min):**
+<input type="number" id="quiz-crcl" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-crcl-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**2. Adjusted Body Weight (kg):**
+<input type="number" id="quiz-adjbw" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-adjbw-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**3. Volume of Distribution of Unbound Drug (L):**
+<input type="number" id="quiz-vss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-vss-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**4. Time to Steady State - tss (hours):**
+<input type="number" id="quiz-tss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-tss-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**5. Average Steady-State Concentration - Css,avg (mg/L):**
+<input type="number" id="quiz-cssavg" placeholder="Enter your calculation" step="0.01" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-cssavg-feedback" class="quiz-feedback"></span>
+:::
+
+<div style="text-align: center; margin: 15px 0;">
+<button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">Check Answers</button>
+<button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
+</div>
+:::
+:::
+
+::: {.controls-middle}
+## Controls
+
+### Random Patient Generator
+::: {.patient-generator}
+<div style="margin-bottom: 20px;">
+<button id="generate-patient-btn" onclick="generateRandomPatient()">Generate Random Patient</button>
+<div id="patient-info" style="margin-top: 15px;">
+<ul style="list-style-type: none; padding-left: 0;">
+<li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
+<li><strong>Sex:</strong> <u><span id="patient-sex">-</span></u></li>
+<li><strong>Height:</strong> <u><span id="patient-height">-</span></u> cm</li>
+<li><strong>Weight:</strong> <u><span id="patient-weight">-</span></u> kg</li>
+<li><strong>Creatinine:</strong> <u><span id="patient-creatinine">-</span></u> mg/dL</li>
+</ul>
+</div>
+<div class="small-buttons" style="margin-top: 15px;">
+<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
+<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
+</div>
+</div>
+:::
+
+### Drug Name
+::: {.drug-name-section}
+<div style="margin-bottom: 20px;">
+<label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
+<input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+</div>
+:::
+
+### Core PK Parameters
+::: {.pk-properties-compact}
+::: {.control-group-compact}
+<label for="bioavailability-slider">Bioavailability (F):</label>
+<input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05">
+<span id="bioavailability-value">0.8</span>
+:::
+
+::: {.control-group-compact}
+<label for="fraction-unbound-slider">Fraction Unbound:</label>
+<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.1" step="0.01">
+<span id="fraction-unbound-value">0.1</span>
+:::
+
+::: {.control-group-compact}
+<label for="volume-slider">Volume of Distribution (L/kg):</label>
+<input type="range" id="volume-slider" min="0.1" max="10" value="0.7" step="0.1">
+<span id="volume-value">0.7</span> L/kg
+:::
+
+::: {.control-group-compact}
+<label for="f-renal-slider">Fraction Renally Cleared:</label>
+<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
+<span id="f-renal-value">0.8</span>
+:::
+:::
+
+### Dosing Parameters
+::: {.pk-properties-compact}
+::: {.control-group-compact}
+<label for="loading-dose-slider">Loading Dose (mg):</label>
+<input type="range" id="loading-dose-slider" min="0" max="3000" value="0" step="50">
+<span id="loading-dose-value">0</span> mg
+:::
+
+::: {.control-group-compact}
+<label for="dose-slider">Dose (mg):</label>
+<input type="range" id="dose-slider" min="0" max="3000" value="250" step="50">
+<span id="dose-value">250</span> mg
+:::
+
+::: {.control-group-compact}
+<label for="interval-slider">Dosing Interval (hrs):</label>
+<input type="range" id="interval-slider" min="1" max="48" value="24" step="1">
+<span id="interval-value">24</span> hrs
+:::
+
+::: {.control-group-compact}
+<label for="duration-slider">Treatment Duration (days):</label>
+<input type="range" id="duration-slider" min="1" max="14" value="10" step="1">
+<span id="duration-value">10</span> days
+:::
+
+::: {.control-group-compact}
+<label for="formulation-select">Formulation:</label>
+<select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+<option value="slow">Slow (Extended Release)</option>
+<option value="medium" selected>Medium (Standard Oral)</option>
+<option value="fast">Fast (IV Bolus)</option>
+</select>
+<span id="formulation-value">Medium (Standard Oral)</span>
+:::
+:::
+:::
+
+::: {.plot-data-right}
+## Plot and Subject Data
+
+::: {.panel-tabset}
+
+### Plot
+
+::: {#concentration-plot style="width: 100%; height: 500px;"}
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="800" height="400"></canvas>
+</div>
+:::
+
+::: {.simulation-buttons}
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+<button id="download-btn" onclick="downloadData()">Download Data</button>
+:::
+
+### Reference Lines
+::: {.reference-properties}
+::: {.control-group}
+<label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
+<input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1">
+<span id="toxicity-value">20</span> mg/L
+:::
+
+::: {.control-group}
+<label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
+<input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5">
+<span id="efficacy-value">5</span> mg/L
+:::
+:::
+
+### Subject Data
+
+::: {#subject-table}
+<table id="pk-table" class="table table-striped">
+<thead>
+<tr>
+<th>Subject</th>
+<th>Drug Name</th>
+<th>Age</th>
+<th>Sex</th>
+<th>Ht (cm)</th>
+<th>Wt (kg)</th>
+<th>BMI</th>
+<th>IBW (kg)</th>
+<th>Adj IBW (kg)</th>
+<th>Creatinine (mg/dL)</th>
+<th>CrCl (mL/min)</th>
+<th>Loading Dose (mg)</th>
+<th>Dose (mg)</th>
+<th>Interval (hrs)</th>
+<th>Duration (days)</th>
+<th>Clearance (L/h)</th>
+<th>Volume (L)</th>
+<th>Fraction Unbound</th>
+<th>V<sub>ss,u</sub> (L)</th>
+<th>Bioavailability</th>
+<th>Half-life (h)</th>
+<th>C<sub>ss,avg</sub></th>
+<th>AUC<sub>0-24h</sub></th>
+<th>C<sub>max</sub></th>
+<th>AUC/Efficacy</th>
+<th>C<sub>max</sub>/Efficacy</th>
+<th>Time>Efficacy (%)</th>
+</tr>
+</thead>
+<tbody id="pk-table-body">
+</tbody>
+</table>
+:::
+
+:::
+:::
+
+:::
+
 <style>
-.pk-controls {
-  display: flex;
-  flex-direction: column;
+/* Main layout */
+.main-layout {
+  display: grid;
+  grid-template-columns: 250px 350px 1fr;
   gap: 20px;
   margin: 20px 0;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
+  min-height: 100vh;
 }
 
-.pk-controls h3 {
-  margin: 0 0 10px 0;
+/* Sidebar left */
+.sidebar-left {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-right: 2px solid #dee2e6;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.sidebar-left h2 {
+  margin-top: 0;
+  color: #495057;
+  font-size: 1.2em;
+  border-bottom: 2px solid #6c757d;
+  padding-bottom: 10px;
+}
+
+.sidebar-left h3 {
+  color: #6c757d;
+  font-size: 1.0em;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.sidebar-left p, .sidebar-left ul {
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: #555;
+}
+
+/* Quiz styles */
+.quiz-section {
+  background-color: #fff;
+  border: 2px solid #17a2b8;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.quiz-question {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.quiz-feedback {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
+.quiz-feedback.correct {
+  color: #28a745;
+}
+
+.quiz-feedback.incorrect {
+  color: #dc3545;
+}
+
+.drug-name-section {
+  background-color: #fff;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Middle controls */
+.controls-middle {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  height: fit-content;
+}
+
+.controls-middle h2 {
+  margin-top: 0;
+  color: #495057;
+  font-size: 1.2em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.controls-middle h3 {
+  margin: 20px 0 10px 0;
   color: #495057;
   font-size: 1.1em;
   border-bottom: 2px solid #007bff;
   padding-bottom: 5px;
 }
 
-.patient-and-pk-section {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
+/* Right plot and data */
+.plot-data-right {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
 }
 
-.patient-section {
-  flex: 1;
-  min-width: 300px;
+.plot-data-right h2 {
+  margin-top: 0;
+  color: #495057;
+  font-size: 1.2em;
+  border-bottom: 2px solid #28a745;
+  padding-bottom: 10px;
 }
 
-.pk-section {
-  flex: 1;
-  min-width: 250px;
+/* Responsive layout */
+@media (max-width: 1200px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .sidebar-left {
+    position: static;
+  }
 }
-
 .patient-generator {
   background-color: #fff;
   border: 2px solid #28a745;
@@ -330,20 +475,6 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
   font-size: 14px;
 }
 
-.drug-name-section {
-  background-color: #fff;
-  border: 2px solid #007bff;
-  border-radius: 8px;
-  padding: 20px;
-  margin-top: 20px;
-}
-
-.pk-properties, .dosing-properties, .reference-properties {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-}
-
 .pk-properties-compact {
   display: flex;
   flex-direction: column;
@@ -401,6 +532,12 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
   width: 100%;
 }
 
+.reference-properties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
 .simulation-buttons {
   text-align: center;
   margin: 20px 0;
@@ -421,21 +558,6 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
   background-color: #0056b3;
 }
 
-.plot-controls {
-  text-align: center;
-  margin: 10px 0;
-}
-
-.scale-toggle {
-  display: inline-block;
-}
-
-.scale-toggle label {
-  font-weight: bold;
-  margin-right: 10px;
-  color: #495057;
-}
-
 #scale-toggle-btn {
   padding: 8px 16px;
   background-color: #28a745;
@@ -448,42 +570,6 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
 
 #scale-toggle-btn:hover {
   background-color: #218838;
-}
-
-.download-section {
-  text-align: center;
-  margin: 20px 0;
-}
-
-.download-section button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.download-section button:hover {
-  background-color: #0056b3;
-}
-
-#reset-btn {
-  background-color: #6c757d;
-}
-
-#reset-btn:hover {
-  background-color: #545b62;
-}
-
-#random-btn {
-  background-color: #17a2b8;
-}
-
-#random-btn:hover {
-  background-color: #138496;
 }
 
 .table {
@@ -531,20 +617,6 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-@media (max-width: 768px) {
-  .pk-properties, .dosing-properties, .reference-properties {
-    grid-template-columns: 1fr;
-  }
-  
-  .patient-and-pk-section {
-    flex-direction: column;
-  }
-  
-  .patient-section, .pk-section {
-    min-width: auto;
-  }
 }
 </style>
 
@@ -665,6 +737,8 @@ function generateSubjects() {
   }
   
   // Dosing parameters
+  const drugName = document.getElementById('drug-name-input')?.value || '';
+  const loadingDose = parseFloat(document.getElementById('loading-dose-slider')?.value || 0);
   const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
   const interval = parseFloat(document.getElementById('interval-slider')?.value || 24);
   const duration = parseFloat(document.getElementById('duration-slider')?.value || 10);
@@ -679,6 +753,8 @@ function generateSubjects() {
   
   subjects.push({
     id: 1,
+    // Drug information
+    drugName: drugName,
     // Patient demographics
     age: age,
     sex: sex,
@@ -691,6 +767,7 @@ function generateSubjects() {
     creatinineClearance: creatinineClearance,
     creatinineClearanceMlMin: creatinineClearanceMlMin,
     // Core PK parameters (patient-adjusted)
+    loadingDose: loadingDose,
     dose: dose,
     clearance: clearance,
     volume: volume,
@@ -1093,6 +1170,7 @@ function updateTable() {
     const row = tbody.insertRow();
     row.innerHTML = `
       <td>${subject.id}</td>
+      <td>${subject.drugName || 'N/A'}</td>
       <td>${subject.age}</td>
       <td>${subject.sex}</td>
       <td>${subject.height}</td>
@@ -1102,6 +1180,7 @@ function updateTable() {
       <td>${subject.adjustedIbw.toFixed(1)}</td>
       <td>${subject.creatinine ? subject.creatinine.toFixed(2) : 'N/A'}</td>
       <td>${subject.creatinineClearanceMlMin ? subject.creatinineClearanceMlMin.toFixed(1) : 'N/A'}</td>
+      <td>${subject.loadingDose}</td>
       <td>${subject.dose}</td>
       <td>${subject.interval}</td>
       <td>${subject.duration}</td>
@@ -1261,6 +1340,93 @@ function randomizeParameters() {
   runSimulation();
 }
 
+// Quiz functionality
+function checkQuizAnswers() {
+  if (subjects.length === 0) {
+    alert('Please generate a patient first!');
+    return;
+  }
+  
+  const subject = subjects[0];
+  const tolerance = 0.1; // 10% tolerance for answers
+  
+  // 1. Creatinine Clearance (mL/min)
+  const userCrCl = parseFloat(document.getElementById('quiz-crcl').value);
+  const correctCrCl = subject.creatinineClearanceMlMin;
+  const crClFeedback = document.getElementById('quiz-crcl-feedback');
+  if (Math.abs(userCrCl - correctCrCl) / correctCrCl <= tolerance) {
+    crClFeedback.textContent = `✓ Correct! (${correctCrCl.toFixed(1)} mL/min)`;
+    crClFeedback.className = 'quiz-feedback correct';
+  } else {
+    crClFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCrCl.toFixed(1)} mL/min`;
+    crClFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 2. Adjusted Body Weight (kg)
+  const userAdjBW = parseFloat(document.getElementById('quiz-adjbw').value);
+  const correctAdjBW = subject.adjustedIbw;
+  const adjBWFeedback = document.getElementById('quiz-adjbw-feedback');
+  if (Math.abs(userAdjBW - correctAdjBW) / correctAdjBW <= tolerance) {
+    adjBWFeedback.textContent = `✓ Correct! (${correctAdjBW.toFixed(1)} kg)`;
+    adjBWFeedback.className = 'quiz-feedback correct';
+  } else {
+    adjBWFeedback.textContent = `✗ Incorrect. Correct answer: ${correctAdjBW.toFixed(1)} kg`;
+    adjBWFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 3. Volume of Distribution of Unbound Drug (L)
+  const userVss = parseFloat(document.getElementById('quiz-vss').value);
+  const correctVss = subject.vssUnbound;
+  const vssFeedback = document.getElementById('quiz-vss-feedback');
+  if (Math.abs(userVss - correctVss) / correctVss <= tolerance) {
+    vssFeedback.textContent = `✓ Correct! (${correctVss.toFixed(1)} L)`;
+    vssFeedback.className = 'quiz-feedback correct';
+  } else {
+    vssFeedback.textContent = `✗ Incorrect. Correct answer: ${correctVss.toFixed(1)} L`;
+    vssFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 4. Time to Steady State (hours) - approximately 5 half-lives
+  const userTss = parseFloat(document.getElementById('quiz-tss').value);
+  const correctTss = subject.halfLife * 5;
+  const tssFeedback = document.getElementById('quiz-tss-feedback');
+  if (Math.abs(userTss - correctTss) / correctTss <= tolerance) {
+    tssFeedback.textContent = `✓ Correct! (${correctTss.toFixed(1)} hours)`;
+    tssFeedback.className = 'quiz-feedback correct';
+  } else {
+    tssFeedback.textContent = `✗ Incorrect. Correct answer: ${correctTss.toFixed(1)} hours`;
+    tssFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 5. Css,avg (mg/L)
+  const userCssAvg = parseFloat(document.getElementById('quiz-cssavg').value);
+  const correctCssAvg = subject.cssAvg;
+  const cssAvgFeedback = document.getElementById('quiz-cssavg-feedback');
+  if (Math.abs(userCssAvg - correctCssAvg) / correctCssAvg <= tolerance) {
+    cssAvgFeedback.textContent = `✓ Correct! (${correctCssAvg.toFixed(2)} mg/L)`;
+    cssAvgFeedback.className = 'quiz-feedback correct';
+  } else {
+    cssAvgFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCssAvg.toFixed(2)} mg/L`;
+    cssAvgFeedback.className = 'quiz-feedback incorrect';
+  }
+}
+
+function resetQuiz() {
+  // Clear all quiz inputs
+  document.getElementById('quiz-crcl').value = '';
+  document.getElementById('quiz-adjbw').value = '';
+  document.getElementById('quiz-vss').value = '';
+  document.getElementById('quiz-tss').value = '';
+  document.getElementById('quiz-cssavg').value = '';
+  
+  // Clear all feedback
+  const feedbacks = document.querySelectorAll('.quiz-feedback');
+  feedbacks.forEach(feedback => {
+    feedback.textContent = '';
+    feedback.className = 'quiz-feedback';
+  });
+}
+
 // Update slider value displays
 function updateSliderValues() {
   const updates = [
@@ -1270,6 +1436,7 @@ function updateSliderValues() {
     { slider: 'bioavailability-slider', display: 'bioavailability-value' },
     { slider: 'fraction-unbound-slider', display: 'fraction-unbound-value' },
     // Dosing parameters
+    { slider: 'loading-dose-slider', display: 'loading-dose-value' },
     { slider: 'dose-slider', display: 'dose-value' },
     { slider: 'interval-slider', display: 'interval-value' },
     { slider: 'duration-slider', display: 'duration-value' },
@@ -1319,7 +1486,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Core PK parameters
     'f-renal-slider', 'volume-slider', 'bioavailability-slider', 'fraction-unbound-slider',
     // Dosing parameters
-    'dose-slider', 'interval-slider', 'duration-slider', 'formulation-select',
+    'loading-dose-slider', 'dose-slider', 'interval-slider', 'duration-slider', 'formulation-select',
     // Reference lines
     'toxicity-slider', 'efficacy-slider'
   ];
@@ -1365,6 +1532,15 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
+  
+  // Add event listener for drug name input
+  const drugNameInput = document.getElementById('drug-name-input');
+  if (drugNameInput) {
+    drugNameInput.addEventListener('input', function() {
+      // Update table when drug name changes
+      runSimulation();
+    });
+  }
   
   // Initialize the simulation
   updateSliderValues();
