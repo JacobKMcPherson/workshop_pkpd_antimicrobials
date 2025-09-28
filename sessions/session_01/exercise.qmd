@@ -30,6 +30,10 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 <li><strong>Creatinine:</strong> <u><span id="patient-creatinine">-</span></u> mg/dL</li>
 </ul>
 </div>
+<div class="small-buttons" style="margin-top: 15px;">
+<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
+<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
+</div>
 </div>
 :::
 :::
@@ -62,7 +66,35 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 ::: {.dosing-properties}
 ::: {.control-group}
 <label for="dose-slider">Dose (mg):</label>
-<input type="range" id="dose-slider" min="1" max="1000" value="250" step="1">
+<select id="dose-slider">
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="5">5</option>
+  <option value="10">10</option>
+  <option value="25">25</option>
+  <option value="50">50</option>
+  <option value="100">100</option>
+  <option value="150">150</option>
+  <option value="200">200</option>
+  <option value="250" selected>250</option>
+  <option value="300">300</option>
+  <option value="350">350</option>
+  <option value="400">400</option>
+  <option value="450">450</option>
+  <option value="500">500</option>
+  <option value="600">600</option>
+  <option value="700">700</option>
+  <option value="800">800</option>
+  <option value="900">900</option>
+  <option value="1000">1000</option>
+  <option value="1250">1250</option>
+  <option value="1500">1500</option>
+  <option value="1750">1750</option>
+  <option value="2000">2000</option>
+  <option value="2250">2250</option>
+  <option value="2500">2500</option>
+  <option value="3000">3000</option>
+</select>
 <span id="dose-value">250</span> mg
 :::
 
@@ -107,8 +139,6 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 
 ::: {.simulation-buttons}
 <button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-<button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
-<button id="random-btn" onclick="randomizeParameters()">Random Simulation</button>
 <button id="download-btn" onclick="downloadData()">Download Data</button>
 :::
 
@@ -261,6 +291,44 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
 
 .patient-generator button:hover {
   background-color: #218838;
+}
+
+.small-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.small-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  flex: 1;
+}
+
+.small-btn:hover {
+  background-color: #0056b3;
+}
+
+#reset-btn.small-btn {
+  background-color: #6c757d;
+}
+
+#reset-btn.small-btn:hover {
+  background-color: #545b62;
+}
+
+#random-btn.small-btn {
+  background-color: #17a2b8;
+}
+
+#random-btn.small-btn:hover {
+  background-color: #138496;
 }
 
 #patient-info ul {
@@ -1072,8 +1140,7 @@ function randomizeParameters() {
     'f-renal-slider': { min: 0.1, max: 1.0 },
     'volume-slider': { min: 0.2, max: 1.5 },
     'bioavailability-slider': { min: 0.4, max: 1.0 },
-    // Dosing parameters
-    'dose-slider': { min: 100, max: 400 },
+    // Duration parameter
     'duration-slider': { min: 3, max: 14 }
   };
   
@@ -1092,6 +1159,14 @@ function randomizeParameters() {
       element.value = finalValue;
     }
   });
+  
+  // Handle dose dropdown separately - pick from available discrete options
+  const doseOptions = [1, 2, 5, 10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 3000];
+  const randomDose = doseOptions[Math.floor(Math.random() * doseOptions.length)];
+  const doseElement = document.getElementById('dose-slider');
+  if (doseElement) {
+    doseElement.value = randomDose;
+  }
   
   // Handle interval dropdown separately - pick from available options
   const intervalOptions = [1, 2, 4, 6, 8, 12, 18, 24, 36, 48];
@@ -1182,9 +1257,11 @@ document.addEventListener('DOMContentLoaded', function() {
   ];
   
   sliderIds.forEach(id => {
-    const slider = document.getElementById(id);
-    if (slider) {
-      slider.addEventListener('input', function() {
+    const element = document.getElementById(id);
+    if (element) {
+      // Use 'change' event for select elements, 'input' for range sliders
+      const eventType = element.tagName.toLowerCase() === 'select' ? 'change' : 'input';
+      element.addEventListener(eventType, function() {
         updateSliderValues();
         // Redraw chart when reference line sliders change, but also recalculate ratios for efficacy
         if (id === 'toxicity-slider') {
