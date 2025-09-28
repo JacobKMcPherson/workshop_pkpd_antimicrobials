@@ -119,35 +119,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 :::
 
-::: {.content-section}
-## Educational Content
 
-### Key Pharmacokinetic Concepts
-
-This simulation demonstrates several important PK concepts:
-
-- **Patient-specific clearance**: Based on creatinine clearance and fraction renally cleared
-- **Loading dose strategy**: Higher initial dose to rapidly achieve therapeutic concentrations
-- **Multiple dosing**: Accumulation toward steady-state over multiple doses
-- **PK/PD indices**: AUC/MIC ratios and time above MIC for efficacy prediction
-
-### Blood Sampling Strategy
-
-The simulation shows concentrations sampled every hour to provide detailed PK profiles. In clinical practice:
-
-- **Trough levels**: Sampled just before the next dose
-- **Peak levels**: Sampled 1-2 hours after dose administration
-- **Therapeutic drug monitoring**: Used to optimize dosing for efficacy and safety
-
-### Simplified Pharmacokinetic Model
-
-This simulation uses a one-compartment model with:
-
-- **First-order absorption**: Rate depends on amount remaining
-- **Linear elimination**: Constant clearance regardless of concentration  
-- **Patient-specific parameters**: Adjusted for demographics and organ function
-
-:::
 
 :::
 
@@ -224,6 +196,33 @@ This simulation uses a one-compartment model with:
 </tbody>
 </table>
 :::
+
+### Educational Content
+
+#### Key Pharmacokinetic Concepts
+
+This simulation demonstrates several important PK concepts:
+
+- **Patient-specific clearance**: Based on creatinine clearance and fraction renally cleared
+- **Loading dose strategy**: Higher initial dose to rapidly achieve therapeutic concentrations
+- **Multiple dosing**: Accumulation toward steady-state over multiple doses
+- **PK/PD indices**: AUC/MIC ratios and time above MIC for efficacy prediction
+
+#### Blood Sampling Strategy
+
+The simulation shows concentrations sampled every hour to provide detailed PK profiles. In clinical practice:
+
+- **Trough levels**: Sampled just before the next dose
+- **Peak levels**: Sampled 1-2 hours after dose administration
+- **Therapeutic drug monitoring**: Used to optimize dosing for efficacy and safety
+
+#### Simplified Pharmacokinetic Model
+
+This simulation uses a one-compartment model with:
+
+- **First-order absorption**: Rate depends on amount remaining
+- **Linear elimination**: Constant clearance regardless of concentration  
+- **Patient-specific parameters**: Adjusted for demographics and organ function
 
 ### Knowledge Check Quiz
 
