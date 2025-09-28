@@ -28,20 +28,24 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <li><strong>Creatinine:</strong> <u><span id="patient-creatinine">-</span></u> mg/dL</li>
 </ul>
 </div>
-<div class="small-buttons" style="margin-top: 15px;">
-<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
-<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
-</div>
 </div>
 :::
 
-### Drug Name
 ::: {.drug-name-section}
 <div style="margin-bottom: 20px;">
 <label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
 <input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
 </div>
+
+<label for="formulation-select">Formulation:</label>
+<select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+<option value="slow">Slow (Extended Release)</option>
+<option value="medium" selected>Medium (Standard Oral)</option>
+<option value="fast">Fast (IV Bolus)</option>
+</select>
+<span id="formulation-value">Medium (Standard Oral)</span>
 :::
+
 :::
 
 ::: {.controls-column-2}
@@ -70,6 +74,14 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
 <span id="f-renal-value">0.8</span>
 :::
+
+
+<div class="small-buttons" style="margin-top: 15px;">
+<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
+<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
+</div>
+
+
 :::
 :::
 
@@ -100,15 +112,10 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <span id="duration-value">10</span> days
 :::
 
-::: {.control-group-compact}
-<label for="formulation-select">Formulation:</label>
-<select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
-<option value="slow">Slow (Extended Release)</option>
-<option value="medium" selected>Medium (Standard Oral)</option>
-<option value="fast">Fast (IV Bolus)</option>
-</select>
-<span id="formulation-value">Medium (Standard Oral)</span>
-:::
+<button id="download-btn" onclick="downloadData()">Download Data</button>
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+
+
 :::
 :::
 :::
@@ -123,16 +130,11 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ### Plot
 
-::: {#concentration-plot style="width: 100%; height: 500px;"}
+::: {#concentration-plot style="width: 50%;"}
 <div id="chart-fallback">
   <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="800" height="400"></canvas>
+  <canvas id="pk-chart" width="1920" height="1080"></canvas>
 </div>
-:::
-
-::: {.simulation-buttons}
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-<button id="download-btn" onclick="downloadData()">Download Data</button>
 :::
 
 ### Reference Lines
@@ -1624,7 +1626,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 :::
 
-::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+:::
+
+
+::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
 [← Session 1](index.qmd){.btn .btn-outline-primary}
@@ -1636,4 +1641,4 @@ document.addEventListener('DOMContentLoaded', function() {
 [Session 2 →](../session_02/index.qmd){.btn .btn-outline-primary}
 
 </div>
-:::::
+:::
