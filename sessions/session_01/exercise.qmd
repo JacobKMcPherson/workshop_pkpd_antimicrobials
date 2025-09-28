@@ -12,94 +12,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.main-layout}
 
 ::: {.sidebar-left}
-## Educational Content
-
-### Key Pharmacokinetic Concepts
-
-**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
-
-**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
-
-**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
-
-**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
-
-**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
-
-**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
-
-### Blood Sampling Strategy
-
-In this simulation, blood samples are collected every 1 hour to provide a detailed view of how pharmacokinetic data is collected in clinical practice. This sampling frequency allows us to:
-
-- Capture both peak and trough concentrations
-- Observe the full absorption and elimination phases
-- Reduce the burden on patients compared to more frequent sampling
-- Provide sufficient data points for pharmacokinetic analysis
-
-### Simplified Pharmacokinetic Model
-
-This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
-
-**Essential PK Parameters:**
-- **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation
-- **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight
-- **Bioavailability (F)**: Fraction of dose reaching systemic circulation
-
-**Patient-Specific Factors:**
-- **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
-- **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
-
-**Dosing Parameters:**
-- **Dose**: Amount of drug administered per dose
-- **Dosing Interval**: Time between doses
-- **Treatment Duration**: Total length of treatment
-
-This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
-
-### Knowledge Check Quiz
-
-Test your understanding by calculating the following parameters for the current patient:
-
-::: {.quiz-section}
-::: {.quiz-question}
-**1. Creatinine Clearance (mL/min):**
-<input type="number" id="quiz-crcl" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
-<span id="quiz-crcl-feedback" class="quiz-feedback"></span>
-:::
-
-::: {.quiz-question}
-**2. Adjusted Body Weight (kg):**
-<input type="number" id="quiz-adjbw" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
-<span id="quiz-adjbw-feedback" class="quiz-feedback"></span>
-:::
-
-::: {.quiz-question}
-**3. Volume of Distribution of Unbound Drug (L):**
-<input type="number" id="quiz-vss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
-<span id="quiz-vss-feedback" class="quiz-feedback"></span>
-:::
-
-::: {.quiz-question}
-**4. Time to Steady State - tss (hours):**
-<input type="number" id="quiz-tss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
-<span id="quiz-tss-feedback" class="quiz-feedback"></span>
-:::
-
-::: {.quiz-question}
-**5. Average Steady-State Concentration - Css,avg (mg/L):**
-<input type="number" id="quiz-cssavg" placeholder="Enter your calculation" step="0.01" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
-<span id="quiz-cssavg-feedback" class="quiz-feedback"></span>
-:::
-
-<div style="text-align: center; margin: 15px 0;">
-<button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">Check Answers</button>
-<button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
-</div>
-:::
-:::
-
-::: {.controls-middle}
 ## Controls
 
 ::: {.controls-grid}
@@ -205,7 +117,7 @@ Test your understanding by calculating the following parameters for the current 
 :::
 :::
 
-::: {.plot-data-right}
+::: {.controls-middle}
 ## Plot and Subject Data
 
 ::: {.panel-tabset}
@@ -282,6 +194,92 @@ Test your understanding by calculating the following parameters for the current 
 :::
 :::
 
+::: {.plot-data-right}
+## Educational Content
+
+### Key Pharmacokinetic Concepts
+
+**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
+
+**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+
+**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
+
+**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
+
+**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+
+**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
+
+### Blood Sampling Strategy
+
+In this simulation, blood samples are collected every 1 hour to provide a detailed view of how pharmacokinetic data is collected in clinical practice. This sampling frequency allows us to:
+
+- Capture both peak and trough concentrations
+- Observe the full absorption and elimination phases
+- Reduce the burden on patients compared to more frequent sampling
+- Provide sufficient data points for pharmacokinetic analysis
+
+### Simplified Pharmacokinetic Model
+
+This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
+
+**Essential PK Parameters:**
+- **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation
+- **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight
+- **Bioavailability (F)**: Fraction of dose reaching systemic circulation
+
+**Patient-Specific Factors:**
+- **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
+- **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
+
+**Dosing Parameters:**
+- **Dose**: Amount of drug administered per dose
+- **Dosing Interval**: Time between doses
+- **Treatment Duration**: Total length of treatment
+
+This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
+
+### Knowledge Check Quiz
+
+Test your understanding by calculating the following parameters for the current patient:
+
+::: {.quiz-section}
+::: {.quiz-question}
+**1. Creatinine Clearance (mL/min):**
+<input type="number" id="quiz-crcl" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-crcl-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**2. Adjusted Body Weight (kg):**
+<input type="number" id="quiz-adjbw" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-adjbw-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**3. Volume of Distribution of Unbound Drug (L):**
+<input type="number" id="quiz-vss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-vss-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**4. Time to Steady State - tss (hours):**
+<input type="number" id="quiz-tss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-tss-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**5. Average Steady-State Concentration - Css,avg (mg/L):**
+<input type="number" id="quiz-cssavg" placeholder="Enter your calculation" step="0.01" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-cssavg-feedback" class="quiz-feedback"></span>
+:::
+
+<div style="text-align: center; margin: 15px 0;">
+<button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">Check Answers</button>
+<button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
+</div>
+:::
 :::
 
 <style>
@@ -292,11 +290,9 @@ Test your understanding by calculating the following parameters for the current 
   gap: 20px;
   margin: 20px 0;
   min-height: 100vh;
-  width: 100vw;
-  max-width: 100vw;
 }
 
-/* Sidebar left */
+/* Sidebar left - Controls */
 .sidebar-left {
   background-color: #f8f9fa;
   padding: 20px;
@@ -311,7 +307,7 @@ Test your understanding by calculating the following parameters for the current 
   margin-top: 0;
   color: #495057;
   font-size: 1.2em;
-  border-bottom: 2px solid #6c757d;
+  border-bottom: 2px solid #007bff;
   padding-bottom: 10px;
 }
 
@@ -367,9 +363,9 @@ Test your understanding by calculating the following parameters for the current 
   margin-top: 20px;
 }
 
-/* Middle controls */
+/* Middle controls - Plot and Subject Data */
 .controls-middle {
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   height: fit-content;
@@ -379,7 +375,7 @@ Test your understanding by calculating the following parameters for the current 
   margin-top: 0;
   color: #495057;
   font-size: 1.2em;
-  border-bottom: 2px solid #007bff;
+  border-bottom: 2px solid #28a745;
   padding-bottom: 10px;
 }
 
@@ -418,9 +414,9 @@ Test your understanding by calculating the following parameters for the current 
   padding-bottom: 5px;
 }
 
-/* Right plot and data */
+/* Right plot and data - Educational Content */
 .plot-data-right {
-  background-color: #ffffff;
+  background-color: #f8f9fa;
   padding: 20px;
   border-radius: 8px;
   border: 1px solid #dee2e6;
@@ -430,8 +426,21 @@ Test your understanding by calculating the following parameters for the current 
   margin-top: 0;
   color: #495057;
   font-size: 1.2em;
-  border-bottom: 2px solid #28a745;
+  border-bottom: 2px solid #6c757d;
   padding-bottom: 10px;
+}
+
+.plot-data-right h3 {
+  color: #6c757d;
+  font-size: 1.0em;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.plot-data-right p, .plot-data-right ul {
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: #555;
 }
 
 /* Responsive layout */
