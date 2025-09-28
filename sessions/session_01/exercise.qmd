@@ -116,6 +116,51 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 :::
 
+## Educational Content
+
+### Key Pharmacokinetic Concepts
+
+**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
+
+**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+
+**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
+
+**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
+
+**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+
+**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
+
+### Blood Sampling Strategy
+
+In this simulation, blood samples are collected every 1 hour to provide a detailed view of how pharmacokinetic data is collected in clinical practice. This sampling frequency allows us to:
+
+- Capture both peak and trough concentrations
+- Observe the full absorption and elimination phases
+- Reduce the burden on patients compared to more frequent sampling
+- Provide sufficient data points for pharmacokinetic analysis
+
+### Simplified Pharmacokinetic Model
+
+This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
+
+**Essential PK Parameters:**
+- **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation
+- **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight
+- **Bioavailability (F)**: Fraction of dose reaching systemic circulation
+
+**Patient-Specific Factors:**
+- **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
+- **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
+
+**Dosing Parameters:**
+- **Dose**: Amount of drug administered per dose
+- **Dosing Interval**: Time between doses
+- **Treatment Duration**: Total length of treatment
+
+This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
+
 :::
 
 :::
@@ -194,57 +239,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 </table>
 :::
 
-:::
-
-:::
-
-:::
-
-## Educational Content
-
-### Key Pharmacokinetic Concepts
-
-**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
-
-**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
-
-**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
-
-**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
-
-**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
-
-**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
-
-### Blood Sampling Strategy
-
-In this simulation, blood samples are collected every 1 hour to provide a detailed view of how pharmacokinetic data is collected in clinical practice. This sampling frequency allows us to:
-
-- Capture both peak and trough concentrations
-- Observe the full absorption and elimination phases
-- Reduce the burden on patients compared to more frequent sampling
-- Provide sufficient data points for pharmacokinetic analysis
-
-### Simplified Pharmacokinetic Model
-
-This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
-
-**Essential PK Parameters:**
-- **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation
-- **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight
-- **Bioavailability (F)**: Fraction of dose reaching systemic circulation
-
-**Patient-Specific Factors:**
-- **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
-- **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
-
-**Dosing Parameters:**
-- **Dose**: Amount of drug administered per dose
-- **Dosing Interval**: Time between doses
-- **Treatment Duration**: Total length of treatment
-
-This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
-
 ### Knowledge Check Quiz
 
 Test your understanding by calculating the following parameters for the current patient:
@@ -285,6 +279,13 @@ Test your understanding by calculating the following parameters for the current 
 <button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
 </div>
 
+:::
+
+:::
+
+:::
+
+:::
 
 <style>
 /* Main layout */
