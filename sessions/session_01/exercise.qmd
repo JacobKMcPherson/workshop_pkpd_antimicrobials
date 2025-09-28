@@ -112,7 +112,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 
 :::
-:::
+
 
 ## Plot and Subject Data
 
@@ -188,7 +188,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 
 :::
-:::
+
 
 
 ## Educational Content
@@ -275,8 +275,7 @@ Test your understanding by calculating the following parameters for the current 
 <button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">Check Answers</button>
 <button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
 </div>
-:::
-:::
+
 
 <style>
 /* Main layout */
@@ -894,23 +893,22 @@ function calculateConcentration(subject, time) {
   const tau = interval;
   
   let concentration = 0;
-  
-  // Calculate contribution from loading dose at time 0 (if loadingDose > 0)
+
+  // Apply loading dose at time 0
   if (loadingDose > 0 && time >= 0) {
-    const conc = (loadingDose * bioavailability * ka / vssUnbound) * 
-                 (Math.exp(-ke * time) - Math.exp(-ka * time)) / 
+    const conc = (loadingDose * bioavailability * ka / vssUnbound) *
+                 (Math.exp(-ke * time) - Math.exp(-ka * time)) /
                  (ka - ke);
     concentration += conc;
   }
   
-  // Calculate contribution from each maintenance dose
-  for (let n = 0; n < numDoses; n++) {
+  // Apply maintenance doses from the second dose onward
+  for (let n = 1; n < numDoses; n++) {  // <-- n = 1 starts at second dose
     const doseTime = n * tau;
     if (time >= doseTime) {
       const timeSinceDose = time - doseTime;
-      // One-compartment model with first-order absorption using unbound volume
-      const conc = (dose * bioavailability * ka / vssUnbound) * 
-                   (Math.exp(-ke * timeSinceDose) - Math.exp(-ka * timeSinceDose)) / 
+      const conc = (dose * bioavailability * ka / vssUnbound) *
+                   (Math.exp(-ke * timeSinceDose) - Math.exp(-ka * timeSinceDose)) /
                    (ka - ke);
       concentration += conc;
     }
