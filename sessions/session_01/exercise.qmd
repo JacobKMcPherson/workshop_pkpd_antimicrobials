@@ -94,6 +94,16 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 <input type="range" id="duration-slider" min="1" max="14" value="10" step="1">
 <span id="duration-value">10</span> days
 :::
+
+::: {.control-group-compact}
+<label for="formulation-select">Formulation:</label>
+<select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+<option value="slow">Slow (Extended Release)</option>
+<option value="medium" selected>Medium (Standard Oral)</option>
+<option value="fast">Fast (IV Bolus)</option>
+</select>
+<span id="formulation-value">Medium (Standard Oral)</span>
+:::
 :::
 
 :::
@@ -559,12 +569,21 @@ let currentPatient = {
 const baseParams = {
   clearance: 5.0,      // L/h
   volume: 0.7,         // L/kg (drug-specific volume per kg)
-  ka: 1.2,             // absorption rate constant (1/h)
   dose: 250,           // mg
   bioavailability: 0.8,
   interval: 24,        // dosing interval (h)
   numDoses: 10
 };
+
+// Get absorption rate constant based on formulation
+function getAbsorptionRate(formulation) {
+  const absorptionRates = {
+    'slow': 0.3,    // Extended release formulation (slow absorption)
+    'medium': 1.2,  // Standard oral formulation (medium absorption)  
+    'fast': 10.0    // IV bolus (very fast absorption, effectively instantaneous)
+  };
+  return absorptionRates[formulation] || 1.2; // default to medium
+}
 
 // Initialize the simulation
 function initializeSimulation() {
@@ -741,7 +760,11 @@ function generateRandomPatient() {
 function calculateConcentration(subject, time) {
   const { clearance, vssUnbound, dose, bioavailability, interval, numDoses } = subject;
   const ke = clearance / vssUnbound;  // elimination rate constant using unbound volume
-  const ka = baseParams.ka;
+  
+  // Get absorption rate based on selected formulation
+  const formulation = document.getElementById('formulation-select')?.value || 'medium';
+  const ka = getAbsorptionRate(formulation);
+  
   const tau = interval;
   
   let concentration = 0;
@@ -1262,6 +1285,14 @@ function updateSliderValues() {
       display.textContent = slider.value;
     }
   });
+  
+  // Special handling for formulation select
+  const formulationSelect = document.getElementById('formulation-select');
+  const formulationDisplay = document.getElementById('formulation-value');
+  if (formulationSelect && formulationDisplay) {
+    const selectedOption = formulationSelect.options[formulationSelect.selectedIndex];
+    formulationDisplay.textContent = selectedOption.text;
+  }
 }
 
 // Initialize when DOM is loaded
@@ -1288,7 +1319,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Core PK parameters
     'f-renal-slider', 'volume-slider', 'bioavailability-slider', 'fraction-unbound-slider',
     // Dosing parameters
-    'dose-slider', 'interval-slider', 'duration-slider',
+    'dose-slider', 'interval-slider', 'duration-slider', 'formulation-select',
     // Reference lines
     'toxicity-slider', 'efficacy-slider'
   ];
