@@ -36,6 +36,14 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 </div>
 </div>
 :::
+
+### Drug Name
+::: {.drug-name-section}
+<div style="margin-bottom: 20px;">
+<label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
+<input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+</div>
+:::
 :::
 
 ::: {.pk-section}
@@ -50,7 +58,6 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 ::: {.control-group-compact}
 <label for="volume-slider">Volume of Distribution (L/kg):</label>
 <input type="range" id="volume-slider" min="0.1" max="10" value="0.7" step="0.1">
-<input type="number" id="volume-number" min="0.1" max="10" value="0.7" step="0.1" style="width: 80px; margin-left: 10px;">
 <span id="volume-value">0.7</span> L/kg
 :::
 
@@ -69,21 +76,20 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 :::
 
 ### Dosing Parameters
-::: {.dosing-properties}
-::: {.control-group}
+::: {.pk-properties-compact}
+::: {.control-group-compact}
 <label for="dose-slider">Dose (mg):</label>
 <input type="range" id="dose-slider" min="0" max="3000" value="250" step="50">
-<input type="number" id="dose-number" min="0" max="3000" value="250" step="50" style="width: 80px; margin-left: 10px;">
 <span id="dose-value">250</span> mg
 :::
 
-::: {.control-group}
+::: {.control-group-compact}
 <label for="interval-slider">Dosing Interval (h):</label>
 <input type="range" id="interval-slider" min="1" max="48" value="24" step="1">
 <span id="interval-value">24</span> h
 :::
 
-::: {.control-group}
+::: {.control-group-compact}
 <label for="duration-slider">Treatment Duration (days):</label>
 <input type="range" id="duration-slider" min="1" max="14" value="10" step="1">
 <span id="duration-value">10</span> days
@@ -308,6 +314,14 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
 #patient-info li {
   margin: 5px 0;
   font-size: 14px;
+}
+
+.drug-name-section {
+  background-color: #fff;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
 }
 
 .pk-properties, .dosing-properties, .reference-properties {
@@ -614,8 +628,8 @@ function generateSubjects() {
   // Calculate number of doses based on duration
   const numDoses = Math.ceil((duration * 24) / interval);
   
-  // Calculate half-life
-  const halfLife = 0.693 * volume / clearance;
+  // Calculate half-life using unbound volume
+  const halfLife = 0.693 * vssUnbound / clearance;
   
   subjects.push({
     id: 1,
@@ -695,8 +709,8 @@ function generateRandomPatient() {
 
 // One-compartment PK model with first-order absorption and multiple dosing
 function calculateConcentration(subject, time) {
-  const { clearance, volume, dose, bioavailability, interval, numDoses } = subject;
-  const ke = clearance / volume;  // elimination rate constant
+  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses } = subject;
+  const ke = clearance / vssUnbound;  // elimination rate constant using unbound volume
   const ka = baseParams.ka;
   const tau = interval;
   
@@ -707,8 +721,8 @@ function calculateConcentration(subject, time) {
     const doseTime = n * tau;
     if (time >= doseTime) {
       const timeSinceDose = time - doseTime;
-      // One-compartment model with first-order absorption
-      const conc = (dose * bioavailability * ka / volume) * 
+      // One-compartment model with first-order absorption using unbound volume
+      const conc = (dose * bioavailability * ka / vssUnbound) * 
                    (Math.exp(-ke * timeSinceDose) - Math.exp(-ka * timeSinceDose)) / 
                    (ka - ke);
       concentration += conc;
@@ -1214,20 +1228,6 @@ function updateSliderValues() {
       display.textContent = slider.value;
     }
   });
-  
-  // Synchronize number inputs with sliders
-  const numberInputs = [
-    { slider: 'dose-slider', number: 'dose-number' },
-    { slider: 'volume-slider', number: 'volume-number' }
-  ];
-  
-  numberInputs.forEach(input => {
-    const slider = document.getElementById(input.slider);
-    const numberInput = document.getElementById(input.number);
-    if (slider && numberInput) {
-      numberInput.value = slider.value;
-    }
-  });
 }
 
 // Initialize when DOM is loaded
@@ -1297,31 +1297,6 @@ document.addEventListener('DOMContentLoaded', function() {
           // Recalculate simulation for PK parameter changes
           runSimulation();
         }
-      });
-    }
-  });
-  
-  // Add event listeners for number inputs
-  const numberInputs = [
-    { slider: 'dose-slider', number: 'dose-number' },
-    { slider: 'volume-slider', number: 'volume-number' }
-  ];
-  
-  numberInputs.forEach(input => {
-    const slider = document.getElementById(input.slider);
-    const numberInput = document.getElementById(input.number);
-    
-    if (slider && numberInput) {
-      // When number input changes, update slider
-      numberInput.addEventListener('input', function() {
-        slider.value = this.value;
-        updateSliderValues();
-        runSimulation();
-      });
-      
-      // When slider changes, update number input
-      slider.addEventListener('input', function() {
-        numberInput.value = this.value;
       });
     }
   });
