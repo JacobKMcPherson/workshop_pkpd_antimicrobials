@@ -729,7 +729,41 @@ function initializeSimulation() {
     canvas.width = 800;
     canvas.height = 400;
   }
-  
+  // Get slider elements
+const loadingDoseSlider = document.getElementById('loading-dose-slider');
+const doseSlider = document.getElementById('dose-slider');
+const loadingDoseValue = document.getElementById('loading-dose-value');
+const doseValue = document.getElementById('dose-value');
+
+// Update Loading Dose if Dose increases
+doseSlider.addEventListener('input', function () {
+  const dose = parseFloat(doseSlider.value);
+  const loadingDose = parseFloat(loadingDoseSlider.value);
+
+  doseValue.textContent = dose;
+
+  if (loadingDose < dose) {
+    loadingDoseSlider.value = dose;
+    loadingDoseValue.textContent = dose;
+  }
+  runSimulation(); // Update simulation if needed
+});
+
+// Optionally, update Loading Dose display
+loadingDoseSlider.addEventListener('input', function () {
+  const loadingDose = parseFloat(loadingDoseSlider.value);
+  const dose = parseFloat(doseSlider.value);
+
+  // Ensure Loading Dose is not less than Dose
+  if (loadingDose < dose) {
+    loadingDoseSlider.value = dose;
+    loadingDoseValue.textContent = dose;
+  } else {
+    loadingDoseValue.textContent = loadingDose;
+  }
+  runSimulation();
+});
+
   // Run initial simulation
   runSimulation();
 }
