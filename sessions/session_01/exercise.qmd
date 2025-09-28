@@ -102,6 +102,9 @@ Test your understanding by calculating the following parameters for the current 
 ::: {.controls-middle}
 ## Controls
 
+::: {.controls-grid}
+
+::: {.controls-column-1}
 ### Random Patient Generator
 ::: {.patient-generator}
 <div style="margin-bottom: 20px;">
@@ -129,7 +132,9 @@ Test your understanding by calculating the following parameters for the current 
 <input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
 </div>
 :::
+:::
 
+::: {.controls-column-2}
 ### Core PK Parameters
 ::: {.pk-properties-compact}
 ::: {.control-group-compact}
@@ -156,7 +161,9 @@ Test your understanding by calculating the following parameters for the current 
 <span id="f-renal-value">0.8</span>
 :::
 :::
+:::
 
+::: {.controls-column-3}
 ### Dosing Parameters
 ::: {.pk-properties-compact}
 ::: {.control-group-compact}
@@ -192,6 +199,9 @@ Test your understanding by calculating the following parameters for the current 
 </select>
 <span id="formulation-value">Medium (Standard Oral)</span>
 :::
+:::
+:::
+
 :::
 :::
 
@@ -278,10 +288,12 @@ Test your understanding by calculating the following parameters for the current 
 /* Main layout */
 .main-layout {
   display: grid;
-  grid-template-columns: 250px 350px 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
   gap: 20px;
   margin: 20px 0;
   min-height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
 }
 
 /* Sidebar left */
@@ -371,6 +383,33 @@ Test your understanding by calculating the following parameters for the current 
   padding-bottom: 10px;
 }
 
+/* 3-column controls grid */
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.controls-column-1,
+.controls-column-2,
+.controls-column-3 {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.controls-column-1 h3,
+.controls-column-2 h3,
+.controls-column-3 h3 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 1.1em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
 .controls-middle h3 {
   margin: 20px 0 10px 0;
   color: #495057;
@@ -404,6 +443,11 @@ Test your understanding by calculating the following parameters for the current 
   
   .sidebar-left {
     position: static;
+  }
+  
+  .controls-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
   }
 }
 .patient-generator {
@@ -835,7 +879,7 @@ function generateRandomPatient() {
 
 // One-compartment PK model with first-order absorption and multiple dosing
 function calculateConcentration(subject, time) {
-  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses } = subject;
+  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose } = subject;
   const ke = clearance / vssUnbound;  // elimination rate constant using unbound volume
   
   // Get absorption rate based on selected formulation
@@ -846,7 +890,15 @@ function calculateConcentration(subject, time) {
   
   let concentration = 0;
   
-  // Calculate contribution from each dose
+  // Calculate contribution from loading dose at time 0 (if loadingDose > 0)
+  if (loadingDose > 0 && time >= 0) {
+    const conc = (loadingDose * bioavailability * ka / vssUnbound) * 
+                 (Math.exp(-ke * time) - Math.exp(-ka * time)) / 
+                 (ka - ke);
+    concentration += conc;
+  }
+  
+  // Calculate contribution from each maintenance dose
   for (let n = 0; n < numDoses; n++) {
     const doseTime = n * tau;
     if (time >= doseTime) {

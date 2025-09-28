@@ -11,8 +11,8 @@
 }
 /* Widen the main container of the Quarto website */
 .container, .content, main {
-  max-width: 800px; /* Or any width you prefer */
-  width: 90vw;       /* Makes it responsive */
+  max-width: 100vw; /* Use full viewport width */
+  width: 100vw;     /* Makes it use full width */
 }
 .hero-banner h1 {
   color: white;
