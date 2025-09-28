@@ -9,7 +9,7 @@ execute:
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
-::: {.content-section}
+::: {#controls-section .content-section}
 ## Controls
 
 ::: {.controls-grid}
@@ -116,7 +116,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 :::
 
-::: {.content-section}
+::: {#plot-section .content-section}
 ## Plot and Subject Data
 
 ::: {.panel-tabset}
@@ -642,6 +642,19 @@ main.content {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Put Controls at left and Plot/Subject Data at right on wide screens */
+@media (min-width: 992px) {
+  #controls-section { float: left; width: 40%; }
+  #plot-section { float: right; width: 60%; }
+}
+
+/* Clear floats after the main content (prevents overlap with footer/next blocks) */
+main.content::after {
+  content: "";
+  display: table;
+  clear: both;
 }
 </style>
 
