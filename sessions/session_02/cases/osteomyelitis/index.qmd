@@ -12,6 +12,9 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.content-section}
 ## Controls
 
+::: {.main-layout}
+
+::: {.controls-section}
 ::: {.controls-grid}
 
 ::: {.controls-column-1}
@@ -113,21 +116,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 :::
 
+::: {.plot-section}
+### Real-time Plot
 
-
-:::
-
-::: {.content-section}
-## Plot and Subject Data
-
-::: {.panel-tabset}
-
-### Plot
-
-::: {#concentration-plot style="width: 100%; height: 500px;"}
+::: {#concentration-plot}
 <div id="chart-fallback">
   <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="800" height="400"></canvas>
+  <canvas id="pk-chart" width="1920" height="1080"></canvas>
 </div>
 :::
 
@@ -135,6 +130,16 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
 <button id="download-btn" onclick="downloadData()">Download Data</button>
 :::
+:::
+
+:::
+
+:::
+
+::: {.content-section}
+## Subject Data
+
+::: {.panel-tabset}
 
 ### Reference Lines
 ::: {.reference-properties}
@@ -151,7 +156,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 :::
 
-### Subject Data
+### Data Table
 
 ::: {#subject-table}
 <table id="pk-table" class="table table-striped">
@@ -416,6 +421,44 @@ main.content {
   margin-top: 20px;
 }
 
+/* Main layout for side-by-side Controls and Plot */
+.main-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.controls-section {
+  min-width: 0; /* Prevent grid overflow */
+}
+
+.plot-section {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  min-width: 0; /* Prevent grid overflow */
+}
+
+.plot-section h3 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 1.1em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+#concentration-plot {
+  width: 100%;
+  height: auto;
+}
+
+#pk-chart {
+  max-width: 100%;
+  height: auto;
+}
+
 .controls-column-1,
 .controls-column-2,
 .controls-column-3 {
@@ -479,13 +522,14 @@ main.content {
     gap: 20px;
   }
   
-  .sidebar-left {
-    position: static;
+  .controls-grid {
+    grid-template-columns: 1fr 1fr;
   }
-  
+}
+
+@media (max-width: 768px) {
   .controls-grid {
     grid-template-columns: 1fr;
-    gap: 15px;
   }
 }
 .patient-generator {
