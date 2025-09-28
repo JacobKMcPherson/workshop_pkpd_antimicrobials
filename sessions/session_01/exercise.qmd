@@ -140,7 +140,11 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 <th>Subject</th>
 <th>Age</th>
 <th>Sex</th>
+<th>Ht (cm)</th>
 <th>Wt (kg)</th>
+<th>BMI</th>
+<th>IBW (kg)</th>
+<th>Adj IBW (kg)</th>
 <th>Creatinine (mg/dL)</th>
 <th>CrCl (mL/min)</th>
 <th>Dose (mg)</th>
@@ -618,6 +622,29 @@ function generateSubjects() {
   // Calculate volume of distribution at steady state of unbound drug (Vss,u)
   const vssUnbound = fractionUnbound * volume;
   
+  // Calculate BMI, IBW, and Adjusted IBW
+  const bmi = weight / Math.pow(height / 100, 2); // BMI = weight(kg) / height(m)^2
+  
+  // Ideal Body Weight (IBW) calculations
+  // Males: IBW = 50 + 2.3 × (height in inches - 60)
+  // Females: IBW = 45.5 + 2.3 × (height in inches - 60)
+  const heightInches = height / 2.54; // Convert cm to inches
+  let ibw;
+  if (sex === 'Male') {
+    ibw = 50 + 2.3 * (heightInches - 60);
+  } else {
+    ibw = 45.5 + 2.3 * (heightInches - 60);
+  }
+  ibw = Math.max(ibw, 40); // Minimum IBW of 40 kg
+  
+  // Adjusted IBW = IBW + 0.4 × (actual weight - IBW) if actual weight > IBW
+  let adjustedIbw;
+  if (weight > ibw) {
+    adjustedIbw = ibw + 0.4 * (weight - ibw);
+  } else {
+    adjustedIbw = weight; // Use actual weight if it's less than or equal to IBW
+  }
+  
   // Dosing parameters
   const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
   const interval = parseFloat(document.getElementById('interval-slider')?.value || 24);
@@ -638,6 +665,9 @@ function generateSubjects() {
     sex: sex,
     height: height,
     weight: weight,
+    bmi: bmi,
+    ibw: ibw,
+    adjustedIbw: adjustedIbw,
     creatinine: creatinine,
     creatinineClearance: creatinineClearance,
     creatinineClearanceMlMin: creatinineClearanceMlMin,
@@ -1042,7 +1072,11 @@ function updateTable() {
       <td>${subject.id}</td>
       <td>${subject.age}</td>
       <td>${subject.sex}</td>
+      <td>${subject.height}</td>
       <td>${subject.weight}</td>
+      <td>${subject.bmi.toFixed(1)}</td>
+      <td>${subject.ibw.toFixed(1)}</td>
+      <td>${subject.adjustedIbw.toFixed(1)}</td>
       <td>${subject.creatinine ? subject.creatinine.toFixed(2) : 'N/A'}</td>
       <td>${subject.creatinineClearanceMlMin ? subject.creatinineClearanceMlMin.toFixed(1) : 'N/A'}</td>
       <td>${subject.dose}</td>
