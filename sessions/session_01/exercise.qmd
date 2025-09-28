@@ -829,7 +829,7 @@ function generateSubjects() {
   
   // Dosing parameters
   const drugName = document.getElementById('drug-name-input')?.value || '';
-  const loadingDose = parseFloat(document.getElementById('loading-dose-slider')?.value || 0);
+  const loadingDose = parseFloat(document.getElementById('loading-dose-slider')?.value || 250);
   const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
   const interval = parseFloat(document.getElementById('interval-slider')?.value || 24);
   const duration = parseFloat(document.getElementById('duration-slider')?.value || 10);
@@ -1307,7 +1307,7 @@ function downloadData() {
       fRenal: parseFloat(document.getElementById('f-renal-slider')?.value || 0.8),
       volume: parseFloat(document.getElementById('volume-slider')?.value || 0.7),
       bioavailability: parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8),
-      dose: parseFloat(document.getElementById('dose-slider')?.value || 250),
+      dose: parseFloat(document.getElementById('')?.value || 250),
       interval: parseFloat(document.getElementById('interval-slider')?.value || 24),
       duration: parseFloat(document.getElementById('duration-slider')?.value || 10),
       toxicityThreshold: parseFloat(document.getElementById('toxicity-slider')?.value || 20),
@@ -1365,6 +1365,7 @@ function resetSimulation() {
     'bioavailability-slider': 0.8,
     'fraction-unbound-slider': 0.1,
     // Dosing parameters
+    'loading-dose-slider': 250,
     'dose-slider': 250,
     'interval-slider': 24,
     'duration-slider': 10,
