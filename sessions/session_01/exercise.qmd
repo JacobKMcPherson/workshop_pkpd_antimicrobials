@@ -58,11 +58,6 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 :::
 :::
 
-::: {.simulation-buttons}
-<button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
-<button id="random-btn" onclick="randomizeParameters()">Random Simulation</button>
-:::
-
 ### Dosing Parameters
 ::: {.dosing-properties}
 ::: {.control-group}
@@ -95,25 +90,6 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 :::
 :::
 
-### Reference Lines
-::: {.reference-properties}
-::: {.control-group}
-<label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
-<input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1">
-<span id="toxicity-value">20</span> mg/L
-:::
-
-::: {.control-group}
-<label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
-<input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5">
-<span id="efficacy-value">5</span> mg/L
-:::
-:::
-
-::: {.download-section}
-<button id="download-btn" onclick="downloadData()">Download Data</button>
-:::
-
 :::
 
 ## Plot and Subject Data
@@ -127,6 +103,34 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
   <p>Loading interactive chart...</p>
   <canvas id="pk-chart" width="800" height="400"></canvas>
 </div>
+:::
+
+::: {.plot-controls}
+<div class="scale-toggle">
+<label for="scale-toggle">Y-axis Scale:</label>
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+</div>
+:::
+
+::: {.simulation-buttons}
+<button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
+<button id="random-btn" onclick="randomizeParameters()">Random Simulation</button>
+<button id="download-btn" onclick="downloadData()">Download Data</button>
+:::
+
+### Reference Lines
+::: {.reference-properties}
+::: {.control-group}
+<label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
+<input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1">
+<span id="toxicity-value">20</span> mg/L
+:::
+
+::: {.control-group}
+<label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
+<input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5">
+<span id="efficacy-value">5</span> mg/L
+:::
 :::
 
 ### Subject Data
@@ -357,6 +361,35 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
   background-color: #0056b3;
 }
 
+.plot-controls {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.scale-toggle {
+  display: inline-block;
+}
+
+.scale-toggle label {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #495057;
+}
+
+#scale-toggle-btn {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#scale-toggle-btn:hover {
+  background-color: #218838;
+}
+
 .download-section {
   text-align: center;
   margin: 20px 0;
@@ -445,6 +478,7 @@ let subjects = [];
 let timePoints = [];
 let canvas = null;
 let ctx = null;
+let isLogScale = true; // Track current scale type
 
 // Patient data
 let currentPatient = {
@@ -706,8 +740,55 @@ function drawChart() {
   // Find scales
   const maxTime = Math.max(...timePoints);
   const rawMaxConc = Math.max(...subjects.flatMap(s => s.concentrations));
-  // Fixed y-axis range: always 0 to 100 mg/L
-  const maxConc = 100;
+  
+  // Get reference line values for dynamic scaling
+  const toxicityThreshold = parseFloat(document.getElementById('toxicity-slider')?.value || 20);
+  const efficacyThreshold = parseFloat(document.getElementById('efficacy-slider')?.value || 5);
+  const maxReferenceValue = Math.max(toxicityThreshold, efficacyThreshold);
+  
+  let minConc, maxConc, valueToY, gridValues, axisLabel;
+  
+  if (isLogScale) {
+    // Log scale y-axis range: dynamically scaled to 20% above the greater reference line
+    minConc = 0.1;
+    maxConc = Math.max(maxReferenceValue * 1.2, 10); // Minimum of 10 mg/L for reasonable scale
+    axisLabel = 'Concentration (mg/L, log scale)';
+    
+    // Helper functions for log scale
+    const logScale = (value) => Math.log10(Math.max(value, minConc));
+    valueToY = (value) => margin.top + height - ((logScale(value) - logScale(minConc)) / (logScale(maxConc) - logScale(minConc))) * height;
+    
+    // Generate logarithmic grid values based on the scale
+    gridValues = [];
+    let currentValue = 0.1;
+    while (currentValue <= maxConc) {
+      gridValues.push(currentValue);
+      if (currentValue < 1) {
+        currentValue = Math.round((currentValue + 0.1) * 10) / 10;
+      } else if (currentValue < 10) {
+        currentValue += 1;
+      } else if (currentValue < 100) {
+        currentValue += 10;
+      } else {
+        currentValue += 100;
+      }
+    }
+  } else {
+    // Linear scale y-axis range: dynamically scaled to 20% above the greater reference line
+    minConc = 0;
+    maxConc = Math.max(maxReferenceValue * 1.2, 10); // Minimum of 10 mg/L for reasonable scale
+    axisLabel = 'Concentration (mg/L)';
+    
+    // Helper function for linear scale
+    valueToY = (value) => margin.top + height - (value / maxConc) * height;
+    
+    // Generate linear grid values based on the scale
+    const interval = Math.ceil(maxConc / 10);
+    gridValues = [];
+    for (let i = 0; i <= Math.ceil(maxConc / interval); i++) {
+      gridValues.push(i * interval);
+    }
+  }
   
   // Draw background
   ctx.fillStyle = '#f8f9fa';
@@ -716,22 +797,26 @@ function drawChart() {
   // Draw grid lines
   ctx.strokeStyle = '#e9ecef';
   ctx.lineWidth = 1;
+  
+  // Vertical grid lines (time)
   for (let i = 0; i <= 10; i++) {
     const x = margin.left + (i / 10) * width;
-    const y = margin.top + (i / 10) * height;
-    
-    // Vertical lines
     ctx.beginPath();
     ctx.moveTo(x, margin.top);
     ctx.lineTo(x, margin.top + height);
     ctx.stroke();
-    
-    // Horizontal lines
-    ctx.beginPath();
-    ctx.moveTo(margin.left, y);
-    ctx.lineTo(margin.left + width, y);
-    ctx.stroke();
   }
+  
+  // Horizontal grid lines
+  gridValues.forEach(tick => {
+    if (tick >= minConc && tick <= maxConc) {
+      const y = valueToY(tick);
+      ctx.beginPath();
+      ctx.moveTo(margin.left, y);
+      ctx.lineTo(margin.left + width, y);
+      ctx.stroke();
+    }
+  });
   
   // Draw axes
   ctx.strokeStyle = '#000';
@@ -743,11 +828,8 @@ function drawChart() {
   ctx.stroke();
   
   // Draw reference lines (toxicity and efficacy thresholds)
-  const toxicityThreshold = parseFloat(document.getElementById('toxicity-slider')?.value || 20);
-  const efficacyThreshold = parseFloat(document.getElementById('efficacy-slider')?.value || 5);
-  
-  if (toxicityThreshold > 0 && toxicityThreshold <= maxConc) {
-    const toxicityY = margin.top + height - (toxicityThreshold / maxConc) * height;
+  if (toxicityThreshold > 0 && toxicityThreshold >= minConc && toxicityThreshold <= maxConc) {
+    const toxicityY = valueToY(toxicityThreshold);
     ctx.strokeStyle = '#dc3545'; // Red for toxicity
     ctx.lineWidth = 2;
     ctx.setLineDash([5, 5]); // Dashed line
@@ -763,8 +845,8 @@ function drawChart() {
     ctx.fillText(`Toxicity (${toxicityThreshold} mg/L)`, margin.left + 10, toxicityY - 5);
   }
   
-  if (efficacyThreshold > 0 && efficacyThreshold <= maxConc) {
-    const efficacyY = margin.top + height - (efficacyThreshold / maxConc) * height;
+  if (efficacyThreshold > 0 && efficacyThreshold >= minConc && efficacyThreshold <= maxConc) {
+    const efficacyY = valueToY(efficacyThreshold);
     ctx.strokeStyle = '#28a745'; // Green for efficacy
     ctx.lineWidth = 2;
     ctx.setLineDash([5, 5]); // Dashed line
@@ -794,7 +876,7 @@ function drawChart() {
     let firstPoint = true;
     for (let i = 0; i < timePoints.length; i++) {
       const x = margin.left + (timePoints[i] / maxTime) * width;
-      const y = margin.top + height - (subject.concentrations[i] / maxConc) * height;
+      const y = valueToY(subject.concentrations[i]);
       
       if (firstPoint) {
         ctx.moveTo(x, y);
@@ -809,7 +891,7 @@ function drawChart() {
     ctx.fillStyle = singleSubjectColor;
     for (let i = 0; i < timePoints.length; i++) {
       const x = margin.left + (timePoints[i] / maxTime) * width;
-      const y = margin.top + height - (subject.concentrations[i] / maxConc) * height;
+      const y = valueToY(subject.concentrations[i]);
       
       ctx.beginPath();
       ctx.arc(x, y, 4, 0, 2 * Math.PI);
@@ -830,13 +912,14 @@ function drawChart() {
   ctx.translate(20, margin.top + height/2);
   ctx.rotate(-Math.PI/2);
   ctx.textAlign = 'center';
-  ctx.fillText('Concentration (mg/L)', 0, 0);
+  ctx.fillText(axisLabel, 0, 0);
   ctx.restore();
   
   // Title
   ctx.textAlign = 'center';
   ctx.font = 'bold 16px Arial';
-  ctx.fillText('Plasma Concentration-Time Profile (Blood Samples Every Hour)', canvas.width/2, 25);
+  const scaleType = isLogScale ? 'Log Scale' : 'Linear Scale';
+  ctx.fillText(`Plasma Concentration-Time Profile (${scaleType}, Blood Samples Every Hour)`, canvas.width/2, 25);
   
   // Add axis ticks and values
   ctx.font = '12px Arial';
@@ -851,11 +934,22 @@ function drawChart() {
   
   // Y-axis ticks
   ctx.textAlign = 'right';
-  for (let i = 0; i <= 5; i++) {
-    const y = margin.top + height - (i / 5) * height;
-    const concValue = (i / 5) * maxConc;
-    ctx.fillText(concValue.toFixed(1), margin.left - 10, y + 4);
+  gridValues.forEach(tick => {
+    if (tick >= minConc && tick <= maxConc) {
+      const y = valueToY(tick);
+      ctx.fillText(tick.toString(), margin.left - 10, y + 4);
+    }
+  });
+}
+
+// Toggle between log and linear scale
+function toggleScale() {
+  isLogScale = !isLogScale;
+  const toggleBtn = document.getElementById('scale-toggle-btn');
+  if (toggleBtn) {
+    toggleBtn.textContent = isLogScale ? 'Switch to Linear' : 'Switch to Log';
   }
+  drawChart();
 }
 
 // Update the subjects table
