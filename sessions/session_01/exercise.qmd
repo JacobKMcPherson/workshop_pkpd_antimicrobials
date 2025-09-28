@@ -1420,6 +1420,13 @@ function randomizeParameters() {
     }
   });
   
+  // Set Loading Dose equal to Dose after randomization
+  const doseElement = document.getElementById('dose-slider');
+  const loadingDoseElement = document.getElementById('loading-dose-slider');
+  if (doseElement && loadingDoseElement) {
+    loadingDoseElement.value = doseElement.value;
+  }
+  
   // Generate reference lines ensuring toxicity > efficacy
   const efficacyMin = 2;
   const efficacyMax = 50;  // Increased to allow higher efficacy thresholds
