@@ -487,8 +487,9 @@ Test your understanding by calculating the following parameters for the current 
 
 .small-buttons {
   display: flex;
-  gap: 10px;
-  justify-content: space-between;
+  flex-direction: column; /* Change direction to column to stack buttons */
+  gap: 5px; /* Adjust the gap between buttons */
+  justify-content: flex-start; /* Align buttons to the start */
 }
 
 .small-btn {
