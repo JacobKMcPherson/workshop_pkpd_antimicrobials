@@ -421,21 +421,15 @@ main.content {
 }
 
 /* Responsive design for full-width layout */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .main-content {
     padding: 0 10px;
   }
-  
   .content-section {
     padding: 15px;
   }
 }
-  
-  .controls-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-}
+
 .patient-generator {
   background-color: #fff;
   border: 2px solid #28a745;
