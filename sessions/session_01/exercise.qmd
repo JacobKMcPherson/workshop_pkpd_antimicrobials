@@ -9,6 +9,11 @@ execute:
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
+
+::: {.main-layout}
+
+::: {.sidebar-left}
+
 ## Controls
 
 ::: {.controls-grid}
@@ -113,7 +118,9 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 :::
 
+:::
 
+::: {.plot-data-right}
 ## Plot and Subject Data
 
 ::: {.panel-tabset}
@@ -189,7 +196,9 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 :::
 
+:::
 
+:::
 
 ## Educational Content
 
