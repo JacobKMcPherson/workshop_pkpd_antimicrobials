@@ -105,14 +105,8 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 </div>
 :::
 
-::: {.plot-controls}
-<div class="scale-toggle">
-<label for="scale-toggle">Y-axis Scale:</label>
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-</div>
-:::
-
 ::: {.simulation-buttons}
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
 <button id="reset-btn" onclick="resetSimulation()">Reset Parameters</button>
 <button id="random-btn" onclick="randomizeParameters()">Random Simulation</button>
 <button id="download-btn" onclick="downloadData()">Download Data</button>
@@ -611,7 +605,7 @@ function generateRandomPatient() {
   const sex = Math.random() < 0.5 ? "Male" : "Female";
   const height = Math.floor(Math.random() * (200 - 140 + 1)) + 140;
   const weight = Math.floor(Math.random() * (140 - 40 + 1)) + 40;
-  const creatinine = (Math.random() * (2.0 - 0.5) + 0.5).toFixed(2);
+  const creatinine = (Math.random() * (10.0 - 0.5) + 0.5).toFixed(2);
 
   // Update global patient data
   currentPatient = { age, sex, height, weight, creatinine: parseFloat(creatinine) };
