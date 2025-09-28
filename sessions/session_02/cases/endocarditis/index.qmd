@@ -15,9 +15,7 @@ execute:
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
-::: {.main-layout}
-
-::: {.sidebar-left}
+::: {.content-section}
 ## Controls
 
 ::: {.controls-grid}
@@ -119,7 +117,9 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 :::
 :::
+:::
 
+::: {.content-section}
 ## Educational Content
 
 ### Key Pharmacokinetic Concepts
@@ -151,8 +151,7 @@ This simulation uses a one-compartment model with:
 
 :::
 
-::: {.plot-data-right}
-
+::: {.content-section}
 ## Plot and Subject Data
 
 ::: {.panel-tabset}
@@ -270,17 +269,66 @@ Test your understanding by calculating the following parameters for the current 
 
 :::
 
+:::
+
 <style>
-/* Main layout */
-.main-layout {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  gap: 20px;
-  margin: 20px 0;
-  min-height: 100vh;
+/* Full-width single column layout */
+body {
+  margin: 0;
+  padding: 0;
 }
 
-/* Sidebar left - Controls */
+.main-content {
+  max-width: none;
+  width: 100vw;
+  margin: 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Override Quarto default max-width */
+main.content {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* Section styling */
+.content-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.content-section h2 {
+  margin-top: 0;
+  color: #495057;
+  font-size: 1.2em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.content-section h3 {
+  color: #6c757d;
+  font-size: 1.0em;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.content-section p, .content-section ul {
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: #555;
+}
+
+/* Legacy layout classes - no longer used but kept for compatibility */
+.main-layout {
+  /* Removed grid layout */
+}
+
 .sidebar-left {
   background-color: #f8f9fa;
   padding: 20px;
