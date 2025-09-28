@@ -66,52 +66,13 @@ This interactive module demonstrates the pharmacokinetics of multiple dosing usi
 ::: {.dosing-properties}
 ::: {.control-group}
 <label for="dose-slider">Dose (mg):</label>
-<select id="dose-slider">
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="5">5</option>
-  <option value="10">10</option>
-  <option value="25">25</option>
-  <option value="50">50</option>
-  <option value="100">100</option>
-  <option value="150">150</option>
-  <option value="200">200</option>
-  <option value="250" selected>250</option>
-  <option value="300">300</option>
-  <option value="350">350</option>
-  <option value="400">400</option>
-  <option value="450">450</option>
-  <option value="500">500</option>
-  <option value="600">600</option>
-  <option value="700">700</option>
-  <option value="800">800</option>
-  <option value="900">900</option>
-  <option value="1000">1000</option>
-  <option value="1250">1250</option>
-  <option value="1500">1500</option>
-  <option value="1750">1750</option>
-  <option value="2000">2000</option>
-  <option value="2250">2250</option>
-  <option value="2500">2500</option>
-  <option value="3000">3000</option>
-</select>
+<input type="range" id="dose-slider" min="1" max="3000" value="250" step="1">
 <span id="dose-value">250</span> mg
 :::
 
 ::: {.control-group}
 <label for="interval-slider">Dosing Interval (h):</label>
-<select id="interval-slider">
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="4">4</option>
-  <option value="6">6</option>
-  <option value="8">8</option>
-  <option value="12">12</option>
-  <option value="18">18</option>
-  <option value="24" selected>24</option>
-  <option value="36">36</option>
-  <option value="48">48</option>
-</select>
+<input type="range" id="interval-slider" min="1" max="48" value="24" step="1">
 <span id="interval-value">24</span> h
 :::
 
@@ -494,29 +455,45 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
 }
 
 .table th, .table td {
-  padding: 0.4rem;
+  padding: 0.3rem 0.2rem;
   text-align: center;
+  vertical-align: top;
+  font-size: 0.75em;
+  min-width: 60px;
 }
 
 .table th {
-  font-size: 0.75em;
+  font-size: 0.7em;
   background-color: #f8f9fa;
+  font-weight: bold;
+  line-height: 1.1;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+#subject-table {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 1rem 0;
 }
 
 #pk-table {
-  overflow-x: auto;
-  display: block;
-  white-space: nowrap;
-}
-
-#pk-table thead, #pk-table tbody, #pk-table tr {
-  display: table;
   width: 100%;
-  table-layout: fixed;
+  min-width: 1200px;
+  table-layout: auto;
+  border-collapse: collapse;
 }
 
-#pk-table thead {
-  width: calc(100% - 1em);
+#pk-table th {
+  white-space: normal;
+  word-break: break-word;
+  max-width: 80px;
+}
+
+#pk-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 768px) {
@@ -1140,11 +1117,14 @@ function randomizeParameters() {
     'f-renal-slider': { min: 0.1, max: 1.0 },
     'volume-slider': { min: 0.2, max: 1.5 },
     'bioavailability-slider': { min: 0.4, max: 1.0 },
+    // Dosing parameters
+    'dose-slider': { min: 1, max: 3000 },
+    'interval-slider': { min: 1, max: 48 },
     // Duration parameter
     'duration-slider': { min: 3, max: 14 }
   };
   
-  // Randomize core PK and dosing parameters
+  // Randomize parameters
   Object.entries(randomParams).forEach(([id, range]) => {
     const element = document.getElementById(id);
     if (element) {
@@ -1159,22 +1139,6 @@ function randomizeParameters() {
       element.value = finalValue;
     }
   });
-  
-  // Handle dose dropdown separately - pick from available discrete options
-  const doseOptions = [1, 2, 5, 10, 25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 3000];
-  const randomDose = doseOptions[Math.floor(Math.random() * doseOptions.length)];
-  const doseElement = document.getElementById('dose-slider');
-  if (doseElement) {
-    doseElement.value = randomDose;
-  }
-  
-  // Handle interval dropdown separately - pick from available options
-  const intervalOptions = [1, 2, 4, 6, 8, 12, 18, 24, 36, 48];
-  const randomInterval = intervalOptions[Math.floor(Math.random() * intervalOptions.length)];
-  const intervalElement = document.getElementById('interval-slider');
-  if (intervalElement) {
-    intervalElement.value = randomInterval;
-  }
   
   // Generate reference lines ensuring toxicity > efficacy
   const efficacyMin = 2;
@@ -1205,6 +1169,7 @@ function updateSliderValues() {
     { slider: 'bioavailability-slider', display: 'bioavailability-value' },
     // Dosing parameters
     { slider: 'dose-slider', display: 'dose-value' },
+    { slider: 'interval-slider', display: 'interval-value' },
     { slider: 'duration-slider', display: 'duration-value' },
     // Reference lines
     { slider: 'toxicity-slider', display: 'toxicity-value' },
@@ -1218,13 +1183,6 @@ function updateSliderValues() {
       display.textContent = slider.value;
     }
   });
-  
-  // Handle interval dropdown separately
-  const intervalSelect = document.getElementById('interval-slider');
-  const intervalDisplay = document.getElementById('interval-value');
-  if (intervalSelect && intervalDisplay) {
-    intervalDisplay.textContent = intervalSelect.value;
-  }
 }
 
 // Initialize when DOM is loaded
@@ -1251,7 +1209,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Core PK parameters
     'f-renal-slider', 'volume-slider', 'bioavailability-slider',
     // Dosing parameters
-    'dose-slider', 'duration-slider',
+    'dose-slider', 'interval-slider', 'duration-slider',
     // Reference lines
     'toxicity-slider', 'efficacy-slider'
   ];
@@ -1297,15 +1255,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
-  
-  // Handle interval dropdown separately (it already has onchange attribute)
-  const intervalSelect = document.getElementById('interval-slider');
-  if (intervalSelect) {
-    intervalSelect.addEventListener('change', function() {
-      updateSliderValues();
-      runSimulation();
-    });
-  }
   
   // Initialize the simulation
   updateSliderValues();
