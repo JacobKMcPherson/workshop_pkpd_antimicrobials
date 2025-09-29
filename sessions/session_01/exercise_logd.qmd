@@ -1,7 +1,7 @@
 ---
 title: "pH-Dependent Drug Absorption and Distribution"
 format: html
-editor: visual
+editor: source
 execute:
   shiny: true
   shinylive: true
