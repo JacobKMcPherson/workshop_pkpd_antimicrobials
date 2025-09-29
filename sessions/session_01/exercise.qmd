@@ -9,20 +9,16 @@ execute:
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
-<div id="chart-fallback">
-  <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="1920" height="1080"></canvas>
-</div>
 
 ::: {.content-section}
 ## Controls
 ::: {.main-layout}
 
 ::: {.controls-column-1}
-### Random Patient Generator
+### Patient Generator
 ::: {.patient-generator}
 <div style="margin-bottom: 20px;">
-<button id="generate-patient-btn" onclick="generateRandomPatient()">Generate Random Patient</button>
+<button id="generate-patient-btn" onclick="generateRandomPatient()">New Patient</button>
 <div id="patient-info" style="margin-top: 15px;">
 <ul style="list-style-type: none; padding-left: 0;">
 <li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
@@ -55,6 +51,11 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.controls-column-2}
 ### Core PK Parameters
 ::: {.pk-properties-compact}
+<div class="small-buttons" style="margin-top: 8px;">
+<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
+<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
+</div>
+
 ::: {.control-group-compact}
 <label for="bioavailability-slider">Bioavailability (F):</label>
 <input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05">
@@ -80,18 +81,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 
 
-<div class="small-buttons" style="margin-top: 15px;">
-<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
-<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
-</div>
-
-
 :::
 :::
 
 ::: {.controls-column-3}
 ### Dosing Parameters
 ::: {.pk-properties-compact}
+<button id="download-btn" onclick="downloadData()">Download Data</button>
 ::: {.control-group-compact}
 <label for="loading-dose-slider">Loading Dose (mg):</label>
 <input type="range" id="loading-dose-slider" min="0" max="3000" value="250" step="50">
@@ -116,9 +112,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <span id="duration-value">10</span> days
 :::
 
-<button id="download-btn" onclick="downloadData()">Download Data</button>
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-
 :::
 
 :::
@@ -132,6 +125,19 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ## Subject Data
 
 ::: {.panel-tabset}
+
+
+### Real-time Plot
+
+::: {#concentration-plot}
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="1920" height="1080"></canvas>
+</div>
+
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+
+:::
 
 ### Reference Lines
 ::: {.reference-properties}
@@ -437,7 +443,7 @@ main.content {
 .controls-column-2,
 .controls-column-3 {
   background-color: #ffffff;
-  padding: 15px;
+  padding: 8px;
   border-radius: 8px;
   border: 1px solid #dee2e6;
 }
