@@ -11,7 +11,13 @@ execute:
 
 **Drug of Choice**: Vancomycin + ceftriaxone (or cefotaxime)
 
-**PK/PD Target**:
+**PK/PD Target**: AUC/MIC ≥ 400 (vancomycin) + %T>MIC ≥ 50% (ceftriaxone)
+
+**Key PK Parameters for Meningitis**:
+- **Volume of Distribution**: 0.1-0.15 L/kg (poor CNS penetration for vancomycin)
+- **CSF Penetration**: Vancomycin CSF/plasma ratio ≈ 0.05-0.2 (inflamed meninges)
+- **Protein Binding**: Vancomycin ~90%, Ceftriaxone ~95%
+- **CNS Dosing**: Higher doses needed due to blood-brain barrier
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
@@ -75,7 +81,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.1" max="10" value="0.7" step="0.1">
+<input type="range" id="volume-slider" min="0.1" max="0.2" value="0.15" step="0.01">
 <span id="volume-value">0.7</span> L/kg
 :::
 
@@ -101,19 +107,19 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="dose-slider">Dose (mg):</label>
-<input type="range" id="dose-slider" min="0" max="3000" value="250" step="50">
+<input type="range" id="dose-slider" min="750" max="1500" value="1000" step="50">
 <span id="dose-value">250</span> mg
 :::
 
 ::: {.control-group-compact}
 <label for="interval-slider">Dosing Interval (hrs):</label>
-<input type="range" id="interval-slider" min="1" max="48" value="24" step="1">
+<input type="range" id="interval-slider" min="8" max="12" value="12" step="1">
 <span id="interval-value">24</span> hrs
 :::
 
 ::: {.control-group-compact}
 <label for="duration-slider">Treatment Duration (days):</label>
-<input type="range" id="duration-slider" min="1" max="14" value="10" step="1">
+<input type="range" id="duration-slider" min="7" max="21" value="14" step="1">
 <span id="duration-value">10</span> days
 :::
 
@@ -141,13 +147,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.reference-properties}
 ::: {.control-group}
 <label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
-<input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1">
+<input type="range" id="toxicity-slider" min="25" max="40" value="30" step="1">
 <span id="toxicity-value">20</span> mg/L
 :::
 
 ::: {.control-group}
 <label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
-<input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5">
+<input type="range" id="efficacy-slider" min="15" max="25" value="20" step="1">
 <span id="efficacy-value">5</span> mg/L
 :::
 :::
@@ -194,19 +200,21 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ### Education
 
-#### Key Pharmacokinetic Concepts
+#### Meningitis-Specific Pharmacokinetic Concepts
 
-**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
+**Blood-Brain Barrier Challenges**: The CNS is a pharmacokinetic sanctuary site due to tight junctions in brain capillaries. Most antibiotics, including vancomycin, have poor CNS penetration with CSF/plasma ratios of only 0.05-0.2 even in inflamed meninges.
 
-**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+**Combination Therapy Rationale**: Vancomycin + ceftriaxone combination provides:
+- Vancomycin: covers MRSA and resistant enterococci (though poor CNS penetration)
+- Ceftriaxone: excellent CNS penetration (CSF/plasma ≈ 0.1-0.3) and covers resistant S. pneumoniae
 
-**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
+**Volume of Distribution for CNS Infections**: The restrictive Vd (0.1-0.15 L/kg) for vancomycin means most drug remains in plasma, requiring higher doses to achieve therapeutic CSF concentrations.
 
-**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
+**AUC-Guided Dosing in Meningitis**: Target AUC₀₋₂₄/MIC ≥ 400 requires aggressive dosing due to poor penetration. Some cases may need intrathecal administration for resistant organisms.
 
-**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+**CSF Sampling Considerations**: CSF drug concentrations are often monitored in severe cases. Timing of lumbar puncture relative to dosing affects interpretation of results.
 
-**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
+**Duration and Monitoring**: CNS infections require prolonged therapy (14-21 days) with careful monitoring for neurotoxicity and nephrotoxicity from high-dose regimens.
 
 #### Blood Sampling Strategy
 

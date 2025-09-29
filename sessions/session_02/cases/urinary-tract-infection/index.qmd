@@ -11,7 +11,13 @@ execute:
 
 **Drug of Choice**: Ertapenem
 
-**PK/PD Target**:
+**PK/PD Target**: %T>MIC ≥ 40% (β-lactam for UTI)
+
+**Key PK Parameters for UTI**:
+- **Volume of Distribution**: 0.1-0.2 L/kg (excellent urinary concentration)
+- **Protein Binding**: ~95% (free fraction = 0.05)
+- **Renal Clearance**: ~90% unchanged in urine
+- **Urine Concentrations**: 10-100× higher than plasma levels
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
@@ -39,7 +45,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.drug-name-section}
 <div style="margin-bottom: 2px;">
 <label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
-<input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+<input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Ertapenem)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
 </div>
 
 <label for="formulation-select">Formulation:</label>
@@ -69,19 +75,19 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="fraction-unbound-slider">Fraction Unbound:</label>
-<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.1" step="0.01">
+<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.05" step="0.01">
 <span id="fraction-unbound-value">0.1</span>
 :::
 
 ::: {.control-group-compact}
 <label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.1" max="10" value="0.7" step="0.1">
+<input type="range" id="volume-slider" min="0.1" max="0.2" value="0.15" step="0.01">
 <span id="volume-value">0.7</span> L/kg
 :::
 
 ::: {.control-group-compact}
 <label for="f-renal-slider">Fraction Renally Cleared:</label>
-<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
+<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.9" step="0.05">
 <span id="f-renal-value">0.8</span>
 :::
 
@@ -101,7 +107,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="dose-slider">Dose (mg):</label>
-<input type="range" id="dose-slider" min="0" max="3000" value="250" step="50">
+<input type="range" id="dose-slider" min="500" max="1000" value="1000" step="50">
 <span id="dose-value">250</span> mg
 :::
 
@@ -141,13 +147,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.reference-properties}
 ::: {.control-group}
 <label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
-<input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1">
+<input type="range" id="toxicity-slider" min="30" max="60" value="40" step="5">
 <span id="toxicity-value">20</span> mg/L
 :::
 
 ::: {.control-group}
 <label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
-<input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5">
+<input type="range" id="efficacy-slider" min="1" max="8" value="4" step="0.5">
 <span id="efficacy-value">5</span> mg/L
 :::
 :::
@@ -194,19 +200,19 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ### Education
 
-#### Key Pharmacokinetic Concepts
+#### UTI-Specific Pharmacokinetic Concepts
 
-**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
+**Exceptional Urinary Concentration**: Ertapenem achieves urinary concentrations 10-100× higher than plasma levels due to active renal secretion and concentration mechanisms. This makes relatively modest plasma levels highly effective for UTI treatment.
 
-**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+**Volume of Distribution for UTI**: The small Vd (0.1-0.2 L/kg) means most drug remains in plasma and is rapidly excreted unchanged in urine, exactly where it's needed for urinary tract infections.
 
-**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
+**%T>MIC Target for UTI**: Lower target %T>MIC ≥ 40% is sufficient for UTI due to the extraordinarily high urinary concentrations achieved. This is much more forgiving than systemic infections.
 
-**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
+**Protein Binding Considerations**: Despite 95% protein binding, the massive urinary concentrations mean adequate free drug levels are achieved in the urinary tract for antimicrobial effect.
 
-**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+**ESBL Coverage Strategy**: Ertapenem provides excellent coverage against ESBL-producing E. coli, including those resistant to fluoroquinolones. The carbapenem backbone is stable against ESBL enzymes.
 
-**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
+**Monitoring and Duration**: UTI typically requires shorter duration (5-7 days) compared to other sites. Urine culture and susceptibility testing guide duration and confirm eradication.
 
 #### Blood Sampling Strategy
 

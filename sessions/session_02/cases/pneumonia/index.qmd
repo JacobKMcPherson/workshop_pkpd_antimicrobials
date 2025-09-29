@@ -11,7 +11,13 @@ execute:
 
 **Drug of Choice**: Cefepime
 
-**PK/PD Target**:
+**PK/PD Target**: %T>MIC ≥ 70% (or %T>4×MIC ≥ 50% for Pseudomonas)
+
+**Key PK Parameters for Pneumonia**:
+- **Volume of Distribution**: 0.2-0.3 L/kg (excellent lung penetration)
+- **Protein Binding**: ~20% (free fraction = 0.8)
+- **Renal Clearance**: ~85% unchanged in urine
+- **Lung Penetration**: ELF/plasma ratio ≈ 0.6-1.0
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
@@ -39,7 +45,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.drug-name-section}
 <div style="margin-bottom: 2px;">
 <label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
-<input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+<input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Cefepime)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
 </div>
 
 <label for="formulation-select">Formulation:</label>
@@ -69,19 +75,19 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="fraction-unbound-slider">Fraction Unbound:</label>
-<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.1" step="0.01">
+<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.8" step="0.01">
 <span id="fraction-unbound-value">0.1</span>
 :::
 
 ::: {.control-group-compact}
 <label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.1" max="10" value="0.7" step="0.1">
+<input type="range" id="volume-slider" min="0.2" max="0.3" value="0.25" step="0.01">
 <span id="volume-value">0.7</span> L/kg
 :::
 
 ::: {.control-group-compact}
 <label for="f-renal-slider">Fraction Renally Cleared:</label>
-<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
+<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.85" step="0.05">
 <span id="f-renal-value">0.8</span>
 :::
 
@@ -101,13 +107,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="dose-slider">Dose (mg):</label>
-<input type="range" id="dose-slider" min="0" max="3000" value="250" step="50">
+<input type="range" id="dose-slider" min="500" max="2000" value="1000" step="100">
 <span id="dose-value">250</span> mg
 :::
 
 ::: {.control-group-compact}
 <label for="interval-slider">Dosing Interval (hrs):</label>
-<input type="range" id="interval-slider" min="1" max="48" value="24" step="1">
+<input type="range" id="interval-slider" min="8" max="12" value="8" step="1">
 <span id="interval-value">24</span> hrs
 :::
 
@@ -141,13 +147,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.reference-properties}
 ::: {.control-group}
 <label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
-<input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1">
+<input type="range" id="toxicity-slider" min="40" max="80" value="60" step="5">
 <span id="toxicity-value">20</span> mg/L
 :::
 
 ::: {.control-group}
 <label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
-<input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5">
+<input type="range" id="efficacy-slider" min="8" max="32" value="16" step="2">
 <span id="efficacy-value">5</span> mg/L
 :::
 :::
@@ -194,19 +200,19 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ### Education
 
-#### Key Pharmacokinetic Concepts
+#### Pneumonia-Specific Pharmacokinetic Concepts
 
-**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
+**Lung Tissue Penetration**: Cefepime achieves excellent penetration into lung tissue and epithelial lining fluid (ELF). The ELF/plasma ratio is approximately 0.6-1.0, making it highly effective for pneumonia treatment.
 
-**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+**Volume of Distribution for Pneumonia**: Cefepime has a small Vd (0.2-0.3 L/kg) but this is ideal for lung infections as it maintains high plasma concentrations that effectively penetrate into pulmonary tissues.
 
-**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
+**%T>MIC Target for Pseudomonas Pneumonia**: The target %T>MIC ≥ 70% ensures the free drug concentration remains above the MIC for sufficient time during each dosing interval. For resistant Pseudomonas, %T>4×MIC ≥ 50% may be more appropriate.
 
-**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
+**Protein Binding Considerations**: Cefepime is only ~20% protein bound, meaning 80% is pharmacologically active. This high free fraction contributes to excellent tissue penetration.
 
-**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+**β-lactam Dosing Strategy**: More frequent dosing (every 8 hours) maximizes time above MIC. Extended or continuous infusions can further optimize %T>MIC for critical infections.
 
-**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
+**Renal Dose Adjustment**: With 85% renal elimination, dose adjustment is critical in renal impairment to maintain efficacy while preventing accumulation.
 
 #### Blood Sampling Strategy
 
