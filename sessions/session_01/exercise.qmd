@@ -9,7 +9,6 @@ execute:
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
-
 ::: {.content-section}
 
 ::: {.main-layout}
