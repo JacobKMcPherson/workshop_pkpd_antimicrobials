@@ -1,5 +1,5 @@
 ---
-title: "Exercise"
+title: "Multiple Dosing PK/PD"
 format: html
 editor: visual
 execute:
@@ -18,7 +18,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::: {style="margin-bottom: 8px;"}
 <button id="generate-patient-btn" onclick="generateRandomPatient()">
 
-New Patient
+New Patient Generator
 
 </button>
 
@@ -180,7 +180,7 @@ Switch to Linear
 <th><p>Time&gt;Efficacy (%)</p></th>
 </tr>
 </thead>
-<tbody>
+<tbody id="pk-table-body">
 </tbody>
 </table>
 :::
@@ -519,18 +519,22 @@ main.content {
 
 #reset-btn.small-btn {
   background-color: #6c757d;
+  color: white;
 }
 
 #reset-btn.small-btn:hover {
   background-color: #545b62;
+  color: white;
 }
 
 #random-btn.small-btn {
   background-color: #17a2b8;
+  color: white;
 }
 
 #random-btn.small-btn:hover {
   background-color: #138496;
+  color: white;
 }
 
 #patient-info ul {
