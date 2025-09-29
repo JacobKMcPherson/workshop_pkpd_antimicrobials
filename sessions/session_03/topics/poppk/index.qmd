@@ -1,6 +1,7 @@
 ---
 title: "Population Pharmacokinetics (PopPK)"
 format: html
+editor: source
 ---
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
