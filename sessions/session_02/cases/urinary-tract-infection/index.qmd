@@ -200,19 +200,19 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ### Education
 
-#### Key Pharmacokinetic Concepts
+#### UTI-Specific Pharmacokinetic Concepts
 
-**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
+**Exceptional Urinary Concentration**: Ertapenem achieves urinary concentrations 10-100× higher than plasma levels due to active renal secretion and concentration mechanisms. This makes relatively modest plasma levels highly effective for UTI treatment.
 
-**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+**Volume of Distribution for UTI**: The small Vd (0.1-0.2 L/kg) means most drug remains in plasma and is rapidly excreted unchanged in urine, exactly where it's needed for urinary tract infections.
 
-**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
+**%T>MIC Target for UTI**: Lower target %T>MIC ≥ 40% is sufficient for UTI due to the extraordinarily high urinary concentrations achieved. This is much more forgiving than systemic infections.
 
-**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
+**Protein Binding Considerations**: Despite 95% protein binding, the massive urinary concentrations mean adequate free drug levels are achieved in the urinary tract for antimicrobial effect.
 
-**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+**ESBL Coverage Strategy**: Ertapenem provides excellent coverage against ESBL-producing E. coli, including those resistant to fluoroquinolones. The carbapenem backbone is stable against ESBL enzymes.
 
-**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
+**Monitoring and Duration**: UTI typically requires shorter duration (5-7 days) compared to other sites. Urine culture and susceptibility testing guide duration and confirm eradication.
 
 #### Blood Sampling Strategy
 
