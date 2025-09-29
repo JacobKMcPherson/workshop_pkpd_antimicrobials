@@ -17,9 +17,9 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.controls-column-1}
 ### Patient Generator
 ::: {.patient-generator}
-<div style="margin-bottom: 20px;">
+<div style="margin-bottom: 8px;">
 <button id="generate-patient-btn" onclick="generateRandomPatient()">New Patient</button>
-<div id="patient-info" style="margin-top: 15px;">
+<div id="patient-info" style="margin-top: 8px;">
 <ul style="list-style-type: none; padding-left: 0;">
 <li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
 <li><strong>Sex:</strong> <u><span id="patient-sex">-</span></u></li>
@@ -32,7 +32,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 
 ::: {.drug-name-section}
-<div style="margin-bottom: 20px;">
+<div style="margin-bottom: 2px;">
 <label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
 <input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
 </div>
@@ -49,9 +49,9 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 
 ::: {.controls-column-2}
-### Core PK Parameters
+### PK Parameters
 ::: {.pk-properties-compact}
-<div class="small-buttons" style="margin-top: 8px;">
+<div class="small-buttons" style="margin-top: 2px;">
 <button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
 <button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
 </div>
@@ -85,7 +85,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 
 ::: {.controls-column-3}
-### Dosing Parameters
+### Dosing
 ::: {.pk-properties-compact}
 <button id="download-btn" onclick="downloadData()">Download Data</button>
 ::: {.control-group-compact}
@@ -571,11 +571,22 @@ main.content {
 .control-group-compact {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding: 8px;
+  gap: 0px; /* Remove vertical gap between elements */
+  padding: 4px; /* Less padding for a narrower look */
   background-color: #fff;
   border-radius: 4px;
   border: 1px solid #dee2e6;
+}
+
+/* Make sure the value span has minimal vertical margin */
+.control-group-compact span {
+  font-size: 0.9em;
+  color: #6c757d;
+  text-align: center;
+  margin-bottom: 0;       /* Remove extra space below */
+  margin-top: 1px;        /* Minimal space above */
+  line-height: 1.1;       /* Tighter vertical spacing */
+  padding: 0;             /* Remove any default padding */
 }
 
 .control-group-compact label {
@@ -588,12 +599,6 @@ main.content {
 .control-group-compact input[type="range"] {
   width: 100%;
   margin: 2px 0;
-}
-
-.control-group-compact span {
-  font-size: 0.9em;
-  color: #6c757d;
-  text-align: center;
 }
 
 .control-group select {

@@ -13,22 +13,16 @@ execute:
 
 **PK/PD Target**:
 
-This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
-
 ::: {.content-section}
 ## Controls
-
 ::: {.main-layout}
 
-::: {.controls-section}
-::: {.controls-grid}
-
 ::: {.controls-column-1}
-### Random Patient Generator
+### Patient Generator
 ::: {.patient-generator}
-<div style="margin-bottom: 20px;">
-<button id="generate-patient-btn" onclick="generateRandomPatient()">Generate Random Patient</button>
-<div id="patient-info" style="margin-top: 15px;">
+<div style="margin-bottom: 8px;">
+<button id="generate-patient-btn" onclick="generateRandomPatient()">New Patient</button>
+<div id="patient-info" style="margin-top: 8px;">
 <ul style="list-style-type: none; padding-left: 0;">
 <li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
 <li><strong>Sex:</strong> <u><span id="patient-sex">-</span></u></li>
@@ -37,25 +31,34 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <li><strong>Creatinine:</strong> <u><span id="patient-creatinine">-</span></u> mg/dL</li>
 </ul>
 </div>
-<div class="small-buttons" style="margin-top: 15px;">
-<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
-<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
-</div>
 </div>
 :::
 
-### Drug Name
 ::: {.drug-name-section}
-<div style="margin-bottom: 20px;">
+<div style="margin-bottom: 2px;">
 <label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
 <input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
 </div>
+
+<label for="formulation-select">Formulation:</label>
+<select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+<option value="slow">Slow (Extended Release)</option>
+<option value="medium" selected>Medium (Standard Oral)</option>
+<option value="fast">Fast (IV Bolus)</option>
+</select>
+<span id="formulation-value">Medium (Standard Oral)</span>
 :::
+
 :::
 
 ::: {.controls-column-2}
-### Core PK Parameters
+### PK Parameters
 ::: {.pk-properties-compact}
+<div class="small-buttons" style="margin-top: 2px;">
+<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
+<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
+</div>
+
 ::: {.control-group-compact}
 <label for="bioavailability-slider">Bioavailability (F):</label>
 <input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05">
@@ -79,12 +82,15 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
 <span id="f-renal-value">0.8</span>
 :::
+
+
 :::
 :::
 
 ::: {.controls-column-3}
-### Dosing Parameters
+### Dosing
 ::: {.pk-properties-compact}
+<button id="download-btn" onclick="downloadData()">Download Data</button>
 ::: {.control-group-compact}
 <label for="loading-dose-slider">Loading Dose (mg):</label>
 <input type="range" id="loading-dose-slider" min="0" max="3000" value="250" step="50">
@@ -109,23 +115,32 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <span id="duration-value">10</span> days
 :::
 
-::: {.control-group-compact}
-<label for="formulation-select">Formulation:</label>
-<select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
-<option value="slow">Slow (Extended Release)</option>
-<option value="medium" selected>Medium (Standard Oral)</option>
-<option value="fast">Fast (IV Bolus)</option>
-</select>
-<span id="formulation-value">Medium (Standard Oral)</span>
 :::
+
 :::
+
 :::
+
 :::
+
 
 ::: {.content-section}
 ## Subject Data
 
 ::: {.panel-tabset}
+
+
+### Real-time Plot
+
+::: {#concentration-plot}
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="1920" height="1080"></canvas>
+</div>
+
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+
+:::
 
 ### Reference Lines
 ::: {.reference-properties}
@@ -186,28 +201,46 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 #### Key Pharmacokinetic Concepts
 
-This simulation demonstrates several important PK concepts:
+**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
 
-- **Patient-specific clearance**: Based on creatinine clearance and fraction renally cleared
-- **Loading dose strategy**: Higher initial dose to rapidly achieve therapeutic concentrations
-- **Multiple dosing**: Accumulation toward steady-state over multiple doses
-- **PK/PD indices**: AUC/MIC ratios and time above MIC for efficacy prediction
+**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+
+**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
+
+**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
+
+**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+
+**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
 
 #### Blood Sampling Strategy
 
-The simulation shows concentrations sampled every hour to provide detailed PK profiles. In clinical practice:
+In this simulation, blood samples are collected every 1 hour to provide a detailed view of how pharmacokinetic data is collected in clinical practice. This sampling frequency allows us to:
 
-- **Trough levels**: Sampled just before the next dose
-- **Peak levels**: Sampled 1-2 hours after dose administration
-- **Therapeutic drug monitoring**: Used to optimize dosing for efficacy and safety
+- Capture both peak and trough concentrations
+- Observe the full absorption and elimination phases
+- Reduce the burden on patients compared to more frequent sampling
+- Provide sufficient data points for pharmacokinetic analysis
 
 #### Simplified Pharmacokinetic Model
 
-This simulation uses a one-compartment model with:
+This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
 
-- **First-order absorption**: Rate depends on amount remaining
-- **Linear elimination**: Constant clearance regardless of concentration  
-- **Patient-specific parameters**: Adjusted for demographics and organ function
+**Essential PK Parameters:**
+- **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation
+- **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight
+- **Bioavailability (F)**: Fraction of dose reaching systemic circulation
+
+**Patient-Specific Factors:**
+- **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
+- **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
+
+**Dosing Parameters:**
+- **Dose**: Amount of drug administered per dose
+- **Dosing Interval**: Time between doses
+- **Treatment Duration**: Total length of treatment
+
+This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
 
 ### Knowledge Check Quiz
 
@@ -251,32 +284,9 @@ Test your understanding by calculating the following parameters for the current 
 
 :::
 
-:::
 
-:::
-
-::: {.plot-section}
-### Real-time Plot
-
-::: {#concentration-plot}
-<div id="chart-fallback">
-  <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="800" height="600"></canvas>
-</div>
-:::
-
-::: {.simulation-buttons}
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-<button id="download-btn" onclick="downloadData()">Download Data</button>
-:::
-:::
-
-:::
-
-:::
 
 <style>
-/* Full-width single column layout */
 body {
   margin: 0;
   padding: 0;
@@ -323,42 +333,6 @@ main.content {
 }
 
 .content-section p, .content-section ul {
-  font-size: 0.85em;
-  line-height: 1.4;
-  color: #555;
-}
-
-/* Legacy layout classes - no longer used but kept for compatibility */
-.main-layout {
-  /* Removed grid layout */
-}
-
-.sidebar-left {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 8px;
-  border-right: 2px solid #dee2e6;
-  height: fit-content;
-  position: sticky;
-  top: 20px;
-}
-
-.sidebar-left h2 {
-  margin-top: 0;
-  color: #495057;
-  font-size: 1.2em;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 10px;
-}
-
-.sidebar-left h3 {
-  color: #6c757d;
-  font-size: 1.0em;
-  margin-top: 25px;
-  margin-bottom: 10px;
-}
-
-.sidebar-left p, .sidebar-left ul {
   font-size: 0.85em;
   line-height: 1.4;
   color: #555;
@@ -472,7 +446,7 @@ main.content {
 .controls-column-2,
 .controls-column-3 {
   background-color: #ffffff;
-  padding: 15px;
+  padding: 8px;
   border-radius: 8px;
   border: 1px solid #dee2e6;
 }
@@ -495,37 +469,16 @@ main.content {
   padding-bottom: 5px;
 }
 
-/* Right plot and data - Educational Content */
-.plot-data-right {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #dee2e6;
-}
-
-.plot-data-right h2 {
-  margin-top: 0;
-  color: #495057;
-  font-size: 1.2em;
-  border-bottom: 2px solid #6c757d;
-  padding-bottom: 10px;
-}
-
-.plot-data-right h3 {
-  color: #6c757d;
-  font-size: 1.0em;
-  margin-top: 25px;
-  margin-bottom: 10px;
-}
-
-.plot-data-right p, .plot-data-right ul {
-  font-size: 0.85em;
-  line-height: 1.4;
-  color: #555;
-}
-
-/* Responsive layout */
+/* Responsive design for full-width layout */
 @media (max-width: 1200px) {
+  .main-content {
+    padding: 0 10px;
+  }
+  .content-section {
+    padding: 15px;
+  }
+  
+  /* Stack layout vertically on smaller screens */
   .main-layout {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -541,6 +494,7 @@ main.content {
     grid-template-columns: 1fr;
   }
 }
+
 .patient-generator {
   background-color: #fff;
   border: 2px solid #28a745;
@@ -620,11 +574,22 @@ main.content {
 .control-group-compact {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding: 8px;
+  gap: 0px; /* Remove vertical gap between elements */
+  padding: 4px; /* Less padding for a narrower look */
   background-color: #fff;
   border-radius: 4px;
   border: 1px solid #dee2e6;
+}
+
+/* Make sure the value span has minimal vertical margin */
+.control-group-compact span {
+  font-size: 0.9em;
+  color: #6c757d;
+  text-align: center;
+  margin-bottom: 0;       /* Remove extra space below */
+  margin-top: 1px;        /* Minimal space above */
+  line-height: 1.1;       /* Tighter vertical spacing */
+  padding: 0;             /* Remove any default padding */
 }
 
 .control-group-compact label {
@@ -637,12 +602,6 @@ main.content {
 .control-group-compact input[type="range"] {
   width: 100%;
   margin: 2px 0;
-}
-
-.control-group-compact span {
-  font-size: 0.9em;
-  color: #6c757d;
-  text-align: center;
 }
 
 .control-group select {
@@ -1736,6 +1695,7 @@ document.addEventListener('DOMContentLoaded', function() {
 :::
 
 :::
+
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
