@@ -3,6 +3,1675 @@ title: "Population Pharmacokinetics (PopPK)"
 format: html
 ---
 
+
+This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
+
+::::::::::::::::::::::::::::::::::::: content-section
+:::::::::::::::::::::: main-layout
+:::::::: controls-column-1
+### Patient Generator
+
+::::: patient-generator
+:::: {style="margin-bottom: 8px;"}
+<button id="generate-patient-btn" onclick="generateRandomPatient()">
+
+New Patient
+
+</button>
+
+::: {#patient-info style="margin-top: 8px;"}
+<ul style="list-style-type: none; padding-left: 0;">
+
+<li><strong>Age:</strong> <u>[-]{#patient-age}</u> years</li>
+
+<li><strong>Sex:</strong> <u>[-]{#patient-sex}</u></li>
+
+<li><strong>Height:</strong> <u>[-]{#patient-height}</u> cm</li>
+
+<li><strong>Weight:</strong> <u>[-]{#patient-weight}</u> kg</li>
+
+<li><strong>Creatinine:</strong> <u>[-]{#patient-creatinine}</u> mg/dL</li>
+
+</ul>
+:::
+::::
+:::::
+
+:::: drug-name-section
+::: {style="margin-bottom: 2px;"}
+<label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label> <input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+:::
+
+<label for="formulation-select">Formulation:</label> <select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;"> <option value="slow">Slow (Extended Release)</option> <option value="medium" selected>Medium (Standard Oral)</option> <option value="fast">Fast (IV Bolus)</option> </select> [Medium (Standard Oral)]{#formulation-value}
+::::
+::::::::
+
+::::::::: controls-column-2
+### PK Parameters
+
+:::::::: pk-properties-compact
+::: {.small-buttons style="margin-top: 2px;"}
+<button id="reset-btn" onclick="resetSimulation()" class="small-btn">
+
+Reset Parameters
+
+</button>
+
+<button id="random-btn" onclick="randomizeParameters()" class="small-btn">
+
+Random Simulation
+
+</button>
+:::
+
+::: control-group-compact
+<label for="bioavailability-slider">Bioavailability (F):</label> <input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05"> [0.8]{#bioavailability-value}
+:::
+
+::: control-group-compact
+<label for="fraction-unbound-slider">Fraction Unbound:</label> <input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.1" step="0.01"> [0.1]{#fraction-unbound-value}
+:::
+
+::: control-group-compact
+<label for="volume-slider">Volume of Distribution (L/kg):</label> <input type="range" id="volume-slider" min="0.1" max="10" value="0.7" step="0.1"> [0.7]{#volume-value} L/kg
+:::
+
+::: control-group-compact
+<label for="f-renal-slider">Fraction Renally Cleared:</label> <input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05"> [0.8]{#f-renal-value}
+:::
+::::::::
+:::::::::
+
+:::::::: controls-column-3
+### Dosing
+
+::::::: pk-properties-compact
+<button id="download-btn" onclick="downloadData()">
+
+Download Data
+
+</button>
+
+::: control-group-compact
+<label for="loading-dose-slider">Loading Dose (mg):</label> <input type="range" id="loading-dose-slider" min="0" max="3000" value="250" step="50"> [0]{#loading-dose-value} mg
+:::
+
+::: control-group-compact
+<label for="dose-slider">Dose (mg):</label> <input type="range" id="dose-slider" min="0" max="3000" value="250" step="50"> [250]{#dose-value} mg
+:::
+
+::: control-group-compact
+<label for="interval-slider">Dosing Interval (hrs):</label> <input type="range" id="interval-slider" min="1" max="48" value="24" step="1"> [24]{#interval-value} hrs
+:::
+
+::: control-group-compact
+<label for="duration-slider">Treatment Duration (days):</label> <input type="range" id="duration-slider" min="1" max="14" value="10" step="1"> [10]{#duration-value} days
+:::
+:::::::
+::::::::
+::::::::::::::::::::::
+
+:::::::::::::::: panel-tabset
+### Plot
+
+:::: {#concentration-plot}
+::: {#chart-fallback}
+<p>Loading interactive chart...</p>
+
+<canvas id="pk-chart" width="1920" height="1080">
+
+</canvas>
+:::
+
+<button id="scale-toggle-btn" onclick="toggleScale()">
+
+Switch to Linear
+
+</button>
+::::
+
+### Reference Lines
+
+::::: reference-properties
+::: control-group
+<label for="toxicity-slider">Toxicity Threshold (mg/L):</label> <input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1"> [20]{#toxicity-value} mg/L
+:::
+
+::: control-group
+<label for="efficacy-slider">Efficacy Threshold (mg/L):</label> <input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5"> [5]{#efficacy-value} mg/L
+:::
+:::::
+
+### Data
+
+::: {#subject-table}
+<table>
+<thead>
+<tr>
+<th><p>Subject</p></th>
+<th><p>Drug Name</p></th>
+<th><p>Age</p></th>
+<th><p>Sex</p></th>
+<th><p>Ht (cm)</p></th>
+<th><p>Wt (kg)</p></th>
+<th><p>BMI</p></th>
+<th><p>IBW (kg)</p></th>
+<th><p>Adj IBW (kg)</p></th>
+<th><p>Creatinine (mg/dL)</p></th>
+<th><p>CrCl (mL/min)</p></th>
+<th><p>Loading Dose (mg)</p></th>
+<th><p>Dose (mg)</p></th>
+<th><p>Interval (hrs)</p></th>
+<th><p>Duration (days)</p></th>
+<th><p>Clearance (L/h)</p></th>
+<th><p>Volume (L)</p></th>
+<th><p>Fraction Unbound</p></th>
+<th><p>V<sub>ss,u</sub> (L)</p></th>
+<th><p>Bioavailability</p></th>
+<th><p>Half-life (h)</p></th>
+<th><p>C<sub>ss,avg</sub></p></th>
+<th><p>AUC<sub>0-24h</sub></p></th>
+<th><p>C<sub>max</sub></p></th>
+<th><p>AUC/Efficacy</p></th>
+<th><p>C<sub>max</sub>/Efficacy</p></th>
+<th><p>Time&gt;Efficacy (%)</p></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+:::
+
+### Education
+
+#### Key Pharmacokinetic Concepts
+
+**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
+
+**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+
+**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
+
+**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
+
+**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+
+**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
+
+#### Blood Sampling Strategy
+
+In this simulation, blood samples are collected every 1 hour to provide a detailed view of how pharmacokinetic data is collected in clinical practice. This sampling frequency allows us to:
+
+-   Capture both peak and trough concentrations
+-   Observe the full absorption and elimination phases
+-   Reduce the burden on patients compared to more frequent sampling
+-   Provide sufficient data points for pharmacokinetic analysis
+
+#### Simplified Pharmacokinetic Model
+
+This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
+
+**Essential PK Parameters:** - **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation - **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight - **Bioavailability (F)**: Fraction of dose reaching systemic circulation
+
+**Patient-Specific Factors:** - **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = \[(140 - age) × weight × (0.85 if female)\] / (72 × serum creatinine) - **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
+
+**Dosing Parameters:** - **Dose**: Amount of drug administered per dose - **Dosing Interval**: Time between doses - **Treatment Duration**: Total length of treatment
+
+This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
+
+### Quiz
+
+Test your understanding by calculating the following parameters for the current patient:
+
+::::::::: quiz-section
+::: quiz-question
+**1. Creatinine Clearance (mL/min):** <input type="number" id="quiz-crcl" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+:::
+
+::: quiz-question
+**2. Adjusted Body Weight (kg):** <input type="number" id="quiz-adjbw" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+:::
+
+::: quiz-question
+**3. Volume of Distribution of Unbound Drug (L):** <input type="number" id="quiz-vss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+:::
+
+::: quiz-question
+**4. Time to Steady State - tss (hours):** <input type="number" id="quiz-tss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+:::
+
+::: quiz-question
+**5. Average Steady-State Concentration - Css,avg (mg/L):** <input type="number" id="quiz-cssavg" placeholder="Enter your calculation" step="0.01" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+:::
+
+::: {style="text-align: center; margin: 15px 0;"}
+<button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">
+
+Check Answers
+
+</button>
+
+<button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">
+
+Reset Quiz
+
+</button>
+:::
+:::::::::
+
+```{=html}
+<style>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  max-width: none;
+  width: 100vw;
+  margin: 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Override Quarto default max-width */
+main.content {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* Section styling */
+.content-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.content-section h2 {
+  margin-top: 0;
+  color: #495057;
+  font-size: 1.2em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.content-section h3 {
+  color: #6c757d;
+  font-size: 1.0em;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.content-section p, .content-section ul {
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: #555;
+}
+
+/* Quiz styles */
+.quiz-section {
+  background-color: #fff;
+  border: 2px solid #17a2b8;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.quiz-question {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.quiz-feedback {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
+.quiz-feedback.correct {
+  color: #28a745;
+}
+
+.quiz-feedback.incorrect {
+  color: #dc3545;
+}
+
+.drug-name-section {
+  background-color: #fff;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Middle controls - Plot and Subject Data */
+.controls-middle {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  height: fit-content;
+}
+
+.controls-middle h2 {
+  margin-top: 0;
+  color: #495057;
+  font-size: 1.2em;
+  border-bottom: 2px solid #28a745;
+  padding-bottom: 10px;
+}
+
+/* 3-column controls grid */
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Main layout for Controls, Content, and Plot Sidebar */
+.main-layout {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.5fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.controls-section {
+  min-width: 0; /* Prevent grid overflow */
+}
+
+.plot-section {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  min-width: 0; /* Prevent grid overflow */
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.plot-section h3 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 1.1em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+#concentration-plot {
+  width: 100%;
+  height: auto;
+}
+
+#pk-chart {
+  max-width: 100%;
+  height: auto;
+}
+
+.controls-column-1,
+.controls-column-2,
+.controls-column-3 {
+  background-color: #ffffff;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.controls-column-1 h3,
+.controls-column-2 h3,
+.controls-column-3 h3 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 1.1em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+.controls-middle h3 {
+  margin: 20px 0 10px 0;
+  color: #495057;
+  font-size: 1.1em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+/* Responsive design for full-width layout */
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 0 10px;
+  }
+  .content-section {
+    padding: 15px;
+  }
+  
+  /* Stack layout vertically on smaller screens */
+  .main-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .controls-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.patient-generator {
+  background-color: #fff;
+  border: 2px solid #28a745;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.patient-generator button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.patient-generator button:hover {
+  background-color: #218838;
+}
+
+.small-buttons {
+  display: flex;
+  flex-direction: column; /* Change direction to column to stack buttons */
+  gap: 5px; /* Adjust the gap between buttons */
+  justify-content: flex-start; /* Align buttons to the start */
+}
+
+.small-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  flex: 1;
+}
+
+.small-btn:hover {
+  background-color: #0056b3;
+}
+
+#reset-btn.small-btn {
+  background-color: #6c757d;
+}
+
+#reset-btn.small-btn:hover {
+  background-color: #545b62;
+}
+
+#random-btn.small-btn {
+  background-color: #17a2b8;
+}
+
+#random-btn.small-btn:hover {
+  background-color: #138496;
+}
+
+#patient-info ul {
+  margin-top: 15px;
+}
+
+#patient-info li {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.pk-properties-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.control-group-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 0px; /* Remove vertical gap between elements */
+  padding: 4px; /* Less padding for a narrower look */
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
+
+/* Make sure the value span has minimal vertical margin */
+.control-group-compact span {
+  font-size: 0.9em;
+  color: #6c757d;
+  text-align: center;
+  margin-bottom: 0;       /* Remove extra space below */
+  margin-top: 1px;        /* Minimal space above */
+  line-height: 1.1;       /* Tighter vertical spacing */
+  padding: 0;             /* Remove any default padding */
+}
+
+.control-group-compact label {
+  font-weight: bold;
+  color: #495057;
+  font-size: 0.9em;
+  margin-bottom: 2px;
+}
+
+.control-group-compact input[type="range"] {
+  width: 100%;
+  margin: 2px 0;
+}
+
+.control-group select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.control-group label {
+  font-weight: bold;
+  color: #495057;
+}
+
+.control-group input[type="range"] {
+  width: 100%;
+}
+
+.reference-properties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.simulation-buttons {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.simulation-buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.simulation-buttons button:hover {
+  background-color: #0056b3;
+}
+
+#scale-toggle-btn {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#scale-toggle-btn:hover {
+  background-color: #218838;
+}
+
+.table {
+  font-size: 0.8em;
+  white-space: nowrap;
+}
+
+.table th, .table td {
+  padding: 0.3rem 0.2rem;
+  text-align: center;
+  vertical-align: top;
+  font-size: 0.75em;
+  min-width: 60px;
+}
+
+.table th {
+  font-size: 0.7em;
+  background-color: #f8f9fa;
+  font-weight: bold;
+  line-height: 1.1;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+#subject-table {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 1rem 0;
+}
+
+#pk-table {
+  width: 100%;
+  min-width: 1200px;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+#pk-table th {
+  white-space: normal;
+  word-break: break-word;
+  max-width: 80px;
+}
+
+#pk-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
+```
+
+```{=html}
+<script>
+// Global variables
+let subjects = [];
+let timePoints = [];
+let canvas = null;
+let ctx = null;
+let isLogScale = true; // Track current scale type
+
+// Patient data
+let currentPatient = {
+  age: 35,
+  sex: 'Male',
+  height: 170,
+  weight: 70,
+  creatinine: 1.0
+};
+
+// PK Model parameters
+const baseParams = {
+  clearance: 5.0,      // L/h
+  volume: 0.7,         // L/kg (drug-specific volume per kg)
+  dose: 250,           // mg
+  bioavailability: 0.8,
+  interval: 24,        // dosing interval (h)
+  numDoses: 10
+};
+
+// Get absorption rate constant based on formulation
+function getAbsorptionRate(formulation) {
+  const absorptionRates = {
+    'slow': 0.3,    // Extended release formulation (slow absorption)
+    'medium': 1.2,  // Standard oral formulation (medium absorption)  
+    'fast': 10.0    // IV bolus (very fast absorption, effectively instantaneous)
+  };
+  return absorptionRates[formulation] || 1.2; // default to medium
+}
+
+// Initialize the simulation
+function initializeSimulation() {
+  // Generate time points (0 to 240 hours, every 1 hour)
+  timePoints = [];
+  for (let t = 0; t <= 240; t += 1) {
+    timePoints.push(t);
+  }
+  
+  // Initialize canvas
+  canvas = document.getElementById('pk-chart');
+  if (canvas) {
+    ctx = canvas.getContext('2d');
+    canvas.width = 800;
+    canvas.height = 400;
+  }
+  // Get slider elements
+const loadingDoseSlider = document.getElementById('loading-dose-slider');
+const doseSlider = document.getElementById('dose-slider');
+const loadingDoseValue = document.getElementById('loading-dose-value');
+const doseValue = document.getElementById('dose-value');
+
+// Update Loading Dose if Dose increases
+doseSlider.addEventListener('input', function () {
+  const dose = parseFloat(doseSlider.value);
+  const loadingDose = parseFloat(loadingDoseSlider.value);
+
+  doseValue.textContent = dose;
+
+  if (loadingDose < dose) {
+    loadingDoseSlider.value = dose;
+    loadingDoseValue.textContent = dose;
+  }
+  runSimulation(); // Update simulation if needed
+});
+
+// Optionally, update Loading Dose display
+loadingDoseSlider.addEventListener('input', function () {
+  const loadingDose = parseFloat(loadingDoseSlider.value);
+  const dose = parseFloat(doseSlider.value);
+
+  // Ensure Loading Dose is not less than Dose
+  if (loadingDose < dose) {
+    loadingDoseSlider.value = dose;
+    loadingDoseValue.textContent = dose;
+  } else {
+    loadingDoseValue.textContent = loadingDose;
+  }
+  runSimulation();
+});
+
+  // Run initial simulation
+  runSimulation();
+}
+
+// Generate subjects with patient-specific parameters
+function generateSubjects() {
+  // Base PK parameters from sliders
+  const baseClearance = 5.0; // Fixed base clearance (L/h)
+  const fRenal = parseFloat(document.getElementById('f-renal-slider')?.value || 0.8);
+  const baseVolumePerKg = parseFloat(document.getElementById('volume-slider')?.value || 0.7);
+  const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8);
+  const fractionUnbound = parseFloat(document.getElementById('fraction-unbound-slider')?.value || 0.1);
+  
+  // Calculate patient-specific clearance using new formula
+  const { age, sex, height, weight, creatinine } = currentPatient;
+  
+  // Cockcroft-Gault equation for creatinine clearance (mL/min)
+  // CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
+  let creatinineClearance = ((140 - age) * weight) / (72 * creatinine);
+  if (sex === 'Female') {
+    creatinineClearance *= 0.85;
+  }
+  
+  // Store creatinine clearance in mL/min for display purposes
+  const creatinineClearanceMlMin = creatinineClearance;
+  
+  // Convert creatinine clearance from mL/min to L/h for PK calculations
+  creatinineClearance = creatinineClearance * 0.06; // mL/min to L/h conversion
+  
+  // Calculate clearance using new formula: clearance_patient = base_clearance × (1 - f_renal) + base_clearance × f_renal × (CrCl_patient / CrCl_normal)
+  // Assuming a typical creatinine clearance of ~120 mL/min (7.2 L/h) for normalization
+  const normalCrCl = 7.2; // L/h
+  const clearance = baseClearance * (1 - fRenal) + baseClearance * fRenal * (creatinineClearance / normalCrCl);
+  
+  // Calculate volume of distribution using drug-specific L/kg value multiplied by patient weight
+  const volume = baseVolumePerKg * weight;
+  
+  // Calculate volume of distribution at steady state of unbound drug (Vss,u)
+  const vssUnbound = fractionUnbound * volume;
+  
+  // Calculate BMI, IBW, and Adjusted IBW
+  const bmi = weight / Math.pow(height / 100, 2); // BMI = weight(kg) / height(m)^2
+  
+  // Ideal Body Weight (IBW) calculations
+  // Males: IBW = 50 + 2.3 × (height in inches - 60)
+  // Females: IBW = 45.5 + 2.3 × (height in inches - 60)
+  const heightInches = height / 2.54; // Convert cm to inches
+  let ibw;
+  if (sex === 'Male') {
+    ibw = 50 + 2.3 * (heightInches - 60);
+  } else {
+    ibw = 45.5 + 2.3 * (heightInches - 60);
+  }
+  ibw = Math.max(ibw, 40); // Minimum IBW of 40 kg
+  
+  // Adjusted IBW = IBW + 0.4 × (actual weight - IBW) if actual weight > IBW
+  let adjustedIbw;
+  if (weight > ibw) {
+    adjustedIbw = ibw + 0.4 * (weight - ibw);
+  } else {
+    adjustedIbw = weight; // Use actual weight if it's less than or equal to IBW
+  }
+  
+  // Dosing parameters
+  const drugName = document.getElementById('drug-name-input')?.value || '';
+  const loadingDose = parseFloat(document.getElementById('loading-dose-slider')?.value || 250);
+  const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
+  const interval = parseFloat(document.getElementById('interval-slider')?.value || 24);
+  const duration = parseFloat(document.getElementById('duration-slider')?.value || 10);
+  
+  subjects = [];
+  
+  // Calculate number of doses based on duration
+  const numDoses = Math.ceil((duration * 24) / interval);
+  
+  // Calculate half-life using unbound volume
+  const halfLife = 0.693 * vssUnbound / clearance;
+  
+  subjects.push({
+    id: 1,
+    // Drug information
+    drugName: drugName,
+    // Patient demographics
+    age: age,
+    sex: sex,
+    height: height,
+    weight: weight,
+    bmi: bmi,
+    ibw: ibw,
+    adjustedIbw: adjustedIbw,
+    creatinine: creatinine,
+    creatinineClearance: creatinineClearance,
+    creatinineClearanceMlMin: creatinineClearanceMlMin,
+    // Core PK parameters (patient-adjusted)
+    loadingDose: loadingDose,
+    dose: dose,
+    clearance: clearance,
+    volume: volume,
+    bioavailability: bioavailability,
+    fractionUnbound: fractionUnbound,
+    vssUnbound: vssUnbound,
+    // Dosing parameters
+    interval: interval,
+    duration: duration,
+    numDoses: numDoses,
+    // Calculated parameters
+    halfLife: halfLife,
+    concentrations: [],
+    auc: 0,
+    cmax: 0,
+    cssAvg: 0,
+    aucEfficacyRatio: 0,
+    cmaxEfficacyRatio: 0,
+    timeAboveEfficacy: 0
+  });
+}
+
+// Box-Muller transformation for normal random numbers
+function randomNormal() {
+  let u = 0, v = 0;
+  while(u === 0) u = Math.random();
+  while(v === 0) v = Math.random();
+  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+
+// Generate random patient with demographics
+function generateRandomPatient() {
+  // Generate random values
+  const age = Math.floor(Math.random() * (90 - 18 + 1)) + 18;
+  const sex = Math.random() < 0.5 ? "Male" : "Female";
+  const height = Math.floor(Math.random() * (200 - 140 + 1)) + 140;
+  const weight = Math.floor(Math.random() * (140 - 40 + 1)) + 40;
+  // Generate random creatinine with bias toward values <3
+  // Use weighted random generation: 70% chance for values 0.5-3, 30% chance for values 3-10
+  let creatinine;
+  if (Math.random() < 0.7) {
+    // 70% chance: values between 0.5 and 3.0
+    creatinine = (Math.random() * (3.0 - 0.5) + 0.5).toFixed(2);
+  } else {
+    // 30% chance: values between 3.0 and 10.0
+    creatinine = (Math.random() * (10.0 - 3.0) + 3.0).toFixed(2);
+  }
+
+  // Update global patient data
+  currentPatient = { age, sex, height, weight, creatinine: parseFloat(creatinine) };
+
+  // Update the UI
+  document.getElementById('patient-age').innerText = age;
+  document.getElementById('patient-sex').innerText = sex;
+  document.getElementById('patient-height').innerText = height;
+  document.getElementById('patient-weight').innerText = weight;
+  document.getElementById('patient-creatinine').innerText = creatinine;
+
+  // Store in localStorage
+  localStorage.setItem('currentPatient', JSON.stringify(currentPatient));
+  
+  // Recalculate and update simulation with new patient-specific parameters
+  runSimulation();
+}
+
+// One-compartment PK model with first-order absorption and multiple dosing
+function calculateConcentration(subject, time) {
+  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose } = subject;
+  const ke = clearance / vssUnbound;  // elimination rate constant using unbound volume
+  
+  // Get absorption rate based on selected formulation
+  const formulation = document.getElementById('formulation-select')?.value || 'medium';
+  const ka = getAbsorptionRate(formulation);
+  
+  const tau = interval;
+  
+  let concentration = 0;
+
+  // Apply loading dose at time 0
+  if (loadingDose > 0 && time >= 0) {
+    const conc = (loadingDose * bioavailability * ka / vssUnbound) *
+                 (Math.exp(-ke * time) - Math.exp(-ka * time)) /
+                 (ka - ke);
+    concentration += conc;
+  }
+  
+  // Apply maintenance doses from the second dose onward
+  for (let n = 1; n < numDoses; n++) {  // <-- n = 1 starts at second dose
+    const doseTime = n * tau;
+    if (time >= doseTime) {
+      const timeSinceDose = time - doseTime;
+      const conc = (dose * bioavailability * ka / vssUnbound) *
+                   (Math.exp(-ke * timeSinceDose) - Math.exp(-ka * timeSinceDose)) /
+                   (ka - ke);
+      concentration += conc;
+    }
+  }
+  
+  return Math.max(0, concentration);
+}
+
+// Run the simulation
+function runSimulation() {
+  generateSubjects();
+  
+  // Get efficacy threshold for calculations
+  const efficacyThreshold = parseFloat(document.getElementById('efficacy-slider')?.value || 5);
+  
+  // Calculate concentrations for each subject
+  subjects.forEach(subject => {
+    subject.concentrations = timePoints.map(time => calculateConcentration(subject, time));
+    
+    // Calculate AUC for first 24 hours (steady-state)
+    const startIdx = timePoints.findIndex(t => t >= 216); // Day 9 start
+    const endIdx = timePoints.findIndex(t => t >= 240);   // Day 10 end
+    if (startIdx !== -1 && endIdx !== -1) {
+      subject.auc = trapezoidalRule(
+        timePoints.slice(startIdx, endIdx), 
+        subject.concentrations.slice(startIdx, endIdx)
+      );
+      
+      // Calculate Css,avg (average steady-state concentration)
+      const steadyStateConcentrations = subject.concentrations.slice(startIdx, endIdx);
+      subject.cssAvg = steadyStateConcentrations.reduce((sum, conc) => sum + conc, 0) / steadyStateConcentrations.length;
+      
+      // Calculate time above efficacy as percentage
+      const timePointsAboveEfficacy = steadyStateConcentrations.filter(conc => conc >= efficacyThreshold).length;
+      subject.timeAboveEfficacy = (timePointsAboveEfficacy / steadyStateConcentrations.length) * 100;
+    }
+    
+    // Find Cmax in steady-state period
+    if (startIdx !== -1 && endIdx !== -1) {
+      subject.cmax = Math.max(...subject.concentrations.slice(startIdx, endIdx));
+    }
+    
+    // Calculate efficacy ratios
+    if (efficacyThreshold > 0) {
+      subject.aucEfficacyRatio = subject.auc / efficacyThreshold;
+      subject.cmaxEfficacyRatio = subject.cmax / efficacyThreshold;
+    } else {
+      subject.aucEfficacyRatio = 0;
+      subject.cmaxEfficacyRatio = 0;
+    }
+  });
+  
+  // Update chart and table
+  drawChart();
+  updateTable();
+}
+
+// Trapezoidal rule for AUC calculation
+function trapezoidalRule(timeArray, concArray) {
+  let auc = 0;
+  for (let i = 1; i < timeArray.length; i++) {
+    const dt = timeArray[i] - timeArray[i-1];
+    const avgConc = (concArray[i] + concArray[i-1]) / 2;
+    auc += dt * avgConc;
+  }
+  return auc;
+}
+
+// Simple canvas-based chart drawing
+function drawChart() {
+  if (!ctx || !canvas) return;
+  
+  // Hide the loading message and show the canvas
+  const chartFallback = document.getElementById('chart-fallback');
+  if (chartFallback) {
+    const loadingText = chartFallback.querySelector('p');
+    if (loadingText) {
+      loadingText.style.display = 'none';
+    }
+    canvas.style.display = 'block';
+  }
+  
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Chart dimensions
+  const margin = { top: 40, right: 40, bottom: 60, left: 80 };
+  const width = canvas.width - margin.left - margin.right;
+  const height = canvas.height - margin.top - margin.bottom;
+  
+  // Find scales
+  const maxTime = Math.max(...timePoints);
+  const rawMaxConc = Math.max(...subjects.flatMap(s => s.concentrations));
+  
+  // Get reference line values for dynamic scaling
+  const toxicityThreshold = parseFloat(document.getElementById('toxicity-slider')?.value || 20);
+  const efficacyThreshold = parseFloat(document.getElementById('efficacy-slider')?.value || 5);
+  const maxReferenceValue = Math.max(toxicityThreshold, efficacyThreshold);
+  
+  let minConc, maxConc, valueToY, gridValues, axisLabel;
+  
+  if (isLogScale) {
+    // Log scale y-axis range: dynamically scaled to 20% above the greater reference line
+    minConc = 0.1;
+    maxConc = Math.max(maxReferenceValue * 1.2, 10); // Minimum of 10 mg/L for reasonable scale
+    axisLabel = 'Concentration (mg/L, log scale)';
+    
+    // Helper functions for log scale
+    const logScale = (value) => Math.log10(Math.max(value, minConc));
+    valueToY = (value) => margin.top + height - ((logScale(value) - logScale(minConc)) / (logScale(maxConc) - logScale(minConc))) * height;
+    
+    // Generate logarithmic grid values based on the scale
+    gridValues = [];
+    let currentValue = 0.1;
+    while (currentValue <= maxConc) {
+      gridValues.push(currentValue);
+      if (currentValue < 1) {
+        currentValue = Math.round((currentValue + 0.1) * 10) / 10;
+      } else if (currentValue < 10) {
+        currentValue += 1;
+      } else if (currentValue < 100) {
+        currentValue += 10;
+      } else {
+        currentValue += 100;
+      }
+    }
+  } else {
+    // Linear scale y-axis range: dynamically scaled to 20% above the greater reference line
+    minConc = 0;
+    maxConc = Math.max(maxReferenceValue * 1.2, 10); // Minimum of 10 mg/L for reasonable scale
+    axisLabel = 'Concentration (mg/L)';
+    
+    // Helper function for linear scale
+    valueToY = (value) => margin.top + height - (value / maxConc) * height;
+    
+    // Generate linear grid values based on the scale
+    const interval = Math.ceil(maxConc / 10);
+    gridValues = [];
+    for (let i = 0; i <= Math.ceil(maxConc / interval); i++) {
+      gridValues.push(i * interval);
+    }
+  }
+  
+  // Draw background
+  ctx.fillStyle = '#f8f9fa';
+  ctx.fillRect(margin.left, margin.top, width, height);
+  
+  // Draw grid lines
+  ctx.strokeStyle = '#e9ecef';
+  ctx.lineWidth = 1;
+  
+  // Vertical grid lines (time)
+  for (let i = 0; i <= 10; i++) {
+    const x = margin.left + (i / 10) * width;
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, margin.top + height);
+    ctx.stroke();
+  }
+  
+  // Horizontal grid lines
+  gridValues.forEach(tick => {
+    if (tick >= minConc && tick <= maxConc) {
+      const y = valueToY(tick);
+      ctx.beginPath();
+      ctx.moveTo(margin.left, y);
+      ctx.lineTo(margin.left + width, y);
+      ctx.stroke();
+    }
+  });
+  
+  // Draw axes
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(margin.left, margin.top);
+  ctx.lineTo(margin.left, margin.top + height);
+  ctx.lineTo(margin.left + width, margin.top + height);
+  ctx.stroke();
+  
+  // Draw reference lines (toxicity and efficacy thresholds)
+  if (toxicityThreshold > 0 && toxicityThreshold >= minConc && toxicityThreshold <= maxConc) {
+    const toxicityY = valueToY(toxicityThreshold);
+    ctx.strokeStyle = '#dc3545'; // Red for toxicity
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]); // Dashed line
+    ctx.beginPath();
+    ctx.moveTo(margin.left, toxicityY);
+    ctx.lineTo(margin.left + width, toxicityY);
+    ctx.stroke();
+    
+    // Label for toxicity line
+    ctx.fillStyle = '#dc3545';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Toxicity (${toxicityThreshold} mg/L)`, margin.left + 10, toxicityY - 5);
+  }
+  
+  if (efficacyThreshold > 0 && efficacyThreshold >= minConc && efficacyThreshold <= maxConc) {
+    const efficacyY = valueToY(efficacyThreshold);
+    ctx.strokeStyle = '#28a745'; // Green for efficacy
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]); // Dashed line
+    ctx.beginPath();
+    ctx.moveTo(margin.left, efficacyY);
+    ctx.lineTo(margin.left + width, efficacyY);
+    ctx.stroke();
+    
+    // Label for efficacy line
+    ctx.fillStyle = '#28a745';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Efficacy (${efficacyThreshold} mg/L)`, margin.left + 10, efficacyY - 5);
+  }
+  
+  // Reset line dash for other drawings
+  ctx.setLineDash([]);
+  
+  // Draw concentration profile for single subject
+  const singleSubjectColor = '#007bff'; // Blue color for single subject
+  
+  subjects.forEach((subject, subjectIndex) => {
+    ctx.strokeStyle = singleSubjectColor;
+    ctx.lineWidth = 3; // Thicker line for better visibility
+    ctx.beginPath();
+    
+    let firstPoint = true;
+    for (let i = 0; i < timePoints.length; i++) {
+      const x = margin.left + (timePoints[i] / maxTime) * width;
+      const y = valueToY(subject.concentrations[i]);
+      
+      if (firstPoint) {
+        ctx.moveTo(x, y);
+        firstPoint = false;
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+    ctx.stroke();
+    
+    // Draw data points to show 1-hour sampling
+    ctx.fillStyle = singleSubjectColor;
+    for (let i = 0; i < timePoints.length; i++) {
+      const x = margin.left + (timePoints[i] / maxTime) * width;
+      const y = valueToY(subject.concentrations[i]);
+      
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  });
+  
+  // Add labels
+  ctx.fillStyle = '#000';
+  ctx.font = '14px Arial';
+  
+  // X-axis label
+  ctx.textAlign = 'center';
+  ctx.fillText('Time (hours)', margin.left + width/2, canvas.height - 10);
+  
+  // Y-axis label
+  ctx.save();
+  ctx.translate(20, margin.top + height/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.textAlign = 'center';
+  ctx.fillText(axisLabel, 0, 0);
+  ctx.restore();
+  
+  // Title
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 16px Arial';
+  const scaleType = isLogScale ? 'Log Scale' : 'Linear Scale';
+  ctx.fillText(`Plasma Concentration-Time Profile (${scaleType}, Blood Samples Every Hour)`, canvas.width/2, 25);
+  
+  // Add axis ticks and values
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  
+  // X-axis ticks
+  for (let i = 0; i <= 10; i++) {
+    const x = margin.left + (i / 10) * width;
+    const timeValue = (i / 10) * maxTime;
+    ctx.fillText(Math.round(timeValue), x, margin.top + height + 20);
+  }
+  
+  // Y-axis ticks
+  ctx.textAlign = 'right';
+  gridValues.forEach(tick => {
+    if (tick >= minConc && tick <= maxConc) {
+      const y = valueToY(tick);
+      ctx.fillText(tick.toString(), margin.left - 10, y + 4);
+    }
+  });
+}
+
+// Toggle between log and linear scale
+function toggleScale() {
+  isLogScale = !isLogScale;
+  const toggleBtn = document.getElementById('scale-toggle-btn');
+  if (toggleBtn) {
+    toggleBtn.textContent = isLogScale ? 'Switch to Linear' : 'Switch to Log';
+  }
+  drawChart();
+}
+
+// Update the subjects table
+function updateTable() {
+  const tbody = document.getElementById('pk-table-body');
+  if (!tbody) return;
+  
+  tbody.innerHTML = '';
+  
+  subjects.forEach(subject => {
+    const row = tbody.insertRow();
+    row.innerHTML = `
+      <td>${subject.id}</td>
+      <td>${subject.drugName || 'N/A'}</td>
+      <td>${subject.age}</td>
+      <td>${subject.sex}</td>
+      <td>${subject.height}</td>
+      <td>${subject.weight}</td>
+      <td>${subject.bmi.toFixed(1)}</td>
+      <td>${subject.ibw.toFixed(1)}</td>
+      <td>${subject.adjustedIbw.toFixed(1)}</td>
+      <td>${subject.creatinine ? subject.creatinine.toFixed(2) : 'N/A'}</td>
+      <td>${subject.creatinineClearanceMlMin ? subject.creatinineClearanceMlMin.toFixed(1) : 'N/A'}</td>
+      <td>${subject.loadingDose}</td>
+      <td>${subject.dose}</td>
+      <td>${subject.interval}</td>
+      <td>${subject.duration}</td>
+      <td>${subject.clearance.toFixed(2)}</td>
+      <td>${subject.volume.toFixed(1)}</td>
+      <td>${subject.fractionUnbound.toFixed(3)}</td>
+      <td>${subject.vssUnbound.toFixed(1)}</td>
+      <td>${subject.bioavailability.toFixed(2)}</td>
+      <td>${subject.halfLife.toFixed(1)}</td>
+      <td>${subject.cssAvg.toFixed(2)}</td>
+      <td>${subject.auc.toFixed(1)}</td>
+      <td>${subject.cmax.toFixed(2)}</td>
+      <td>${subject.aucEfficacyRatio.toFixed(1)}</td>
+      <td>${subject.cmaxEfficacyRatio.toFixed(1)}</td>
+      <td>${subject.timeAboveEfficacy.toFixed(1)}</td>
+    `;
+  });
+}
+
+// Download data functionality
+function downloadData() {
+  // Prepare the data for download
+  const data = {
+    timestamp: new Date().toISOString(),
+    parameters: {
+      fRenal: parseFloat(document.getElementById('f-renal-slider')?.value || 0.8),
+      volume: parseFloat(document.getElementById('volume-slider')?.value || 0.7),
+      bioavailability: parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8),
+      dose: parseFloat(document.getElementById('')?.value || 250),
+      interval: parseFloat(document.getElementById('interval-slider')?.value || 24),
+      duration: parseFloat(document.getElementById('duration-slider')?.value || 10),
+      toxicityThreshold: parseFloat(document.getElementById('toxicity-slider')?.value || 20),
+      efficacyThreshold: parseFloat(document.getElementById('efficacy-slider')?.value || 5)
+    },
+    timePoints: timePoints,
+    subjects: subjects.map(subject => ({
+      id: subject.id,
+      concentrations: subject.concentrations,
+      halfLife: subject.halfLife,
+      auc: subject.auc,
+      cmax: subject.cmax
+    }))
+  };
+  
+  // Create downloadable file
+  const dataStr = JSON.stringify(data, null, 2);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  
+  // Create download link
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(dataBlob);
+  link.download = `pk_simulation_data_${new Date().toISOString().split('T')[0]}.json`;
+  
+  // Trigger download
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  // Also download plot as image
+  downloadPlotImage();
+}
+
+// Download plot as image
+function downloadPlotImage() {
+  if (!canvas) return;
+  
+  // Create download link for canvas image
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL('image/png');
+  link.download = `pk_simulation_plot_${new Date().toISOString().split('T')[0]}.png`;
+  
+  // Trigger download
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Reset parameters to defaults
+function resetSimulation() {
+  const sliderDefaults = {
+    // Core PK parameters
+    'f-renal-slider': 0.8,
+    'volume-slider': 0.7,
+    'bioavailability-slider': 0.8,
+    'fraction-unbound-slider': 0.1,
+    // Dosing parameters
+    'loading-dose-slider': 250,
+    'dose-slider': 250,
+    'interval-slider': 24,
+    'duration-slider': 10,
+    // Reference lines
+    'toxicity-slider': 20,
+    'efficacy-slider': 5
+  };
+  
+  Object.entries(sliderDefaults).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.value = value;
+    }
+  });
+  
+  updateSliderValues();
+  runSimulation();
+}
+
+// Randomize parameters for interesting simulations
+function randomizeParameters() {
+  // Define parameter ranges for randomization (aligned with HTML constraints)
+  const randomParams = {
+    // Core PK parameters - reasonable clinical ranges
+    'f-renal-slider': { min: 0.1, max: 1.0 },
+    'volume-slider': { min: 0.2, max: 8.0 },
+    'bioavailability-slider': { min: 0.4, max: 1.0 },
+    'fraction-unbound-slider': { min: 0.01, max: 1.0 },
+    // Dosing parameters
+    'dose-slider': { min: 0, max: 3000 },
+    'interval-slider': { min: 1, max: 48 },
+    // Duration parameter
+    'duration-slider': { min: 3, max: 14 }
+  };
+  
+  // Randomize parameters
+  Object.entries(randomParams).forEach(([id, range]) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const randomValue = Math.random() * (range.max - range.min) + range.min;
+      // Round to appropriate precision based on parameter type
+      let finalValue;
+      if (id === 'f-renal-slider' || id === 'bioavailability-slider' || id === 'volume-slider') {
+        finalValue = Math.round(randomValue * 10) / 10; // 1 decimal place
+      } else if (id === 'fraction-unbound-slider') {
+        finalValue = Math.round(randomValue * 100) / 100; // 2 decimal places
+      } else {
+        finalValue = Math.round(randomValue); // integers
+      }
+      element.value = finalValue;
+    }
+  });
+  
+  // Set Loading Dose equal to Dose after randomization
+  const doseElement = document.getElementById('dose-slider');
+  const loadingDoseElement = document.getElementById('loading-dose-slider');
+  if (doseElement && loadingDoseElement) {
+    loadingDoseElement.value = doseElement.value;
+  }
+  
+  // Generate reference lines ensuring toxicity > efficacy
+  const efficacyMin = 2;
+  const efficacyMax = 50;  // Increased to allow higher efficacy thresholds
+  const efficacyThreshold = Math.round((Math.random() * (efficacyMax - efficacyMin) + efficacyMin) * 2) / 2; // Round to 0.5
+  
+  // Toxicity should be at least 5 mg/L higher than efficacy, up to 100 mg/L
+  const toxicityMin = efficacyThreshold + 5;
+  const toxicityMax = 100;  // Increased to match new maximum
+  const toxicityThreshold = Math.round(Math.random() * (toxicityMax - toxicityMin) + toxicityMin);
+  
+  const efficacyElement = document.getElementById('efficacy-slider');
+  const toxicityElement = document.getElementById('toxicity-slider');
+  
+  if (efficacyElement) efficacyElement.value = efficacyThreshold;
+  if (toxicityElement) toxicityElement.value = toxicityThreshold;
+  
+  updateSliderValues();
+  runSimulation();
+}
+
+// Quiz functionality
+function checkQuizAnswers() {
+  if (subjects.length === 0) {
+    alert('Please generate a patient first!');
+    return;
+  }
+  
+  const subject = subjects[0];
+  const tolerance = 0.1; // 10% tolerance for answers
+  
+  // 1. Creatinine Clearance (mL/min)
+  const userCrCl = parseFloat(document.getElementById('quiz-crcl').value);
+  const correctCrCl = subject.creatinineClearanceMlMin;
+  const crClFeedback = document.getElementById('quiz-crcl-feedback');
+  if (Math.abs(userCrCl - correctCrCl) / correctCrCl <= tolerance) {
+    crClFeedback.textContent = `✓ Correct! (${correctCrCl.toFixed(1)} mL/min)`;
+    crClFeedback.className = 'quiz-feedback correct';
+  } else {
+    crClFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCrCl.toFixed(1)} mL/min`;
+    crClFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 2. Adjusted Body Weight (kg)
+  const userAdjBW = parseFloat(document.getElementById('quiz-adjbw').value);
+  const correctAdjBW = subject.adjustedIbw;
+  const adjBWFeedback = document.getElementById('quiz-adjbw-feedback');
+  if (Math.abs(userAdjBW - correctAdjBW) / correctAdjBW <= tolerance) {
+    adjBWFeedback.textContent = `✓ Correct! (${correctAdjBW.toFixed(1)} kg)`;
+    adjBWFeedback.className = 'quiz-feedback correct';
+  } else {
+    adjBWFeedback.textContent = `✗ Incorrect. Correct answer: ${correctAdjBW.toFixed(1)} kg`;
+    adjBWFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 3. Volume of Distribution of Unbound Drug (L)
+  const userVss = parseFloat(document.getElementById('quiz-vss').value);
+  const correctVss = subject.vssUnbound;
+  const vssFeedback = document.getElementById('quiz-vss-feedback');
+  if (Math.abs(userVss - correctVss) / correctVss <= tolerance) {
+    vssFeedback.textContent = `✓ Correct! (${correctVss.toFixed(1)} L)`;
+    vssFeedback.className = 'quiz-feedback correct';
+  } else {
+    vssFeedback.textContent = `✗ Incorrect. Correct answer: ${correctVss.toFixed(1)} L`;
+    vssFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 4. Time to Steady State (hours) - approximately 5 half-lives
+  const userTss = parseFloat(document.getElementById('quiz-tss').value);
+  const correctTss = subject.halfLife * 5;
+  const tssFeedback = document.getElementById('quiz-tss-feedback');
+  if (Math.abs(userTss - correctTss) / correctTss <= tolerance) {
+    tssFeedback.textContent = `✓ Correct! (${correctTss.toFixed(1)} hours)`;
+    tssFeedback.className = 'quiz-feedback correct';
+  } else {
+    tssFeedback.textContent = `✗ Incorrect. Correct answer: ${correctTss.toFixed(1)} hours`;
+    tssFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 5. Css,avg (mg/L)
+  const userCssAvg = parseFloat(document.getElementById('quiz-cssavg').value);
+  const correctCssAvg = subject.cssAvg;
+  const cssAvgFeedback = document.getElementById('quiz-cssavg-feedback');
+  if (Math.abs(userCssAvg - correctCssAvg) / correctCssAvg <= tolerance) {
+    cssAvgFeedback.textContent = `✓ Correct! (${correctCssAvg.toFixed(2)} mg/L)`;
+    cssAvgFeedback.className = 'quiz-feedback correct';
+  } else {
+    cssAvgFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCssAvg.toFixed(2)} mg/L`;
+    cssAvgFeedback.className = 'quiz-feedback incorrect';
+  }
+}
+
+function resetQuiz() {
+  // Clear all quiz inputs
+  document.getElementById('quiz-crcl').value = '';
+  document.getElementById('quiz-adjbw').value = '';
+  document.getElementById('quiz-vss').value = '';
+  document.getElementById('quiz-tss').value = '';
+  document.getElementById('quiz-cssavg').value = '';
+  
+  // Clear all feedback
+  const feedbacks = document.querySelectorAll('.quiz-feedback');
+  feedbacks.forEach(feedback => {
+    feedback.textContent = '';
+    feedback.className = 'quiz-feedback';
+  });
+}
+
+// Update slider value displays
+function updateSliderValues() {
+  const updates = [
+    // Core PK parameters
+    { slider: 'f-renal-slider', display: 'f-renal-value' },
+    { slider: 'volume-slider', display: 'volume-value' },
+    { slider: 'bioavailability-slider', display: 'bioavailability-value' },
+    { slider: 'fraction-unbound-slider', display: 'fraction-unbound-value' },
+    // Dosing parameters
+    { slider: 'loading-dose-slider', display: 'loading-dose-value' },
+    { slider: 'dose-slider', display: 'dose-value' },
+    { slider: 'interval-slider', display: 'interval-value' },
+    { slider: 'duration-slider', display: 'duration-value' },
+    // Reference lines
+    { slider: 'toxicity-slider', display: 'toxicity-value' },
+    { slider: 'efficacy-slider', display: 'efficacy-value' }
+  ];
+  
+  updates.forEach(update => {
+    const slider = document.getElementById(update.slider);
+    const display = document.getElementById(update.display);
+    if (slider && display) {
+      display.textContent = slider.value;
+    }
+  });
+  
+  // Special handling for formulation select
+  const formulationSelect = document.getElementById('formulation-select');
+  const formulationDisplay = document.getElementById('formulation-value');
+  if (formulationSelect && formulationDisplay) {
+    const selectedOption = formulationSelect.options[formulationSelect.selectedIndex];
+    formulationDisplay.textContent = selectedOption.text;
+  }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize patient data from localStorage or defaults
+  const savedPatient = localStorage.getItem('currentPatient');
+  if (savedPatient) {
+    currentPatient = JSON.parse(savedPatient);
+    // Ensure creatinine exists in saved patient data
+    if (!currentPatient.creatinine) {
+      currentPatient.creatinine = 1.0;
+    }
+  }
+  
+  // Update patient display
+  document.getElementById('patient-age').innerText = currentPatient.age;
+  document.getElementById('patient-sex').innerText = currentPatient.sex;
+  document.getElementById('patient-height').innerText = currentPatient.height;
+  document.getElementById('patient-weight').innerText = currentPatient.weight;
+  document.getElementById('patient-creatinine').innerText = currentPatient.creatinine;
+  
+  // Add event listeners to sliders
+  const sliderIds = [
+    // Core PK parameters
+    'f-renal-slider', 'volume-slider', 'bioavailability-slider', 'fraction-unbound-slider',
+    // Dosing parameters
+    'loading-dose-slider', 'dose-slider', 'interval-slider', 'duration-slider', 'formulation-select',
+    // Reference lines
+    'toxicity-slider', 'efficacy-slider'
+  ];
+  
+  sliderIds.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      // Use 'change' event for select elements, 'input' for range sliders
+      const eventType = element.tagName.toLowerCase() === 'select' ? 'change' : 'input';
+      element.addEventListener(eventType, function() {
+        updateSliderValues();
+        // Redraw chart when reference line sliders change, but also recalculate ratios for efficacy
+        if (id === 'toxicity-slider') {
+          drawChart();
+        } else if (id === 'efficacy-slider') {
+          // Recalculate efficacy ratios and time above efficacy
+          const efficacyThreshold = parseFloat(this.value);
+          subjects.forEach(subject => {
+            if (efficacyThreshold > 0) {
+              subject.aucEfficacyRatio = subject.auc / efficacyThreshold;
+              subject.cmaxEfficacyRatio = subject.cmax / efficacyThreshold;
+              
+              // Recalculate time above efficacy
+              const startIdx = timePoints.findIndex(t => t >= 216); // Day 9 start
+              const endIdx = timePoints.findIndex(t => t >= 240);   // Day 10 end
+              if (startIdx !== -1 && endIdx !== -1) {
+                const steadyStateConcentrations = subject.concentrations.slice(startIdx, endIdx);
+                const timePointsAboveEfficacy = steadyStateConcentrations.filter(conc => conc >= efficacyThreshold).length;
+                subject.timeAboveEfficacy = (timePointsAboveEfficacy / steadyStateConcentrations.length) * 100;
+              }
+            } else {
+              subject.aucEfficacyRatio = 0;
+              subject.cmaxEfficacyRatio = 0;
+              subject.timeAboveEfficacy = 0;
+            }
+          });
+          drawChart();
+          updateTable();
+        } else {
+          // Recalculate simulation for PK parameter changes
+          runSimulation();
+        }
+      });
+    }
+  });
+  
+  // Add event listener for drug name input
+  const drugNameInput = document.getElementById('drug-name-input');
+  if (drugNameInput) {
+    drugNameInput.addEventListener('input', function() {
+      // Update table when drug name changes
+      runSimulation();
+    });
+  }
+  
+  // Initialize the simulation
+  updateSliderValues();
+  setTimeout(initializeSimulation, 100);  // Small delay to ensure DOM is ready
+});
+</script>
+```
+::::::::::::::::
+:::::::::::::::::::::::::::::::::::::
+
+
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 

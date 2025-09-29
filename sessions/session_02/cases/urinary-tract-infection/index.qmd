@@ -16,7 +16,7 @@ execute:
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
 ::: {.content-section}
-## Controls
+
 ::: {.main-layout}
 
 ::: {.controls-column-1}
@@ -123,16 +123,9 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 :::
 
-:::
-
-
-::: {.content-section}
-## Subject Data
-
 ::: {.panel-tabset}
 
-
-### Real-time Plot
+### Plot
 
 ::: {#concentration-plot}
 <div id="chart-fallback">
@@ -159,7 +152,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 :::
 
-### Data Table
+### Data
 
 ::: {#subject-table}
 <table id="pk-table" class="table table-striped">
@@ -199,7 +192,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 </table>
 :::
 
-### Educational Content
+### Education
 
 #### Key Pharmacokinetic Concepts
 
@@ -244,7 +237,7 @@ This simulation uses a simplified one-compartment model with first-order absorpt
 
 This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
 
-### Knowledge Check Quiz
+### Quiz
 
 Test your understanding by calculating the following parameters for the current patient:
 
@@ -286,8 +279,7 @@ Test your understanding by calculating the following parameters for the current 
 
 :::
 
-
-
+```{=html}
 <style>
 body {
   margin: 0;
@@ -716,7 +708,9 @@ main.content {
   text-overflow: ellipsis;
 }
 </style>
+```
 
+```{=html}
 <script>
 // Global variables
 let subjects = [];
@@ -1693,11 +1687,9 @@ document.addEventListener('DOMContentLoaded', function() {
   setTimeout(initializeSimulation, 100);  // Small delay to ensure DOM is ready
 });
 </script>
-
-:::
-
-:::
-
+```
+::::::::::::::::
+:::::::::::::::::
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
