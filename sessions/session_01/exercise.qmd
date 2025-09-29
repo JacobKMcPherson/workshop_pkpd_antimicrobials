@@ -11,7 +11,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 
 ::: {.content-section}
-## Controls
+
 ::: {.main-layout}
 
 ::: {.controls-column-1}
@@ -120,12 +120,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 :::
 
-
-::: {.content-section}
-## Subject Data
-
 ::: {.panel-tabset}
-
 
 ### Real-time Plot
 
