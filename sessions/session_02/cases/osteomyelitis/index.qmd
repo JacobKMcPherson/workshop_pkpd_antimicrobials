@@ -147,13 +147,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.reference-properties}
 ::: {.control-group}
 <label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
-<input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1">
+<input type="range" id="toxicity-slider" min="100" max="200" value="150" step="10">
 <span id="toxicity-value">20</span> mg/L
 :::
 
 ::: {.control-group}
 <label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
-<input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5">
+<input type="range" id="efficacy-slider" min="8" max="32" value="16" step="2">
 <span id="efficacy-value">5</span> mg/L
 :::
 :::
@@ -200,19 +200,23 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ### Education
 
-#### Key Pharmacokinetic Concepts
+#### Osteomyelitis-Specific Pharmacokinetic Concepts
 
-**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
+**Bone Tissue Penetration**: Cefazolin achieves moderate bone penetration with bone/plasma ratios of 0.1-0.2. While not ideal, the high systemic concentrations and favorable PK/PD profile make it effective for MSSA osteomyelitis.
 
-**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+**Volume of Distribution for Bone Infections**: The moderate Vd (0.15-0.25 L/kg) reflects cefazolin's distribution into bone and soft tissues while maintaining adequate plasma concentrations for sustained antimicrobial effect.
 
-**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
+**%T>MIC Target for Osteomyelitis**: Target %T>MIC ≥ 70% ensures sustained antimicrobial activity throughout the dosing interval. The high MIC breakpoint challenges require aggressive dosing strategies.
 
-**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
+**Protein Binding Impact**: Cefazolin is ~85% protein bound, but the high total concentrations achieved still provide adequate free drug levels in bone tissue.
 
-**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+**Prolonged Treatment Requirements**: Osteomyelitis requires 4-6 weeks minimum due to:
+- Poor vascularization of infected bone
+- Biofilm formation by Staphylococcus species  
+- Need for complete bone sterilization
+- Prevention of chronic infection development
 
-**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
+**Surgical Considerations**: Many cases require surgical debridement combined with antimicrobial therapy. Drug penetration into devitalized tissue is minimal, making surgical intervention critical.
 
 #### Blood Sampling Strategy
 
