@@ -1,6 +1,7 @@
 ---
 title: "Non-Compartmental Analysis"
 format: html
+editor: source
 ---
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
