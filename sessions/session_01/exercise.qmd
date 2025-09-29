@@ -11,11 +11,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.content-section}
 ## Controls
-
 ::: {.main-layout}
-
-::: {.controls-section}
-::: {.controls-grid}
 
 ::: {.controls-column-1}
 ### Random Patient Generator
@@ -118,11 +114,14 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <button id="download-btn" onclick="downloadData()">Download Data</button>
 <button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
 
+:::
 
 :::
+
 :::
+
 :::
-:::
+
 
 ::: {.content-section}
 ## Subject Data
@@ -271,22 +270,7 @@ Test your understanding by calculating the following parameters for the current 
 
 :::
 
-:::
 
-::: {.plot-section}
-### Real-time Plot
-
-::: {#concentration-plot}
-<div id="chart-fallback">
-  <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="800" height="600"></canvas>
-</div>
-:::
-:::
-
-:::
-
-:::
 
 <style>
 body {
