@@ -1,7 +1,7 @@
 ---
 title: "Urinary Tract Infection"
 format: html
-editor: visual
+editor: source
 execute:
   shiny: true
   shinylive: true
