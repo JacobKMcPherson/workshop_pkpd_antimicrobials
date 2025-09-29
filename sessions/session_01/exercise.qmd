@@ -9,6 +9,11 @@ execute:
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="1920" height="1080"></canvas>
+</div>
+
 ::: {.content-section}
 ## Controls
 ::: {.main-layout}
