@@ -11,7 +11,13 @@ execute:
 
 **Drug of Choice**: Daptomycin
 
-**PK/PD Target**:
+**PK/PD Target**: AUC/MIC ≥ 666, Cmin ≥ 24.3 mg/L (high dose for endocarditis)
+
+**Key PK Parameters for Endocarditis**:
+- **Volume of Distribution**: 0.1 L/kg (poor tissue penetration)
+- **Protein Binding**: ~8% (high free fraction = 0.92)
+- **Cardiac Tissue**: Limited penetration, requires high systemic exposure
+- **Dosing**: 8-10 mg/kg/day for complex endocarditis
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
@@ -69,19 +75,19 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="fraction-unbound-slider">Fraction Unbound:</label>
-<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.1" step="0.01">
+<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.92" step="0.01">
 <span id="fraction-unbound-value">0.1</span>
 :::
 
 ::: {.control-group-compact}
 <label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.1" max="10" value="0.7" step="0.1">
+<input type="range" id="volume-slider" min="0.08" max="0.12" value="0.1" step="0.01">
 <span id="volume-value">0.7</span> L/kg
 :::
 
 ::: {.control-group-compact}
 <label for="f-renal-slider">Fraction Renally Cleared:</label>
-<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
+<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.5" step="0.05">
 <span id="f-renal-value">0.8</span>
 :::
 
@@ -101,7 +107,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="dose-slider">Dose (mg):</label>
-<input type="range" id="dose-slider" min="0" max="3000" value="250" step="50">
+<input type="range" id="dose-slider" min="400" max="800" value="600" step="50">
 <span id="dose-value">250</span> mg
 :::
 
@@ -113,7 +119,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="duration-slider">Treatment Duration (days):</label>
-<input type="range" id="duration-slider" min="1" max="14" value="10" step="1">
+<input type="range" id="duration-slider" min="14" max="42" value="28" step="1">
 <span id="duration-value">10</span> days
 :::
 

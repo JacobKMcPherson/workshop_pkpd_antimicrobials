@@ -11,7 +11,12 @@ execute:
 
 **Drug of Choice**: Vancomycin
 
-**PK/PD Target**: AUC/MIC \>= 400
+**PK/PD Target**: AUC/MIC ≥ 400-600 (higher for resistant organisms)
+
+**Key PK Parameters for Bacteremia**:
+- **Volume of Distribution**: 0.4-0.9 L/kg (good systemic penetration)
+- **Protein Binding**: ~90% (free fraction = 0.1)
+- **Renal Clearance**: ~80% unchanged in urine
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
@@ -75,7 +80,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.1" max="10" value="0.7" step="0.1">
+<input type="range" id="volume-slider" min="0.4" max="0.9" value="0.7" step="0.1">
 <span id="volume-value">0.7</span> L/kg
 :::
 
@@ -141,13 +146,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.reference-properties}
 ::: {.control-group}
 <label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
-<input type="range" id="toxicity-slider" min="0" max="100" value="20" step="1">
+<input type="range" id="toxicity-slider" min="15" max="30" value="20" step="1">
 <span id="toxicity-value">20</span> mg/L
 :::
 
 ::: {.control-group}
 <label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
-<input type="range" id="efficacy-slider" min="0" max="100" value="5" step="0.5">
+<input type="range" id="efficacy-slider" min="10" max="20" value="15" step="0.5">
 <span id="efficacy-value">5</span> mg/L
 :::
 :::
@@ -194,19 +199,19 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ### Education
 
-#### Key Pharmacokinetic Concepts
+#### Bacteremia-Specific Pharmacokinetic Concepts
 
-**Bioavailability (F)**: The fraction of an administered dose that reaches the systemic circulation unchanged. For oral tablets, this is typically less than 1.0 due to first-pass metabolism and incomplete absorption.
+**Systemic Circulation Target**: For bacteremia caused by MRSA, the primary site of infection is the bloodstream itself. This makes vancomycin an ideal choice as it achieves excellent systemic exposure with minimal tissue penetration requirements.
 
-**Clearance (CL)**: The volume of plasma from which a drug is completely removed per unit time. It determines the maintenance dose required to achieve steady-state concentrations.
+**Volume of Distribution for Bacteremia**: Vancomycin has a relatively small Vd (0.4-0.9 L/kg) which means it stays primarily in the vascular space and extracellular fluid - exactly where it's needed for bloodstream infections.
 
-**Volume of Distribution (Vd)**: The drug-specific volume of distribution per kilogram of body weight. This represents how extensively the drug distributes into body tissues relative to plasma. The total volume of distribution is calculated by multiplying this value by the patient's weight.
+**AUC/MIC Target for MRSA Bacteremia**: The target AUC₀₋₂₄/MIC ≥ 400-600 ensures adequate exposure throughout the dosing interval. Higher targets (≥600) may be needed for more resistant organisms or severe infections.
 
-**Creatinine Clearance**: Calculated using the Cockcroft-Gault equation to estimate kidney function, which directly influences drug clearance for renally eliminated drugs.
+**Protein Binding Considerations**: Vancomycin is ~90% protein bound, meaning only 10% is pharmacologically active. However, for bacteremia, the high protein binding actually helps maintain therapeutic concentrations in plasma.
 
-**Half-life (t½)**: The time required for the plasma concentration to decrease by 50%. It's calculated as: t½ = 0.693 × Vd/CL
+**Renal Clearance Monitoring**: With 80% renal elimination, creatinine clearance directly impacts vancomycin dosing. Dose adjustments are critical in renal impairment to prevent accumulation and nephrotoxicity.
 
-**Multiple Dosing**: With repeated dosing at variable intervals (8-48 hours), steady-state is approached after approximately 5 half-lives. The degree of accumulation depends on the dosing interval relative to the half-life. Shorter intervals lead to higher steady-state concentrations but also greater accumulation.
+**Trough vs. AUC Monitoring**: While trough levels (15-20 mg/L) were historically used, AUC-guided dosing is now preferred for optimizing efficacy while minimizing nephrotoxicity risk.
 
 #### Blood Sampling Strategy
 
