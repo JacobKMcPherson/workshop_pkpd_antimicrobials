@@ -1,0 +1,1188 @@
+---
+title: "pH-Dependent Drug Absorption and Distribution"
+format: html
+editor: visual
+execute:
+  shiny: true
+  shinylive: true
+---
+
+This interactive module demonstrates gastroenteric absorption and distribution of drugs as a function of pH in different body compartments, focusing on the relationship between logP, pKa, and pH-dependent distribution coefficient (logD).
+
+::::::::::::::::::::::::::::::::::::: content-section
+:::::::::::::::::::::: main-layout
+:::::::: controls-column-1
+### Drug Properties
+
+::::: drug-properties
+:::: {style="margin-bottom: 8px;"}
+<button id="preset-aspirin-btn" onclick="loadPreset('aspirin')">
+Load Aspirin
+</button>
+<button id="preset-morphine-btn" onclick="loadPreset('morphine')" style="margin-left: 10px;">
+Load Morphine  
+</button>
+<button id="preset-caffeine-btn" onclick="loadPreset('caffeine')" style="margin-left: 10px;">
+Load Caffeine
+</button>
+::::
+
+:::: drug-input-section
+::: {style="margin-bottom: 2px;"}
+<label for="drug-name-logd" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label> 
+<input type="text" id="drug-name-logd" placeholder="Enter drug name" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+:::
+
+<label for="drug-type-select">Drug Type:</label> 
+<select id="drug-type-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+  <option value="acid">Weak Acid</option>
+  <option value="base" selected>Weak Base</option>
+  <option value="neutral">Neutral</option>
+</select> 
+[Weak Base]{#drug-type-value}
+::::
+:::::
+
+:::::::: properties-compact
+::: control-group-compact
+<label for="logp-slider">logP (Lipophilicity):</label> 
+<input type="range" id="logp-slider" min="-2" max="6" value="2" step="0.1"> 
+[2.0]{#logp-value}
+:::
+
+::: control-group-compact
+<label for="pka-slider">pKa:</label> 
+<input type="range" id="pka-slider" min="1" max="12" value="9.5" step="0.1"> 
+[9.5]{#pka-value}
+:::
+::::::::
+::::::::
+
+::::::::: controls-column-2  
+### pH Environments
+
+:::::::: ph-environments
+::: control-group-compact
+<label for="stomach-ph-slider">Stomach pH:</label> 
+<input type="range" id="stomach-ph-slider" min="1" max="4" value="1.5" step="0.1"> 
+[1.5]{#stomach-ph-value}
+:::
+
+::: control-group-compact
+<label for="blood-ph-slider">Blood pH:</label> 
+<input type="range" id="blood-ph-slider" min="7.0" max="7.8" value="7.4" step="0.1"> 
+[7.4]{#blood-ph-value}
+:::
+
+::: control-group-compact
+<label for="tissue-ph-slider">Tissue pH:</label> 
+<input type="range" id="tissue-ph-slider" min="6.5" max="7.8" value="7.0" step="0.1"> 
+[7.0]{#tissue-ph-value}
+:::
+
+::: control-group-compact  
+<label for="urine-ph-slider">Urine pH:</label>
+<input type="range" id="urine-ph-slider" min="4.5" max="8.5" value="6.0" step="0.1">
+[6.0]{#urine-ph-value}
+:::
+::::::::
+
+### Reset Controls
+<button id="reset-logd-btn" onclick="resetLogDSimulation()" class="small-btn">
+Reset Parameters
+</button>
+:::::::::
+
+:::::::: controls-column-3
+### Calculations
+
+::::: calculation-results
+::: {#logd-results}
+<div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
+<h4 style="margin-top: 0; color: #495057;">logD Values</h4>
+<p><strong>Stomach:</strong> <span id="logd-stomach">-</span></p>
+<p><strong>Blood:</strong> <span id="logd-blood">-</span></p>
+<p><strong>Tissue:</strong> <span id="logd-tissue">-</span></p>
+<p><strong>Urine:</strong> <span id="logd-urine">-</span></p>
+</div>
+
+<div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6; margin-top: 10px;">
+<h4 style="margin-top: 0; color: #495057;">Ionization (%)</h4>
+<p><strong>Stomach:</strong> <span id="ionized-stomach">-</span>%</p>
+<p><strong>Blood:</strong> <span id="ionized-blood">-</span>%</p>
+<p><strong>Tissue:</strong> <span id="ionized-tissue">-</span>%</p>
+<p><strong>Urine:</strong> <span id="ionized-urine">-</span>%</p>
+</div>
+
+<div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6; margin-top: 10px;">
+<h4 style="margin-top: 0; color: #495057;">Permeability</h4>
+<p><strong>Gastric Absorption:</strong> <span id="gastric-permeability">-</span></p>
+<p><strong>Intestinal Absorption:</strong> <span id="intestinal-permeability">-</span></p>
+<p><strong>Blood-Brain Barrier:</strong> <span id="bbb-permeability">-</span></p>
+</div>
+:::
+:::::
+::::::::
+::::::::::::::::::::::
+
+:::::::::::::::: panel-tabset
+### logD vs pH Plot
+
+:::: {#logd-plot}
+::: {#logd-chart-fallback}
+<p>Loading interactive chart...</p>
+<canvas id="logd-chart" width="1920" height="1080"></canvas>
+:::
+::::
+
+### Ionization vs pH Plot
+
+:::: {#ionization-plot}
+::: {#ionization-chart-fallback}  
+<p>Loading ionization chart...</p>
+<canvas id="ionization-chart" width="1920" height="1080"></canvas>
+:::
+::::
+
+### Education
+
+#### Key Concepts in pH-Dependent Drug Distribution
+
+**logP (Partition Coefficient)**: The logarithm of the octanol-water partition coefficient for the unionized form of a drug. This represents the intrinsic lipophilicity of the molecule and determines its ability to cross lipid membranes.
+
+**pKa (Acid Dissociation Constant)**: The pH at which 50% of the drug exists in ionized form and 50% in unionized form. For weak acids, lower pKa means stronger acid; for weak bases, higher pKa means stronger base.
+
+**logD (Distribution Coefficient)**: The pH-dependent distribution coefficient that accounts for both ionized and unionized forms of the drug at a specific pH. This is what actually determines drug behavior in biological systems.
+
+#### Henderson-Hasselbalch Equations
+
+**For weak acids:**
+- logD = logP + log(1/(1 + 10^(pH - pKa)))
+- % Ionized = 100 × 10^(pH - pKa) / (1 + 10^(pH - pKa))
+
+**For weak bases:**
+- logD = logP + log(1/(1 + 10^(pKa - pH)))  
+- % Ionized = 100 × 10^(pKa - pH) / (1 + 10^(pKa - pH))
+
+#### Clinical Implications
+
+**Gastric Absorption**: Only unionized (lipophilic) forms can cross gastric mucosa. Weak acids are better absorbed in the acidic stomach, while weak bases have poor gastric absorption.
+
+**Intestinal Absorption**: The slightly alkaline intestinal environment (pH ~6.5-7.5) favors absorption of weak bases over weak acids.
+
+**Blood-Brain Barrier**: Only highly lipophilic, unionized molecules readily cross. The blood pH of 7.4 significantly affects brain penetration.
+
+**Renal Elimination**: pH-dependent ionization affects both glomerular filtration and tubular reabsorption, allowing for pH manipulation in poisoning cases.
+
+#### Physiological pH Values
+- **Stomach**: 1.5-3.5 (fasting), 3.0-5.0 (fed)
+- **Small intestine**: 6.5-7.5  
+- **Blood**: 7.35-7.45
+- **Intracellular**: 6.8-7.2
+- **Urine**: 4.5-8.5 (variable)
+
+### Quiz
+
+Test your understanding of pH-dependent drug distribution:
+
+::::::::: quiz-section-logd
+::: quiz-question
+**1. Calculate logD for the current drug in blood (pH 7.4):** 
+<input type="number" id="quiz-logd-blood" placeholder="Enter logD value" step="0.01" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-logd-blood-feedback" class="quiz-feedback"></span>
+:::
+
+::: quiz-question  
+**2. What percentage is ionized in the stomach?**
+<input type="number" id="quiz-ionized-stomach" placeholder="Enter percentage" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-ionized-stomach-feedback" class="quiz-feedback"></span>
+:::
+
+::: quiz-question
+**3. Which compartment has the highest logD for this drug?**
+<select id="quiz-highest-logd" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+  <option value="">Select compartment...</option>
+  <option value="stomach">Stomach</option>
+  <option value="blood">Blood</option>
+  <option value="tissue">Tissue</option>
+  <option value="urine">Urine</option>
+</select>
+<span id="quiz-highest-logd-feedback" class="quiz-feedback"></span>
+:::
+
+::: {style="text-align: center; margin: 15px 0;"}
+<button id="check-logd-answers-btn" onclick="checkLogDQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">
+Check Answers
+</button>
+
+<button id="reset-logd-quiz-btn" onclick="resetLogDQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">
+Reset Quiz
+</button>
+:::
+:::::::::
+
+```{=html}
+<style>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  max-width: none;
+  width: 100vw;
+  margin: 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Override Quarto default max-width */
+main.content {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* Section styling */
+.content-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.content-section h2 {
+  margin-top: 0;
+  color: #495057;
+  font-size: 1.2em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.content-section h3 {
+  color: #6c757d;
+  font-size: 1.0em;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.content-section p, .content-section ul {
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: #555;
+}
+
+/* Quiz styles */
+.quiz-section-logd {
+  background-color: #fff;
+  border: 2px solid #17a2b8;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.quiz-question {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.quiz-feedback {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
+.quiz-feedback.correct {
+  color: #28a745;
+}
+
+.quiz-feedback.incorrect {
+  color: #dc3545;
+}
+
+/* Main layout for Controls, Content, and Plot Sidebar */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.controls-section {
+  min-width: 0; /* Prevent grid overflow */
+}
+
+.controls-column-1,
+.controls-column-2,
+.controls-column-3 {
+  background-color: #ffffff;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.controls-column-1 h3,
+.controls-column-2 h3,
+.controls-column-3 h3 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 1.1em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+/* Responsive design for full-width layout */
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 0 10px;
+  }
+  .content-section {
+    padding: 15px;
+  }
+  
+  /* Stack layout vertically on smaller screens */
+  .main-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.drug-properties {
+  background-color: #fff;
+  border: 2px solid #28a745;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.drug-properties button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.drug-properties button:hover {
+  background-color: #218838;
+}
+
+.drug-input-section {
+  background-color: #fff;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.properties-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.ph-environments {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.control-group-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
+
+.control-group-compact span {
+  font-size: 0.9em;
+  color: #6c757d;
+  text-align: center;
+  margin-bottom: 0;
+  margin-top: 1px;
+  line-height: 1.1;
+  padding: 0;
+}
+
+.control-group-compact label {
+  font-weight: bold;
+  color: #495057;
+  font-size: 0.9em;
+  margin-bottom: 2px;
+}
+
+.control-group-compact input[type="range"] {
+  width: 100%;
+  margin: 2px 0;
+}
+
+.small-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.small-btn:hover {
+  background-color: #545b62;
+}
+
+.calculation-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#logd-chart, #ionization-chart {
+  max-width: 100%;
+  height: auto;
+}
+</style>
+```
+
+```{=html}
+<script>
+// Global variables for logD simulation
+let currentLogD = {
+  logP: 2.0,
+  pKa: 9.5,
+  drugType: 'base', // 'acid', 'base', or 'neutral'
+  drugName: ''
+};
+
+let pHEnvironments = {
+  stomach: 1.5,
+  blood: 7.4, 
+  tissue: 7.0,
+  urine: 6.0
+};
+
+// Drug presets with realistic values
+const drugPresets = {
+  aspirin: {
+    name: 'Aspirin',
+    logP: 1.2,
+    pKa: 3.5,
+    type: 'acid'
+  },
+  morphine: {
+    name: 'Morphine', 
+    logP: 0.89,
+    pKa: 9.85,
+    type: 'base'
+  },
+  caffeine: {
+    name: 'Caffeine',
+    logP: 0.07,
+    pKa: 10.4,
+    type: 'base'
+  }
+};
+
+// Load drug preset
+function loadPreset(drugKey) {
+  const preset = drugPresets[drugKey];
+  if (!preset) return;
+  
+  // Update current values
+  currentLogD.logP = preset.logP;
+  currentLogD.pKa = preset.pKa;
+  currentLogD.drugType = preset.type;
+  currentLogD.drugName = preset.name;
+  
+  // Update UI elements
+  document.getElementById('drug-name-logd').value = preset.name;
+  document.getElementById('drug-type-select').value = preset.type;
+  document.getElementById('logp-slider').value = preset.logP;
+  document.getElementById('pka-slider').value = preset.pKa;
+  
+  // Update displays
+  updateLogDSliderValues();
+  calculateAndDisplayLogD();
+}
+
+// Calculate logD for given pH
+function calculateLogD(logP, pKa, pH, drugType) {
+  if (drugType === 'neutral') {
+    return logP;
+  }
+  
+  let logD;
+  if (drugType === 'acid') {
+    // For weak acids: logD = logP + log(1/(1 + 10^(pH - pKa)))
+    const denominator = 1 + Math.pow(10, pH - pKa);
+    logD = logP + Math.log10(1 / denominator);
+  } else if (drugType === 'base') {
+    // For weak bases: logD = logP + log(1/(1 + 10^(pKa - pH)))
+    const denominator = 1 + Math.pow(10, pKa - pH);
+    logD = logP + Math.log10(1 / denominator);
+  }
+  
+  return logD;
+}
+
+// Calculate percentage ionized
+function calculatePercentIonized(pKa, pH, drugType) {
+  if (drugType === 'neutral') {
+    return 0;
+  }
+  
+  let percentIonized;
+  if (drugType === 'acid') {
+    // For weak acids: % ionized = 100 * 10^(pH - pKa) / (1 + 10^(pH - pKa))
+    const ratio = Math.pow(10, pH - pKa);
+    percentIonized = 100 * ratio / (1 + ratio);
+  } else if (drugType === 'base') {
+    // For weak bases: % ionized = 100 * 10^(pKa - pH) / (1 + 10^(pKa - pH))
+    const ratio = Math.pow(10, pKa - pH);
+    percentIonized = 100 * ratio / (1 + ratio);
+  }
+  
+  return percentIonized;
+}
+
+// Assess permeability based on logD
+function assessPermeability(logD) {
+  if (logD < -1) return 'Very Low';
+  if (logD < 0) return 'Low';
+  if (logD < 2) return 'Moderate';
+  if (logD < 4) return 'High';
+  return 'Very High';
+}
+
+// Calculate and display all logD values and related metrics
+function calculateAndDisplayLogD() {
+  const { logP, pKa, drugType } = currentLogD;
+  
+  // Calculate logD for each compartment
+  const logDValues = {};
+  const ionizedPercentages = {};
+  
+  Object.keys(pHEnvironments).forEach(compartment => {
+    const pH = pHEnvironments[compartment];
+    logDValues[compartment] = calculateLogD(logP, pKa, pH, drugType);
+    ionizedPercentages[compartment] = calculatePercentIonized(pKa, pH, drugType);
+  });
+  
+  // Update logD displays
+  document.getElementById('logd-stomach').textContent = logDValues.stomach.toFixed(2);
+  document.getElementById('logd-blood').textContent = logDValues.blood.toFixed(2);
+  document.getElementById('logd-tissue').textContent = logDValues.tissue.toFixed(2);
+  document.getElementById('logd-urine').textContent = logDValues.urine.toFixed(2);
+  
+  // Update ionization percentages
+  document.getElementById('ionized-stomach').textContent = ionizedPercentages.stomach.toFixed(1);
+  document.getElementById('ionized-blood').textContent = ionizedPercentages.blood.toFixed(1);
+  document.getElementById('ionized-tissue').textContent = ionizedPercentages.tissue.toFixed(1);
+  document.getElementById('ionized-urine').textContent = ionizedPercentages.urine.toFixed(1);
+  
+  // Update permeability assessments
+  document.getElementById('gastric-permeability').textContent = assessPermeability(logDValues.stomach);
+  // Intestinal pH is typically around 7, so use tissue pH as proxy
+  document.getElementById('intestinal-permeability').textContent = assessPermeability(logDValues.tissue);
+  document.getElementById('bbb-permeability').textContent = assessPermeability(logDValues.blood);
+  
+  // Update plots
+  drawLogDPlot();
+  drawIonizationPlot();
+}
+
+// Draw logD vs pH plot
+function drawLogDPlot() {
+  const canvas = document.getElementById('logd-chart');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  canvas.width = 800;
+  canvas.height = 400;
+  
+  // Hide loading message
+  const fallback = document.getElementById('logd-chart-fallback');
+  if (fallback) {
+    const loadingText = fallback.querySelector('p');
+    if (loadingText) loadingText.style.display = 'none';
+    canvas.style.display = 'block';
+  }
+  
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Chart dimensions
+  const margin = { top: 40, right: 40, bottom: 60, left: 80 };
+  const width = canvas.width - margin.left - margin.right;
+  const height = canvas.height - margin.top - margin.bottom;
+  
+  // Generate pH range and logD values
+  const pHRange = [];
+  const logDValues = [];
+  for (let pH = 0; pH <= 14; pH += 0.1) {
+    pHRange.push(pH);
+    const logD = calculateLogD(currentLogD.logP, currentLogD.pKa, pH, currentLogD.drugType);
+    logDValues.push(logD);
+  }
+  
+  // Find scales
+  const minLogD = Math.min(...logDValues) - 1;
+  const maxLogD = Math.max(...logDValues) + 1;
+  
+  // Helper functions for scaling
+  const xScale = (pH) => margin.left + (pH / 14) * width;
+  const yScale = (logD) => margin.top + height - ((logD - minLogD) / (maxLogD - minLogD)) * height;
+  
+  // Draw background
+  ctx.fillStyle = '#f8f9fa';
+  ctx.fillRect(margin.left, margin.top, width, height);
+  
+  // Draw grid lines
+  ctx.strokeStyle = '#e9ecef';
+  ctx.lineWidth = 1;
+  
+  // Vertical grid lines (pH)
+  for (let pH = 0; pH <= 14; pH += 2) {
+    const x = xScale(pH);
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, margin.top + height);
+    ctx.stroke();
+  }
+  
+  // Horizontal grid lines (logD)
+  for (let logD = Math.ceil(minLogD); logD <= Math.floor(maxLogD); logD++) {
+    const y = yScale(logD);
+    ctx.beginPath();
+    ctx.moveTo(margin.left, y);
+    ctx.lineTo(margin.left + width, y);
+    ctx.stroke();
+  }
+  
+  // Draw axes
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(margin.left, margin.top);
+  ctx.lineTo(margin.left, margin.top + height);
+  ctx.lineTo(margin.left + width, margin.top + height);
+  ctx.stroke();
+  
+  // Draw logD curve
+  ctx.strokeStyle = '#007bff';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  
+  let firstPoint = true;
+  for (let i = 0; i < pHRange.length; i++) {
+    const x = xScale(pHRange[i]);
+    const y = yScale(logDValues[i]);
+    
+    if (firstPoint) {
+      ctx.moveTo(x, y);
+      firstPoint = false;
+    } else {
+      ctx.lineTo(x, y);
+    }
+  }
+  ctx.stroke();
+  
+  // Draw physiological pH markers
+  const pHMarkers = [
+    { pH: pHEnvironments.stomach, label: 'Stomach', color: '#dc3545' },
+    { pH: pHEnvironments.blood, label: 'Blood', color: '#28a745' },
+    { pH: pHEnvironments.tissue, label: 'Tissue', color: '#ffc107' },
+    { pH: pHEnvironments.urine, label: 'Urine', color: '#17a2b8' }
+  ];
+  
+  pHMarkers.forEach(marker => {
+    const x = xScale(marker.pH);
+    const logD = calculateLogD(currentLogD.logP, currentLogD.pKa, marker.pH, currentLogD.drugType);
+    const y = yScale(logD);
+    
+    // Draw vertical line
+    ctx.strokeStyle = marker.color;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, margin.top + height);
+    ctx.stroke();
+    
+    // Draw point on curve
+    ctx.setLineDash([]);
+    ctx.fillStyle = marker.color;
+    ctx.beginPath();
+    ctx.arc(x, y, 6, 0, 2 * Math.PI);
+    ctx.fill();
+    
+    // Add label
+    ctx.fillStyle = marker.color;
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(marker.label, x, margin.top + height + 20);
+  });
+  
+  // Reset line dash
+  ctx.setLineDash([]);
+  
+  // Add pKa line if applicable
+  if (currentLogD.drugType !== 'neutral') {
+    const pKaX = xScale(currentLogD.pKa);
+    ctx.strokeStyle = '#6c757d';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([10, 5]);
+    ctx.beginPath();
+    ctx.moveTo(pKaX, margin.top);
+    ctx.lineTo(pKaX, margin.top + height);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    
+    // pKa label
+    ctx.fillStyle = '#6c757d';
+    ctx.font = 'bold 12px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(`pKa = ${currentLogD.pKa}`, pKaX, margin.top - 10);
+  }
+  
+  // Add labels and title
+  ctx.fillStyle = '#000';
+  ctx.font = '14px Arial';
+  
+  // X-axis label
+  ctx.textAlign = 'center';
+  ctx.fillText('pH', margin.left + width/2, canvas.height - 10);
+  
+  // Y-axis label
+  ctx.save();
+  ctx.translate(20, margin.top + height/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.textAlign = 'center';
+  ctx.fillText('logD (Distribution Coefficient)', 0, 0);
+  ctx.restore();
+  
+  // Title
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 16px Arial';
+  ctx.fillText(`logD vs pH for ${currentLogD.drugName || 'Current Drug'}`, canvas.width/2, 25);
+  
+  // Add axis ticks and values
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  
+  // X-axis ticks (pH)
+  for (let pH = 0; pH <= 14; pH += 2) {
+    const x = xScale(pH);
+    ctx.fillText(pH.toString(), x, margin.top + height + 35);
+  }
+  
+  // Y-axis ticks (logD)
+  ctx.textAlign = 'right';
+  for (let logD = Math.ceil(minLogD); logD <= Math.floor(maxLogD); logD++) {
+    const y = yScale(logD);
+    ctx.fillText(logD.toString(), margin.left - 10, y + 4);
+  }
+}
+
+// Draw ionization vs pH plot
+function drawIonizationPlot() {
+  const canvas = document.getElementById('ionization-chart');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  canvas.width = 800;
+  canvas.height = 400;
+  
+  // Hide loading message
+  const fallback = document.getElementById('ionization-chart-fallback');
+  if (fallback) {
+    const loadingText = fallback.querySelector('p');
+    if (loadingText) loadingText.style.display = 'none';
+    canvas.style.display = 'block';
+  }
+  
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Chart dimensions
+  const margin = { top: 40, right: 40, bottom: 60, left: 80 };
+  const width = canvas.width - margin.left - margin.right;
+  const height = canvas.height - margin.top - margin.bottom;
+  
+  // Generate pH range and ionization percentages
+  const pHRange = [];
+  const ionizedValues = [];
+  const unionizedValues = [];
+  
+  for (let pH = 0; pH <= 14; pH += 0.1) {
+    pHRange.push(pH);
+    const percentIonized = calculatePercentIonized(currentLogD.pKa, pH, currentLogD.drugType);
+    ionizedValues.push(percentIonized);
+    unionizedValues.push(100 - percentIonized);
+  }
+  
+  // Helper functions for scaling
+  const xScale = (pH) => margin.left + (pH / 14) * width;
+  const yScale = (percent) => margin.top + height - (percent / 100) * height;
+  
+  // Draw background
+  ctx.fillStyle = '#f8f9fa';
+  ctx.fillRect(margin.left, margin.top, width, height);
+  
+  // Draw grid lines
+  ctx.strokeStyle = '#e9ecef';
+  ctx.lineWidth = 1;
+  
+  // Vertical grid lines (pH)
+  for (let pH = 0; pH <= 14; pH += 2) {
+    const x = xScale(pH);
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, margin.top + height);
+    ctx.stroke();
+  }
+  
+  // Horizontal grid lines (percentage)
+  for (let percent = 0; percent <= 100; percent += 20) {
+    const y = yScale(percent);
+    ctx.beginPath();
+    ctx.moveTo(margin.left, y);
+    ctx.lineTo(margin.left + width, y);
+    ctx.stroke();
+  }
+  
+  // Draw axes
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(margin.left, margin.top);
+  ctx.lineTo(margin.left, margin.top + height);
+  ctx.lineTo(margin.left + width, margin.top + height);
+  ctx.stroke();
+  
+  if (currentLogD.drugType !== 'neutral') {
+    // Draw ionized curve
+    ctx.strokeStyle = '#dc3545'; // Red for ionized
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    
+    let firstPoint = true;
+    for (let i = 0; i < pHRange.length; i++) {
+      const x = xScale(pHRange[i]);
+      const y = yScale(ionizedValues[i]);
+      
+      if (firstPoint) {
+        ctx.moveTo(x, y);
+        firstPoint = false;
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+    ctx.stroke();
+    
+    // Draw unionized curve
+    ctx.strokeStyle = '#007bff'; // Blue for unionized
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    
+    firstPoint = true;
+    for (let i = 0; i < pHRange.length; i++) {
+      const x = xScale(pHRange[i]);
+      const y = yScale(unionizedValues[i]);
+      
+      if (firstPoint) {
+        ctx.moveTo(x, y);
+        firstPoint = false;
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+    ctx.stroke();
+    
+    // Add pKa line
+    const pKaX = xScale(currentLogD.pKa);
+    ctx.strokeStyle = '#6c757d';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([10, 5]);
+    ctx.beginPath();
+    ctx.moveTo(pKaX, margin.top);
+    ctx.lineTo(pKaX, margin.top + height);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    
+    // pKa label
+    ctx.fillStyle = '#6c757d';
+    ctx.font = 'bold 12px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(`pKa = ${currentLogD.pKa}`, pKaX, margin.top - 10);
+    
+    // Add legend
+    ctx.fillStyle = '#dc3545';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText('■ Ionized Form', margin.left + 20, margin.top + 20);
+    
+    ctx.fillStyle = '#007bff';
+    ctx.fillText('■ Unionized Form', margin.left + 20, margin.top + 40);
+  } else {
+    // For neutral compounds, show 100% unionized
+    ctx.strokeStyle = '#007bff';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(margin.left, yScale(100));
+    ctx.lineTo(margin.left + width, yScale(100));
+    ctx.stroke();
+    
+    // Label
+    ctx.fillStyle = '#007bff';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText('■ Neutral (100% Unionized)', margin.left + 20, margin.top + 20);
+  }
+  
+  // Add labels and title
+  ctx.fillStyle = '#000';
+  ctx.font = '14px Arial';
+  
+  // X-axis label
+  ctx.textAlign = 'center';
+  ctx.fillText('pH', margin.left + width/2, canvas.height - 10);
+  
+  // Y-axis label
+  ctx.save();
+  ctx.translate(20, margin.top + height/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.textAlign = 'center';
+  ctx.fillText('Percentage (%)', 0, 0);
+  ctx.restore();
+  
+  // Title
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 16px Arial';
+  ctx.fillText(`Ionization vs pH for ${currentLogD.drugName || 'Current Drug'}`, canvas.width/2, 25);
+  
+  // Add axis ticks and values
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  
+  // X-axis ticks (pH)
+  for (let pH = 0; pH <= 14; pH += 2) {
+    const x = xScale(pH);
+    ctx.fillText(pH.toString(), x, margin.top + height + 35);
+  }
+  
+  // Y-axis ticks (percentage)
+  ctx.textAlign = 'right';
+  for (let percent = 0; percent <= 100; percent += 20) {
+    const y = yScale(percent);
+    ctx.fillText(percent.toString() + '%', margin.left - 10, y + 4);
+  }
+}
+
+// Reset simulation to defaults
+function resetLogDSimulation() {
+  // Reset to default values
+  currentLogD = {
+    logP: 2.0,
+    pKa: 9.5,
+    drugType: 'base',
+    drugName: ''
+  };
+  
+  pHEnvironments = {
+    stomach: 1.5,
+    blood: 7.4,
+    tissue: 7.0,
+    urine: 6.0
+  };
+  
+  // Reset UI elements
+  document.getElementById('drug-name-logd').value = '';
+  document.getElementById('drug-type-select').value = 'base';
+  document.getElementById('logp-slider').value = 2.0;
+  document.getElementById('pka-slider').value = 9.5;
+  document.getElementById('stomach-ph-slider').value = 1.5;
+  document.getElementById('blood-ph-slider').value = 7.4;
+  document.getElementById('tissue-ph-slider').value = 7.0;
+  document.getElementById('urine-ph-slider').value = 6.0;
+  
+  updateLogDSliderValues();
+  calculateAndDisplayLogD();
+}
+
+// Update slider value displays
+function updateLogDSliderValues() {
+  const updates = [
+    { slider: 'logp-slider', display: 'logp-value' },
+    { slider: 'pka-slider', display: 'pka-value' },
+    { slider: 'stomach-ph-slider', display: 'stomach-ph-value' },
+    { slider: 'blood-ph-slider', display: 'blood-ph-value' },
+    { slider: 'tissue-ph-slider', display: 'tissue-ph-value' },
+    { slider: 'urine-ph-slider', display: 'urine-ph-value' }
+  ];
+  
+  updates.forEach(update => {
+    const slider = document.getElementById(update.slider);
+    const display = document.getElementById(update.display);
+    if (slider && display) {
+      display.textContent = parseFloat(slider.value).toFixed(1);
+    }
+  });
+  
+  // Special handling for drug type select
+  const drugTypeSelect = document.getElementById('drug-type-select');
+  const drugTypeDisplay = document.getElementById('drug-type-value');
+  if (drugTypeSelect && drugTypeDisplay) {
+    const selectedOption = drugTypeSelect.options[drugTypeSelect.selectedIndex];
+    drugTypeDisplay.textContent = selectedOption.text;
+  }
+}
+
+// Quiz functionality for logD module
+function checkLogDQuizAnswers() {
+  const tolerance = 0.1; // 10% tolerance for numerical answers
+  
+  // 1. logD in blood
+  const userLogDBlood = parseFloat(document.getElementById('quiz-logd-blood').value);
+  const correctLogDBlood = calculateLogD(currentLogD.logP, currentLogD.pKa, pHEnvironments.blood, currentLogD.drugType);
+  const logDBloodFeedback = document.getElementById('quiz-logd-blood-feedback');
+  
+  if (Math.abs(userLogDBlood - correctLogDBlood) <= Math.abs(correctLogDBlood * tolerance)) {
+    logDBloodFeedback.textContent = `✓ Correct! (${correctLogDBlood.toFixed(2)})`;
+    logDBloodFeedback.className = 'quiz-feedback correct';
+  } else {
+    logDBloodFeedback.textContent = `✗ Incorrect. Correct answer: ${correctLogDBlood.toFixed(2)}`;
+    logDBloodFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 2. Percentage ionized in stomach
+  const userIonizedStomach = parseFloat(document.getElementById('quiz-ionized-stomach').value);
+  const correctIonizedStomach = calculatePercentIonized(currentLogD.pKa, pHEnvironments.stomach, currentLogD.drugType);
+  const ionizedStomachFeedback = document.getElementById('quiz-ionized-stomach-feedback');
+  
+  if (Math.abs(userIonizedStomach - correctIonizedStomach) <= Math.abs(correctIonizedStomach * tolerance)) {
+    ionizedStomachFeedback.textContent = `✓ Correct! (${correctIonizedStomach.toFixed(1)}%)`;
+    ionizedStomachFeedback.className = 'quiz-feedback correct';
+  } else {
+    ionizedStomachFeedback.textContent = `✗ Incorrect. Correct answer: ${correctIonizedStomach.toFixed(1)}%`;
+    ionizedStomachFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 3. Highest logD compartment
+  const userHighestLogD = document.getElementById('quiz-highest-logd').value;
+  
+  // Calculate logD for all compartments and find the highest
+  const logDCompartments = {};
+  Object.keys(pHEnvironments).forEach(compartment => {
+    logDCompartments[compartment] = calculateLogD(currentLogD.logP, currentLogD.pKa, pHEnvironments[compartment], currentLogD.drugType);
+  });
+  
+  const correctHighestCompartment = Object.keys(logDCompartments).reduce((a, b) => 
+    logDCompartments[a] > logDCompartments[b] ? a : b);
+  
+  const highestLogDFeedback = document.getElementById('quiz-highest-logd-feedback');
+  
+  if (userHighestLogD === correctHighestCompartment) {
+    highestLogDFeedback.textContent = `✓ Correct! ${correctHighestCompartment} has the highest logD (${logDCompartments[correctHighestCompartment].toFixed(2)})`;
+    highestLogDFeedback.className = 'quiz-feedback correct';
+  } else {
+    highestLogDFeedback.textContent = `✗ Incorrect. Correct answer: ${correctHighestCompartment} (logD = ${logDCompartments[correctHighestCompartment].toFixed(2)})`;
+    highestLogDFeedback.className = 'quiz-feedback incorrect';
+  }
+}
+
+function resetLogDQuiz() {
+  // Clear all quiz inputs
+  document.getElementById('quiz-logd-blood').value = '';
+  document.getElementById('quiz-ionized-stomach').value = '';
+  document.getElementById('quiz-highest-logd').value = '';
+  
+  // Clear all feedback
+  const feedbacks = document.querySelectorAll('.quiz-feedback');
+  feedbacks.forEach(feedback => {
+    feedback.textContent = '';
+    feedback.className = 'quiz-feedback';
+  });
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Add event listeners to sliders and inputs
+  const sliderIds = [
+    'logp-slider', 'pka-slider', 
+    'stomach-ph-slider', 'blood-ph-slider', 'tissue-ph-slider', 'urine-ph-slider'
+  ];
+  
+  sliderIds.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('input', function() {
+        // Update current values
+        if (id === 'logp-slider') {
+          currentLogD.logP = parseFloat(this.value);
+        } else if (id === 'pka-slider') {
+          currentLogD.pKa = parseFloat(this.value);
+        } else if (id.includes('ph-slider')) {
+          const compartment = id.replace('-ph-slider', '');
+          pHEnvironments[compartment] = parseFloat(this.value);
+        }
+        
+        updateLogDSliderValues();
+        calculateAndDisplayLogD();
+      });
+    }
+  });
+  
+  // Add event listeners for drug type and name
+  const drugTypeSelect = document.getElementById('drug-type-select');
+  if (drugTypeSelect) {
+    drugTypeSelect.addEventListener('change', function() {
+      currentLogD.drugType = this.value;
+      updateLogDSliderValues();
+      calculateAndDisplayLogD();
+    });
+  }
+  
+  const drugNameInput = document.getElementById('drug-name-logd');
+  if (drugNameInput) {
+    drugNameInput.addEventListener('input', function() {
+      currentLogD.drugName = this.value;
+      calculateAndDisplayLogD();
+    });
+  }
+  
+  // Initialize displays and calculations
+  updateLogDSliderValues();
+  setTimeout(() => {
+    calculateAndDisplayLogD();
+  }, 100);  // Small delay to ensure DOM is ready
+});
+</script>
+```
+
+::::::::::::::::
+:::::::::::::::::::::::::::::::::::::
+
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+<div>
+[← PK/PD Exercise](exercise.qmd){.btn .btn-outline-primary}
+</div>
+
+<div>
+[Session 2 →](../session_02/index.qmd){.btn .btn-outline-primary}
+</div>
+:::::
