@@ -122,26 +122,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 :::
 
-::: {.plot-section}
-### Real-time Plot
-
-::: {#concentration-plot}
-<div id="chart-fallback">
-  <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="1920" height="1080"></canvas>
-</div>
-:::
-
-::: {.simulation-buttons}
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-<button id="download-btn" onclick="downloadData()">Download Data</button>
-:::
-:::
-
-:::
-
-:::
-
 ::: {.content-section}
 ## Subject Data
 
@@ -269,6 +249,24 @@ Test your understanding by calculating the following parameters for the current 
 <button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
 </div>
 
+:::
+
+:::
+
+::: {.plot-section}
+### Real-time Plot
+
+::: {#concentration-plot}
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="800" height="600"></canvas>
+</div>
+:::
+
+::: {.simulation-buttons}
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+<button id="download-btn" onclick="downloadData()">Download Data</button>
+:::
 :::
 
 :::
@@ -427,11 +425,11 @@ main.content {
   margin-top: 20px;
 }
 
-/* Main layout for side-by-side Controls and Plot */
+/* Main layout for Controls, Content, and Plot Sidebar */
 .main-layout {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 30px;
+  grid-template-columns: 2fr 2fr 1.5fr;
+  gap: 20px;
   align-items: start;
 }
 
@@ -441,10 +439,13 @@ main.content {
 
 .plot-section {
   background-color: #ffffff;
-  padding: 20px;
+  padding: 15px;
   border-radius: 8px;
   border: 1px solid #dee2e6;
   min-width: 0; /* Prevent grid overflow */
+  height: fit-content;
+  position: sticky;
+  top: 20px;
 }
 
 .plot-section h3 {
