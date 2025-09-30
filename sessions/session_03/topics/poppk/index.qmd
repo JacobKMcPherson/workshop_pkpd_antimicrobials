@@ -4,7 +4,7 @@ format: html
 editor: source
 ---
 
-This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
+This interactive module demonstrates population pharmacokinetic modeling principles for antimicrobial drug development and optimization. Explore how patient covariates influence drug disposition and learn to identify sources of pharmacokinetic variability.
 
 ::: {.content-section}
 
@@ -185,19 +185,32 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ### Education
 
-#### Bacteremia-Specific Pharmacokinetic Concepts
+#### Population Pharmacokinetics (PopPK) Concepts
 
-**Systemic Circulation Target**: For bacteremia caused by MRSA, the primary site of infection is the bloodstream itself. This makes vancomycin an ideal choice as it achieves excellent systemic exposure with minimal tissue penetration requirements.
+**Population Approach**: PopPK analyzes PK data from many individuals simultaneously to characterize typical parameter values and quantify between-subject variability. This approach is essential for understanding drug behavior across diverse patient populations.
 
-**Volume of Distribution for Bacteremia**: Vancomycin has a relatively small Vd (0.4-0.9 L/kg) which means it stays primarily in the vascular space and extracellular fluid - exactly where it's needed for bloodstream infections.
+**Key PopPK Components**:
+- **Structural Model**: Basic PK model (e.g., one-compartment, two-compartment)
+- **Covariate Model**: Relationships between patient characteristics and PK parameters
+- **Random Effects Model**: Quantifies unexplained variability (between-subject, residual)
 
-**AUC/MIC Target for MRSA Bacteremia**: The target AUC₀₋₂₄/MIC ≥ 400-600 ensures adequate exposure throughout the dosing interval. Higher targets (≥600) may be needed for more resistant organisms or severe infections.
+**Important Covariates for Antimicrobials**:
+- **Renal Function**: Creatinine clearance affects clearance of renally eliminated drugs
+- **Body Size**: Weight/BSA influences volume of distribution
+- **Age**: Affects both clearance and volume parameters
+- **Disease State**: Critical illness can alter drug disposition
 
-**Protein Binding Considerations**: Vancomycin is ~90% protein bound, meaning only 10% is pharmacologically active. However, for bacteremia, the high protein binding actually helps maintain therapeutic concentrations in plasma.
+**Clinical Applications**:
+- **Dose Individualization**: Bayesian dosing using patient-specific covariates  
+- **Special Populations**: Pediatric, geriatric, or critically ill patients
+- **Drug Development**: Identify optimal dosing across patient populations
+- **Regulatory Submissions**: Support dosing recommendations
 
-**Renal Clearance Monitoring**: With 80% renal elimination, creatinine clearance directly impacts vancomycin dosing. Dose adjustments are critical in renal impairment to prevent accumulation and nephrotoxicity.
-
-**Trough vs. AUC Monitoring**: While trough levels (15-20 mg/L) were historically used, AUC-guided dosing is now preferred for optimizing efficacy while minimizing nephrotoxicity risk.
+**Model Development Process**:
+1. Base structural model selection
+2. Covariate screening and inclusion
+3. Model evaluation and validation
+4. Clinical translation and dosing guidelines
 
 #### Blood Sampling Strategy
 

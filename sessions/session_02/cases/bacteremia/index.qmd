@@ -196,22 +196,31 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ### Education
 
-#### Endocarditis-Specific Pharmacokinetic Concepts
+#### MRSA Bacteremia Pharmacokinetics of Vancomycin
 
-**Cardiac Tissue Penetration Challenges**: Endocarditis involves infected cardiac valves with poor vascularization and biofilm formation. Daptomycin has limited tissue penetration (Vd = 0.1 L/kg) but high systemic exposure compensates.
+**Systemic Circulation Target**: For bacteremia caused by MRSA, the primary site of infection is the bloodstream itself. This makes vancomycin an ideal choice as it achieves excellent systemic exposure with minimal tissue penetration requirements.
 
-**High-Dose Strategy for VRE Endocarditis**: Target AUC₀₋₂₄/MIC ≥ 666 and Cmin ≥ 24.3 mg/L requires aggressive dosing (8-10 mg/kg/day). Higher doses may be needed for complex cases (up to 12 mg/kg/day).
+**Volume of Distribution for Bacteremia**: Vancomycin has a relatively small Vd (0.4-0.9 L/kg) which means it stays primarily in the vascular space and extracellular fluid - exactly where it's needed for bloodstream infections.
 
-**Calcium-Dependent Activity**: Daptomycin requires physiologic calcium concentrations for antimicrobial activity. Serum calcium should be monitored and maintained >8.5 mg/dL.
+**AUC/MIC Target for MRSA Bacteremia**: The target AUC₀₋₂₄/MIC ≥ 400-600 ensures adequate exposure throughout the dosing interval. Higher targets (≥600) may be needed for more resistant organisms or severe infections.
 
-**Protein Binding Considerations**: Low protein binding (~8%) means 92% is active, contributing to excellent antimicrobial effect despite poor tissue penetration.
+**Protein Binding Considerations**: Vancomycin is ~90% protein bound, meaning only 10% is pharmacologically active. However, for bacteremia, the high protein binding actually helps maintain therapeutic concentrations in plasma.
 
-**Unique Monitoring Requirements**: 
-- **CPK levels**: Monitor for myopathy (dose-related toxicity)
-- **Pulmonary function**: Rare but serious eosinophilic pneumonia
-- **Renal function**: Potential nephrotoxicity with high doses
+**Renal Clearance Monitoring**: With 80% renal elimination, creatinine clearance directly impacts vancomycin dosing. Dose adjustments are critical in renal impairment to prevent accumulation and nephrotoxicity.
 
-**Extended Treatment Duration**: Endocarditis requires 4-6 weeks of therapy. Some cases may need surgical intervention combined with antimicrobial therapy for optimal outcomes.
+**Trough vs. AUC Monitoring**: While trough levels (15-20 mg/L) were historically used, AUC-guided dosing is now preferred for optimizing efficacy while minimizing nephrotoxicity risk.
+
+**MRSA-Specific Considerations**:
+- **MIC Breakpoint**: MRSA susceptibility defined as MIC ≤ 2 mg/L
+- **Heteroresistance**: Some MRSA strains show subpopulations with higher MICs
+- **Biofilm Formation**: MRSA in bacteremia may form biofilms requiring higher exposures
+- **Source Control**: Removal of infected devices critical for treatment success
+
+**Dosing Strategy for MRSA Bacteremia**:
+- **Loading Dose**: 25-30 mg/kg to rapidly achieve target concentrations
+- **Maintenance**: 15-20 mg/kg q8-12h based on renal function
+- **Monitoring**: Target AUC₀₋₂₄ = 400-600 mg⋅h/L
+- **Duration**: Minimum 2 weeks, longer for complicated infections
 
 #### Blood Sampling Strategy
 
