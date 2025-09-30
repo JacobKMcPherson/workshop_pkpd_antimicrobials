@@ -1,7 +1,7 @@
 ---
 title: "Session 02"
 format: html
-editor: visual
+editor: source
 ---
 
 ::: callout-important
@@ -9,11 +9,11 @@ editor: visual
 
 ## Slides
 
-🖥️ [Slides](slides.qmd)
+🖥️ [Slides](slides.qmd){.btn .btn-outline-primary}
 
 ## Exercise
 
-💪🏻[Exercise](exercise.qmd) (see cases below)
+💪🏻[Exercise](exercise.qmd){.btn .btn-outline-primary} (see cases below)
 
 ::: {style="font-size: 0.875em;"}
 :::

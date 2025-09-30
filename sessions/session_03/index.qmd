@@ -1,7 +1,7 @@
 ---
 title: "Session 03"
 format: html
-editor: visual
+editor: source
 ---
 
 ::: callout-important
@@ -9,11 +9,11 @@ editor: visual
 
 ## Slides
 
-🖥️ [Slides](slides.html)
+🖥️ [Slides](slides.html){.btn .btn-outline-primary}
 
 ## Exercise
 
-💪🏻[Exercise](exercise.html)
+💪🏻[Exercise](exercise.html){.btn .btn-outline-primary} (see topics below)
 
 ::: {style="font-size: 0.875em;"}
 :::

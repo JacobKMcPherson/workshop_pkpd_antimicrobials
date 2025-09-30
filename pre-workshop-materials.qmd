@@ -1,7 +1,7 @@
 ---
 title: "Pre-Workshop Materials"
 format: html
-editor: visual
+editor: source
 ---
 
 ::: callout-important
@@ -17,7 +17,7 @@ editor: visual
 
 ## Pre-Workshop Slides
 
-🖥️ [View Primer](content/pre-workshop-primer.html)
+🖥️ [View Primer](content/pre-workshop-primer.html){.btn .btn-outline-primary}
 
 ## Pre-Workshop Evaluation
 

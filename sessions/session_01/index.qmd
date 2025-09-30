@@ -9,7 +9,7 @@ editor: source
 
 ## Slides
 
-🖥️ [Slides](slides.html)
+🖥️ [Slides](slides.html){.btn .btn-outline-primary}
 
 ## Exercises
 
