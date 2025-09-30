@@ -101,20 +101,20 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <button id="download-btn" onclick="downloadData()">Download Data</button>
 ::: {.control-group-compact}
 <label for="loading-dose-slider">Loading Dose (mg):</label>
-<input type="range" id="loading-dose-slider" min="0" max="3000" value="250" step="50">
-<span id="loading-dose-value">0</span> mg
+<input type="range" id="loading-dose-slider" min="0" max="3000" value="1250" step="50">
+<span id="loading-dose-value">1250</span> mg
 :::
 
 ::: {.control-group-compact}
 <label for="dose-slider">Dose (mg):</label>
 <input type="range" id="dose-slider" min="750" max="1500" value="1000" step="50">
-<span id="dose-value">250</span> mg
+<span id="dose-value">1000</span> mg
 :::
 
 ::: {.control-group-compact}
 <label for="interval-slider">Dosing Interval (hrs):</label>
 <input type="range" id="interval-slider" min="8" max="12" value="12" step="1">
-<span id="interval-value">24</span> hrs
+<span id="interval-value">12</span> hrs
 :::
 
 ::: {.control-group-compact}
@@ -738,11 +738,11 @@ let currentPatient = {
 
 // PK Model parameters
 const baseParams = {
-  clearance: 5.0,      // L/h
-  volume: 0.7,         // L/kg (drug-specific volume per kg)
-  dose: 250,           // mg
-  bioavailability: 0.8,
-  interval: 24,        // dosing interval (h)
+  clearance: 4.5,      // L/h (vancomycin for meningitis)
+  volume: 0.65,        // L/kg (vancomycin volume per kg)
+  dose: 1000,          // mg (typical vancomycin dose for meningitis)
+  bioavailability: 1.0, // IV administration
+  interval: 12,        // dosing interval (h) - q12h
   numDoses: 10
 };
 
@@ -815,7 +815,7 @@ function generateSubjects() {
   // Base PK parameters from sliders
   const baseClearance = 5.0; // Fixed base clearance (L/h)
   const fRenal = parseFloat(document.getElementById('f-renal-slider')?.value || 0.8);
-  const baseVolumePerKg = parseFloat(document.getElementById('volume-slider')?.value || 0.7);
+  const baseVolumePerKg = parseFloat(document.getElementById('volume-slider')?.value || 0.65);
   const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8);
   const fractionUnbound = parseFloat(document.getElementById('fraction-unbound-slider')?.value || 0.1);
   
@@ -871,9 +871,9 @@ function generateSubjects() {
   
   // Dosing parameters
   const drugName = document.getElementById('drug-name-input')?.value || '';
-  const loadingDose = parseFloat(document.getElementById('loading-dose-slider')?.value || 250);
-  const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
-  const interval = parseFloat(document.getElementById('interval-slider')?.value || 24);
+  const loadingDose = parseFloat(document.getElementById('loading-dose-slider')?.value || 1250);
+  const dose = parseFloat(document.getElementById('dose-slider')?.value || 1000);
+  const interval = parseFloat(document.getElementById('interval-slider')?.value || 12);
   const duration = parseFloat(document.getElementById('duration-slider')?.value || 10);
   
   subjects = [];
@@ -1347,9 +1347,9 @@ function downloadData() {
     timestamp: new Date().toISOString(),
     parameters: {
       fRenal: parseFloat(document.getElementById('f-renal-slider')?.value || 0.8),
-      volume: parseFloat(document.getElementById('volume-slider')?.value || 0.7),
+      volume: parseFloat(document.getElementById('volume-slider')?.value || 0.65),
       bioavailability: parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8),
-      dose: parseFloat(document.getElementById('')?.value || 250),
+      dose: parseFloat(document.getElementById('')?.value || 1000),
       interval: parseFloat(document.getElementById('interval-slider')?.value || 24),
       duration: parseFloat(document.getElementById('duration-slider')?.value || 10),
       toxicityThreshold: parseFloat(document.getElementById('toxicity-slider')?.value || 20),
@@ -1419,14 +1419,14 @@ function downloadPlotImage() {
 function resetSimulation() {
   const sliderDefaults = {
     // Core PK parameters
-    'f-renal-slider': 0.8,
-    'volume-slider': 0.7,
-    'bioavailability-slider': 0.8,
-    'fraction-unbound-slider': 0.1,
+    'f-renal-slider': 0.85,
+    'volume-slider': 0.65,
+    'bioavailability-slider': 1.0,
+    'fraction-unbound-slider': 0.9,
     // Dosing parameters
-    'loading-dose-slider': 250,
-    'dose-slider': 250,
-    'interval-slider': 24,
+    'loading-dose-slider': 1250,
+    'dose-slider': 1000,
+    'interval-slider': 12,
     'duration-slider': 10,
     // Reference lines
     'toxicity-slider': 20,
