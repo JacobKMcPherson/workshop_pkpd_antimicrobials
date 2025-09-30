@@ -9,11 +9,11 @@ editor: source
 
 ## Slides
 
-🖥️ [Slides](slides.html){.btn .btn-outline-primary}
+[🖥️ Slides](slides.html){.btn .btn-outline-primary}
 
 ## Exercise
 
-💪🏻[Exercise](exercise.html){.btn .btn-outline-primary} (see topics below)
+[💪🏻 Exercise](exercise.html){.btn .btn-outline-primary} (see topics below)
 
 ::: {style="font-size: 0.875em;"}
 :::
