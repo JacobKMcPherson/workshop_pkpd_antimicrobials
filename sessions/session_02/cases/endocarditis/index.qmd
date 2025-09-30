@@ -11,6 +11,12 @@ execute:
 
 **Drug of Choice**: Daptomycin
 
+**Physicochemical Properties**: 
+- **pKa**: 2.8 (acidic drug; predominantly ionized at physiological pH)
+- **logP**: -0.1 (moderately hydrophilic with some lipophilic character)
+
+**Tissue Distribution Rationale**: Daptomycin's moderate logP (-0.1) and acidic pKa (2.8) provide balanced hydrophilic/lipophilic properties enabling good tissue penetration. Its calcium-dependent mechanism requires adequate tissue calcium concentrations, and its moderate lipophilicity allows penetration into cardiac tissues affected in endocarditis.
+
 **PK/PD Target**: AUC/MIC ≥ 666, Cmin ≥ 24.3 mg/L (high dose for endocarditis)
 
 **Key PK Parameters for Endocarditis**:

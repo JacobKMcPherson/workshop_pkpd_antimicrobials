@@ -11,6 +11,12 @@ execute:
 
 **Drug of Choice**: Ertapenem
 
+**Physicochemical Properties**: 
+- **pKa**: 2.8 (acidic drug; predominantly ionized at physiological pH)
+- **logP**: -0.5 (moderately hydrophilic with some lipophilic character)
+
+**Tissue Distribution Rationale**: Ertapenem's moderate logP (-0.5) and acidic pKa (2.8) provide balanced hydrophilic/lipophilic properties enabling good tissue penetration. Its renal excretion and moderate lipophilicity allow effective urinary tract concentrations while maintaining good tissue penetration for complicated UTIs.
+
 **PK/PD Target**: %T>MIC ≥ 40% (β-lactam for UTI)
 
 **Key PK Parameters for UTI**:

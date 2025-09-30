@@ -11,6 +11,12 @@ execute:
 
 **Drug of Choice**: Cefazolin
 
+**Physicochemical Properties**: 
+- **pKa**: 2.1 (acidic drug; predominantly ionized at physiological pH)
+- **logP**: -1.2 (hydrophilic; limited lipid solubility)
+
+**Tissue Distribution Rationale**: Cefazolin's low logP (-1.2) and acidic pKa (2.1) result in predominantly hydrophilic distribution. Despite limited lipophilicity, it achieves good bone tissue concentrations due to its excellent tissue penetration via extracellular fluid and its affinity for bone tissue, making it effective for osteomyelitis treatment.
+
 **PK/PD Target**: %T>MIC ≥ 70% (bone penetration critical)
 
 **Key PK Parameters for Osteomyelitis**:

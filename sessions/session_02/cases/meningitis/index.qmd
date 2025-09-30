@@ -11,6 +11,12 @@ execute:
 
 **Drug of Choice**: Vancomycin + ceftriaxone (or cefotaxime)
 
+**Physicochemical Properties of Vancomycin**: 
+- **pKa**: 7.75 (basic drug; partially ionized at physiological pH)
+- **logP**: -3.1 (highly hydrophilic; very limited lipid solubility)
+
+**Tissue Distribution Rationale**: Vancomycin's very low logP (-3.1) and large molecular size result in poor CNS penetration under normal conditions. However, during meningeal inflammation, increased blood-brain barrier permeability allows therapeutic CSF concentrations. The combination with ceftriaxone (better CNS penetration) provides broader coverage and improved CNS drug delivery.
+
 **PK/PD Target**: AUC/MIC ≥ 400 (vancomycin) + %T>MIC ≥ 50% (ceftriaxone)
 
 **Key PK Parameters for Meningitis**:
