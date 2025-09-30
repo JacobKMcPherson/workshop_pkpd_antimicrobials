@@ -217,25 +217,27 @@ In this simulation, blood samples are collected every 1 hour to provide a detail
 - Reduce the burden on patients compared to more frequent sampling
 - Provide sufficient data points for pharmacokinetic analysis
 
-#### Simplified Pharmacokinetic Model
+#### Data Generation for NCA
 
-This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
+This simulation generates concentration-time data using a simplified one-compartment model to demonstrate how NCA methods can be applied to real-world antimicrobial pharmacokinetic data:
 
-**Essential PK Parameters:**
-- **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation
-- **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight
-- **Bioavailability (F)**: Fraction of dose reaching systemic circulation
+**Concentration-Time Data Generation:**
+- **Simulated PK Profile**: Creates realistic concentration-time curves based on patient-specific parameters
+- **Sampling Points**: Hourly measurements to capture both absorption and elimination phases
+- **Multiple Dosing**: Demonstrates accumulation and steady-state achievement
 
-**Patient-Specific Factors:**
-- **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
-- **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
+**NCA-Relevant Parameters Calculated:**
+- **AUC (Area Under Curve)**: Using linear trapezoidal rule from observed concentrations
+- **Cmax and Tmax**: Peak concentration and time to peak from simulated data
+- **Clearance (CL/F)**: Derived from Dose/AUC without model assumptions
+- **Terminal Half-life**: From log-linear decline in terminal phase
 
-**Dosing Parameters:**
-- **Dose**: Amount of drug administered per dose
-- **Dosing Interval**: Time between doses
-- **Treatment Duration**: Total length of treatment
+**Patient-Specific Input Factors:**
+- **Creatinine Clearance**: Cockcroft-Gault equation guides clearance estimation
+- **Body Size**: Weight influences both clearance and volume parameters
+- **Demographics**: Age and sex incorporated via renal function equations
 
-This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
+This approach demonstrates how NCA methods extract pharmacokinetic parameters directly from concentration-time data without requiring compartmental model assumptions, making it ideal for regulatory submissions and clinical TDM applications.
 
 ### Quiz
 
