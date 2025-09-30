@@ -4,7 +4,7 @@ format: html
 editor: source
 ---
 
-This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
+This interactive module demonstrates non-compartmental analysis (NCA) techniques for antimicrobial pharmacokinetic data analysis. Learn how to calculate key PK parameters directly from concentration-time data without assuming a specific compartmental model.
 
 ::: {.content-section}
 
@@ -185,19 +185,28 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ### Education
 
-#### Bacteremia-Specific Pharmacokinetic Concepts
+#### Non-Compartmental Analysis (NCA) Fundamentals
 
-**Systemic Circulation Target**: For bacteremia caused by MRSA, the primary site of infection is the bloodstream itself. This makes vancomycin an ideal choice as it achieves excellent systemic exposure with minimal tissue penetration requirements.
+**Model-Independent Approach**: NCA calculates pharmacokinetic parameters directly from observed concentration-time data without assuming a specific compartmental model. This makes it ideal for regulatory submissions and clinical practice where model assumptions may not hold.
 
-**Volume of Distribution for Bacteremia**: Vancomycin has a relatively small Vd (0.4-0.9 L/kg) which means it stays primarily in the vascular space and extracellular fluid - exactly where it's needed for bloodstream infections.
+**Key NCA Parameters**:
+- **AUC (Area Under the Curve)**: Total drug exposure calculated using the trapezoidal rule
+- **Cmax**: Maximum observed concentration
+- **Tmax**: Time to maximum concentration  
+- **Clearance (CL/F)**: Dose/AUC for extravascular administration
+- **Terminal Half-life**: Calculated from the terminal elimination phase
 
-**AUC/MIC Target for MRSA Bacteremia**: The target AUC₀₋₂₄/MIC ≥ 400-600 ensures adequate exposure throughout the dosing interval. Higher targets (≥600) may be needed for more resistant organisms or severe infections.
+**Advantages of NCA**:
+- No model assumptions required
+- Robust to sparse sampling
+- Regulatory gold standard
+- Less prone to bias than compartmental methods
 
-**Protein Binding Considerations**: Vancomycin is ~90% protein bound, meaning only 10% is pharmacologically active. However, for bacteremia, the high protein binding actually helps maintain therapeutic concentrations in plasma.
-
-**Renal Clearance Monitoring**: With 80% renal elimination, creatinine clearance directly impacts vancomycin dosing. Dose adjustments are critical in renal impairment to prevent accumulation and nephrotoxicity.
-
-**Trough vs. AUC Monitoring**: While trough levels (15-20 mg/L) were historically used, AUC-guided dosing is now preferred for optimizing efficacy while minimizing nephrotoxicity risk.
+**Clinical Applications**: NCA is particularly valuable for:
+- Bioequivalence studies
+- Dose proportionality assessments
+- First-in-human studies
+- Population PK analysis input data
 
 #### Blood Sampling Strategy
 
