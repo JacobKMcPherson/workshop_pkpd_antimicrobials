@@ -16,14 +16,17 @@ This interactive module demonstrates gastroenteric absorption and distribution o
 
 ::::: drug-properties
 :::: {style="margin-bottom: 8px;"}
-<button id="preset-aspirin-btn" onclick="loadPreset('aspirin')">
-Load Aspirin
+<button id="preset-cefepime-btn" onclick="loadPreset('cefepime')">
+Load Cefepime
 </button>
-<button id="preset-morphine-btn" onclick="loadPreset('morphine')" style="margin-left: 10px;">
-Load Morphine  
+<button id="preset-vancomycin-btn" onclick="loadPreset('vancomycin')" style="margin-left: 10px;">
+Load Vancomycin  
 </button>
-<button id="preset-caffeine-btn" onclick="loadPreset('caffeine')" style="margin-left: 10px;">
-Load Caffeine
+<button id="preset-ciprofloxacin-btn" onclick="loadPreset('ciprofloxacin')" style="margin-left: 10px;">
+Load Ciprofloxacin
+</button>
+<button id="preset-gentamicin-btn" onclick="loadPreset('gentamicin')" style="margin-left: 10px;">
+Load Gentamicin
 </button>
 ::::
 
@@ -128,6 +131,12 @@ Reset Parameters
 :::::::::::::::: panel-tabset
 ### logD vs pH Plot
 
+<div style="text-align: center; margin-bottom: 10px;">
+<button id="download-logd-btn" onclick="downloadLogDPlot()" style="background-color: #007bff; color: white; border: none; border-radius: 4px; padding: 6px 12px; cursor: pointer;">
+Download SVG
+</button>
+</div>
+
 :::: {#logd-plot}
 ::: {#logd-chart-fallback}
 <p>Loading interactive chart...</p>
@@ -136,6 +145,12 @@ Reset Parameters
 ::::
 
 ### Ionization vs pH Plot
+
+<div style="text-align: center; margin-bottom: 10px;">
+<button id="download-ionization-btn" onclick="downloadIonizationPlot()" style="background-color: #007bff; color: white; border: none; border-radius: 4px; padding: 6px 12px; cursor: pointer;">
+Download SVG
+</button>
+</div>
 
 :::: {#ionization-plot}
 ::: {#ionization-chart-fallback}  
@@ -475,24 +490,30 @@ let pHEnvironments = {
   urine: 6.0
 };
 
-// Drug presets with realistic values
+// Drug presets with realistic antibiotic values
 const drugPresets = {
-  aspirin: {
-    name: 'Aspirin',
-    logP: 1.2,
-    pKa: 3.5,
+  cefepime: {
+    name: 'Cefepime',
+    logP: -1.02,
+    pKa: 2.5,
     type: 'acid'
   },
-  morphine: {
-    name: 'Morphine', 
-    logP: 0.89,
-    pKa: 9.85,
+  vancomycin: {
+    name: 'Vancomycin', 
+    logP: -3.1,
+    pKa: 7.75,
     type: 'base'
   },
-  caffeine: {
-    name: 'Caffeine',
-    logP: 0.07,
-    pKa: 10.4,
+  ciprofloxacin: {
+    name: 'Ciprofloxacin',
+    logP: 0.28,
+    pKa: 6.09,
+    type: 'acid'
+  },
+  gentamicin: {
+    name: 'Gentamicin',
+    logP: -3.0,
+    pKa: 8.2,
     type: 'base'
   }
 };
@@ -1117,6 +1138,72 @@ function resetLogDQuiz() {
     feedback.textContent = '';
     feedback.className = 'quiz-feedback';
   });
+}
+
+// Download logD vs pH plot as SVG
+function downloadLogDPlot() {
+  const canvas = document.getElementById('logd-chart');
+  if (!canvas) return;
+  
+  // Create SVG element
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", canvas.width);
+  svg.setAttribute("height", canvas.height);
+  svg.setAttribute("viewBox", `0 0 ${canvas.width} ${canvas.height}`);
+  
+  // Convert canvas to data URL and embed in SVG
+  const dataURL = canvas.toDataURL("image/png");
+  const image = document.createElementNS(svgNS, "image");
+  image.setAttribute("href", dataURL);
+  image.setAttribute("width", canvas.width);
+  image.setAttribute("height", canvas.height);
+  svg.appendChild(image);
+  
+  // Create download link
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const svgBlob = new Blob([svgData], { type: 'image/svg+xml' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(svgBlob);
+  link.download = `logd_vs_ph_plot_${new Date().toISOString().split('T')[0]}.svg`;
+  
+  // Trigger download
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Download ionization vs pH plot as SVG
+function downloadIonizationPlot() {
+  const canvas = document.getElementById('ionization-chart');
+  if (!canvas) return;
+  
+  // Create SVG element
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", canvas.width);
+  svg.setAttribute("height", canvas.height);
+  svg.setAttribute("viewBox", `0 0 ${canvas.width} ${canvas.height}`);
+  
+  // Convert canvas to data URL and embed in SVG
+  const dataURL = canvas.toDataURL("image/png");
+  const image = document.createElementNS(svgNS, "image");
+  image.setAttribute("href", dataURL);
+  image.setAttribute("width", canvas.width);
+  image.setAttribute("height", canvas.height);
+  svg.appendChild(image);
+  
+  // Create download link
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const svgBlob = new Blob([svgData], { type: 'image/svg+xml' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(svgBlob);
+  link.download = `ionization_vs_ph_plot_${new Date().toISOString().split('T')[0]}.svg`;
+  
+  // Trigger download
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 // Initialize when DOM is loaded
