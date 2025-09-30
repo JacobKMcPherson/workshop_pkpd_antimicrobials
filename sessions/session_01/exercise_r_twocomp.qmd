@@ -1,0 +1,323 @@
+---
+title: "Two-Compartment Pharmacokinetic Analysis with R"
+format: html
+editor: source
+engine: knitr
+---
+
+This interactive module demonstrates two-compartment pharmacokinetic modeling using R programming. Learn how to simulate, analyze, and visualize concentration-time profiles for drugs with distribution phases.
+
+## Introduction
+
+Two-compartment models are essential for drugs that exhibit distinct distribution phases. Unlike one-compartment models, these capture the initial rapid distribution into highly perfused tissues (central compartment) followed by slower distribution into less perfused tissues (peripheral compartment).
+
+## R Code: Generate and Analyze Data
+
+```{r}
+#| label: setup
+#| warning: false
+#| message: false
+
+# Load required libraries
+library(deSolve)
+library(ggplot2)
+library(dplyr)
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Two-compartment PK model parameters
+params <- list(
+  CL = 5.0,    # Clearance (L/h)
+  V1 = 10.0,   # Central volume (L)
+  V2 = 20.0,   # Peripheral volume (L)
+  Q = 3.0,     # Inter-compartmental clearance (L/h)
+  ka = 1.5,    # Absorption rate constant (1/h) for oral dosing
+  F = 0.85     # Bioavailability
+)
+
+# Dosing information
+dose <- 500  # mg
+interval <- 12  # hours
+n_doses <- 5
+
+# Time points for simulation
+times <- seq(0, 60, by = 0.1)
+
+# Two-compartment model with first-order absorption
+two_comp_model <- function(time, state, parameters) {
+  with(as.list(c(state, parameters)), {
+    # Differential equations
+    dA_gut <- -ka * A_gut
+    dA_central <- ka * A_gut + Q/V2 * A_peripheral - Q/V1 * A_central - CL/V1 * A_central
+    dA_peripheral <- Q/V1 * A_central - Q/V2 * A_peripheral
+    
+    return(list(c(dA_gut, dA_central, dA_peripheral)))
+  })
+}
+
+# Function to simulate multiple doses
+simulate_multiple_doses <- function(dose, interval, n_doses, params, times) {
+  all_results <- data.frame()
+  
+  for (i in 1:n_doses) {
+    dose_time <- (i - 1) * interval
+    
+    # Initial state
+    if (i == 1) {
+      initial_state <- c(A_gut = dose * params$F, A_central = 0, A_peripheral = 0)
+    } else {
+      # Get final state from previous dose
+      last_state <- tail(result, 1)
+      initial_state <- c(
+        A_gut = last_state$A_gut + dose * params$F,
+        A_central = last_state$A_central,
+        A_peripheral = last_state$A_peripheral
+      )
+    }
+    
+    # Solve ODE for this dose interval
+    dose_times <- times[times >= dose_time & times < dose_time + interval]
+    if (i == n_doses) {
+      dose_times <- times[times >= dose_time]
+    }
+    
+    result <- ode(y = initial_state, times = dose_times - dose_time, 
+                  func = two_comp_model, parms = params)
+    result <- as.data.frame(result)
+    result$time <- result$time + dose_time
+    
+    if (i == 1) {
+      all_results <- result
+    } else {
+      all_results <- rbind(all_results, result[-1, ])
+    }
+  }
+  
+  return(all_results)
+}
+
+# Simulate the concentration-time profile
+pk_data <- simulate_multiple_doses(dose, interval, n_doses, params, times)
+
+# Calculate plasma concentration (mg/L)
+pk_data <- pk_data %>%
+  mutate(
+    Cp = A_central / params$V1,  # Central compartment concentration
+    dose_number = floor(time / interval) + 1
+  )
+
+# Print summary statistics
+cat("Two-Compartment PK Parameters:\n")
+cat("Clearance (CL):", params$CL, "L/h\n")
+cat("Central Volume (V1):", params$V1, "L\n")
+cat("Peripheral Volume (V2):", params$V2, "L\n")
+cat("Inter-compartmental Clearance (Q):", params$Q, "L/h\n")
+cat("Absorption rate (ka):", params$ka, "1/h\n")
+cat("\nCalculated parameters:\n")
+cat("Distribution half-life (t1/2α):", round(0.693 * params$V1 / (params$CL + params$Q), 2), "hours\n")
+cat("Elimination half-life (t1/2β):", round(0.693 * (params$V1 + params$V2) / params$CL, 2), "hours\n")
+
+# Display first few rows
+head(pk_data[, c("time", "A_central", "A_peripheral", "Cp", "dose_number")], 10)
+```
+
+## Visualize Concentration-Time Profile
+
+```{r}
+#| label: plot-pk
+#| fig-width: 10
+#| fig-height: 6
+#| warning: false
+
+# Create concentration-time plot
+ggplot(pk_data, aes(x = time, y = Cp)) +
+  geom_line(color = "blue", size = 1) +
+  geom_vline(xintercept = seq(0, (n_doses-1) * interval, by = interval), 
+             linetype = "dashed", color = "gray50", alpha = 0.5) +
+  labs(
+    title = "Two-Compartment PK Model: Multiple Dose Simulation",
+    subtitle = paste0("Dose: ", dose, " mg every ", interval, " hours (", n_doses, " doses)"),
+    x = "Time (hours)",
+    y = "Plasma Concentration (mg/L)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95")
+  ) +
+  scale_x_continuous(breaks = seq(0, max(pk_data$time), by = 12)) +
+  annotate("text", x = interval/2, y = max(pk_data$Cp) * 0.9, 
+           label = "Dose markers (dashed lines)", 
+           hjust = 0, color = "gray50", size = 3)
+```
+
+## Log-Scale Plot for Distribution Phase
+
+```{r}
+#| label: plot-log
+#| fig-width: 10
+#| fig-height: 6
+#| warning: false
+
+# Log-scale plot to visualize distribution and elimination phases
+first_dose <- pk_data %>% filter(time <= interval)
+
+ggplot(first_dose, aes(x = time, y = Cp)) +
+  geom_line(color = "darkred", size = 1) +
+  scale_y_log10() +
+  labs(
+    title = "First Dose: Distribution and Elimination Phases (Log Scale)",
+    subtitle = "Two distinct phases visible in log-scale plot",
+    x = "Time (hours)",
+    y = "Log Plasma Concentration (mg/L)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95")
+  ) +
+  annotate("text", x = 0.5, y = max(first_dose$Cp) * 0.8,
+           label = "α phase\n(distribution)", hjust = 0, color = "darkred", size = 4) +
+  annotate("text", x = 6, y = min(first_dose$Cp[first_dose$Cp > 0]) * 5,
+           label = "β phase\n(elimination)", hjust = 0, color = "darkred", size = 4)
+```
+
+## Non-Compartmental Analysis
+
+```{r}
+#| label: nca-analysis
+#| warning: false
+
+# Calculate AUC using trapezoidal rule for steady-state interval
+ss_data <- pk_data %>% 
+  filter(time >= (n_doses - 1) * interval & time < n_doses * interval)
+
+# Trapezoidal rule for AUC
+calc_auc <- function(time, conc) {
+  auc <- 0
+  for (i in 2:length(time)) {
+    auc <- auc + (time[i] - time[i-1]) * (conc[i] + conc[i-1]) / 2
+  }
+  return(auc)
+}
+
+auc_ss <- calc_auc(ss_data$time, ss_data$Cp)
+
+# Calculate Cmax and Cmin at steady state
+cmax_ss <- max(ss_data$Cp)
+cmin_ss <- min(ss_data$Cp)
+tmax_ss <- ss_data$time[which.max(ss_data$Cp)] - (n_doses - 1) * interval
+
+cat("\nNon-Compartmental Analysis (Steady State):\n")
+cat("AUC (0-τ):", round(auc_ss, 2), "mg·h/L\n")
+cat("Cmax:", round(cmax_ss, 2), "mg/L\n")
+cat("Tmax:", round(tmax_ss, 2), "hours after dose\n")
+cat("Cmin:", round(cmin_ss, 2), "mg/L\n")
+cat("Fluctuation:", round((cmax_ss - cmin_ss) / cmin_ss * 100, 1), "%\n")
+cat("\nClearance from AUC:", round(dose / auc_ss, 2), "L/h\n")
+cat("(Compare to true CL:", params$CL, "L/h)\n")
+```
+
+## Compartment Amount Over Time
+
+```{r}
+#| label: plot-compartments
+#| fig-width: 10
+#| fig-height: 6
+#| warning: false
+
+# Reshape data for plotting both compartments
+pk_long <- pk_data %>%
+  select(time, A_central, A_peripheral) %>%
+  tidyr::pivot_longer(cols = c(A_central, A_peripheral),
+                      names_to = "Compartment",
+                      values_to = "Amount") %>%
+  mutate(Compartment = ifelse(Compartment == "A_central", 
+                               "Central", "Peripheral"))
+
+ggplot(pk_long, aes(x = time, y = Amount, color = Compartment)) +
+  geom_line(size = 1) +
+  geom_vline(xintercept = seq(0, (n_doses-1) * interval, by = interval), 
+             linetype = "dashed", color = "gray50", alpha = 0.3) +
+  labs(
+    title = "Drug Amount in Central and Peripheral Compartments",
+    x = "Time (hours)",
+    y = "Amount (mg)"
+  ) +
+  scale_color_manual(values = c("Central" = "blue", "Peripheral" = "darkgreen")) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    legend.position = "top",
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_line(color = "gray95")
+  )
+```
+
+## Key Concepts
+
+### Two-Compartment Model Characteristics
+
+1. **Distribution Phase (α phase)**: Rapid initial decline as drug distributes from central to peripheral compartment
+2. **Elimination Phase (β phase)**: Slower terminal phase representing drug elimination from the body
+3. **Bi-exponential Decline**: On log scale, see two distinct linear phases
+
+### Important Parameters
+
+- **V1 (Central Volume)**: Volume of highly perfused tissues (blood, organs)
+- **V2 (Peripheral Volume)**: Volume of less perfused tissues
+- **Q (Inter-compartmental Clearance)**: Rate of distribution between compartments
+- **CL (Clearance)**: Rate of irreversible elimination from central compartment
+
+### Clinical Relevance
+
+Two-compartment models are important for:
+- Drugs with significant tissue distribution
+- Understanding loading dose requirements
+- Predicting accumulation with multiple dosing
+- TDM interpretation (timing of samples matters!)
+
+## Practice Questions
+
+1. **Calculate the volume of distribution at steady state (Vss)**:
+   - Vss = V1 + V2 = ?
+
+2. **What is the distribution half-life (t½α)**?
+   - Use the formula: t½α ≈ 0.693 × V1 / (CL + Q)
+
+3. **What is the terminal elimination half-life (t½β)**?
+   - Use the formula: t½β ≈ 0.693 × (V1 + V2) / CL
+
+4. **Why is Cmax higher after the first dose compared to subsequent doses?**
+
+5. **How would you modify the R code to simulate IV bolus dosing instead of oral?**
+   - Hint: Set ka to a very large value or modify initial conditions
+
+## Try It Yourself
+
+Modify the parameters in the R code above and re-run to explore:
+
+- Effect of changing CL on accumulation
+- Effect of changing Q on distribution phase
+- Effect of changing dosing interval on peak-trough fluctuation
+- Comparison of different bioavailabilities
+
+---
+
+::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+<div>
+
+[← Session 1](index.qmd){.btn .btn-outline-primary}
+
+</div>
+
+<div>
+
+[Session 2 →](../session_02/index.qmd){.btn .btn-outline-primary}
+
+</div>
+:::::
