@@ -1717,7 +1717,6 @@ document.addEventListener('DOMContentLoaded', function() {
 ::::::::::::::::
 :::::::::::::::::
 
-:::
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
