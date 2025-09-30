@@ -16,18 +16,14 @@ This interactive module demonstrates gastroenteric absorption and distribution o
 
 ::::: drug-properties
 :::: {style="margin-bottom: 8px;"}
-<button id="preset-cefepime-btn" onclick="loadPreset('cefepime')">
-Load Cefepime
-</button>
-<button id="preset-vancomycin-btn" onclick="loadPreset('vancomycin')" style="margin-left: 10px;">
-Load Vancomycin  
-</button>
-<button id="preset-ciprofloxacin-btn" onclick="loadPreset('ciprofloxacin')" style="margin-left: 10px;">
-Load Ciprofloxacin
-</button>
-<button id="preset-gentamicin-btn" onclick="loadPreset('gentamicin')" style="margin-left: 10px;">
-Load Gentamicin
-</button>
+<label for="preset-drug-dropdown" style="font-weight: bold; color: #495057; margin-bottom: 6px;">Select Antibiotic Preset:</label>
+<select id="preset-drug-dropdown" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+  <option value="">-- Choose a drug --</option>
+  <option value="cefepime">Cefepime</option>
+  <option value="vancomycin">Vancomycin</option>
+  <option value="ciprofloxacin">Ciprofloxacin</option>
+  <option value="gentamicin">Gentamicin</option>
+</select>
 ::::
 
 :::: drug-input-section
@@ -90,7 +86,7 @@ Load Gentamicin
 :::
 ::::::::
 
-### Reset Controls
+
 <button id="reset-logd-btn" onclick="resetLogDSimulation()" class="small-btn">
 Reset Parameters
 </button>
@@ -101,7 +97,7 @@ Reset Parameters
 
 ::::: calculation-results
 ::: {#logd-results}
-<div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
+<div style="background-color: #f8f9fa; padding: 8px; border-radius: 8px; border: 1px solid #dee2e6;">
 <h4 style="margin-top: 0; color: #495057;">logD Values</h4>
 <p><strong>Stomach:</strong> <span id="logd-stomach">-</span></p>
 <p><strong>Blood:</strong> <span id="logd-blood">-</span></p>
@@ -109,7 +105,7 @@ Reset Parameters
 <p><strong>Urine:</strong> <span id="logd-urine">-</span></p>
 </div>
 
-<div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6; margin-top: 10px;">
+<div style="background-color: #f8f9fa; padding: 8px; border-radius: 8px; border: 1px solid #dee2e6; margin-top: 10px;">
 <h4 style="margin-top: 0; color: #495057;">Ionization (%)</h4>
 <p><strong>Stomach:</strong> <span id="ionized-stomach">-</span>%</p>
 <p><strong>Blood:</strong> <span id="ionized-blood">-</span>%</p>
@@ -117,7 +113,7 @@ Reset Parameters
 <p><strong>Urine:</strong> <span id="ionized-urine">-</span>%</p>
 </div>
 
-<div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6; margin-top: 10px;">
+<div style="background-color: #f8f9fa; padding: 8px; border-radius: 8px; border: 1px solid #dee2e6; margin-top: 10px;">
 <h4 style="margin-top: 0; color: #495057;">Permeability</h4>
 <p><strong>Gastric Absorption:</strong> <span id="gastric-permeability">-</span></p>
 <p><strong>Intestinal Absorption:</strong> <span id="intestinal-permeability">-</span></p>
@@ -131,20 +127,30 @@ Reset Parameters
 :::::::::::::::: panel-tabset
 ### logD vs pH Plot
 
+:::: {#logd-plot}
+::: {#logd-chart-fallback}
+
+<p>Loading interactive chart...</p>
+<canvas id="logd-chart" width="1920" height="1080"></canvas>
+
+:::
+
 <div style="text-align: center; margin-bottom: 10px;">
 <button id="download-logd-btn" onclick="downloadLogDPlot()" style="background-color: #007bff; color: white; border: none; border-radius: 4px; padding: 6px 12px; cursor: pointer;">
 Download SVG
 </button>
 </div>
 
-:::: {#logd-plot}
-::: {#logd-chart-fallback}
-<p>Loading interactive chart...</p>
-<canvas id="logd-chart" width="1920" height="1080"></canvas>
-:::
 ::::
 
 ### Ionization vs pH Plot
+
+:::: {#ionization-plot}
+::: {#ionization-chart-fallback}  
+<p>Loading ionization chart...</p>
+<canvas id="ionization-chart" width="1920" height="1080"></canvas>
+
+:::
 
 <div style="text-align: center; margin-bottom: 10px;">
 <button id="download-ionization-btn" onclick="downloadIonizationPlot()" style="background-color: #007bff; color: white; border: none; border-radius: 4px; padding: 6px 12px; cursor: pointer;">
@@ -152,11 +158,6 @@ Download SVG
 </button>
 </div>
 
-:::: {#ionization-plot}
-::: {#ionization-chart-fallback}  
-<p>Loading ionization chart...</p>
-<canvas id="ionization-chart" width="1920" height="1080"></canvas>
-:::
 ::::
 
 ### Education
@@ -238,6 +239,13 @@ Reset Quiz
 
 ```{=html}
 <style>
+
+#logd-results p {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  line-height: 1.1;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -394,21 +402,21 @@ main.content {
   background-color: #fff;
   border: 2px solid #007bff;
   border-radius: 8px;
-  padding: 15px;
-  margin-top: 10px;
+  padding: 8px;
+  margin-top: 8px;
 }
 
 .properties-compact {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .ph-environments {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .control-group-compact {
@@ -422,20 +430,19 @@ main.content {
 }
 
 .control-group-compact span {
+  display: inline;
   font-size: 0.9em;
   color: #6c757d;
-  text-align: center;
-  margin-bottom: 0;
-  margin-top: 1px;
-  line-height: 1.1;
+  margin: 0;
   padding: 0;
+  line-height: 1;
 }
 
 .control-group-compact label {
   font-weight: bold;
   color: #495057;
   font-size: 0.9em;
-  margin-bottom: 2px;
+  margin-bottom: 0px;
 }
 
 .control-group-compact input[type="range"] {
@@ -475,6 +482,17 @@ main.content {
 
 ```{=html}
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const presetDropdown = document.getElementById('preset-drug-dropdown');
+  if (presetDropdown) {
+    presetDropdown.addEventListener('change', function() {
+      if (this.value) {
+        loadPreset(this.value);
+      }
+    });
+  }
+});
+
 // Global variables for logD simulation
 let currentLogD = {
   logP: 2.0,
