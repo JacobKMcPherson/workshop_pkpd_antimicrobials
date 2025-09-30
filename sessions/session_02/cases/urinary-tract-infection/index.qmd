@@ -284,6 +284,39 @@ Test your understanding by calculating the following parameters for the current 
 <span id="quiz-cssavg-feedback" class="quiz-feedback"></span>
 :::
 
+::: {.quiz-question}
+**6. Ertapenem PK/PD: Based on ertapenem's pKa (2.8) and physiological pH (7.4), what percentage of the drug is ionized?**
+<input type="number" id="quiz-ionized" placeholder="Enter percentage (0-100)" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-ionized-feedback" class="quiz-feedback"></span>
+<div class="quiz-hint" style="font-size: 0.9em; color: #666; margin-top: 5px;">
+*Hint: Use Henderson-Hasselbalch equation. For acids: ionized % = 100 × 10^(pH-pKa)/(1 + 10^(pH-pKa))*
+</div>
+:::
+
+::: {.quiz-question}
+**7. Urinary Concentrations: Why does ertapenem achieve excellent urinary tract penetration for UTI treatment?**
+<select id="quiz-penetration" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<option value="">Select your answer...</option>
+<option value="renal">High renal clearance (90%) concentrates drug 10-100× higher in urine than plasma</option>
+<option value="lipophilic">High lipophilicity enables tissue penetration</option>
+<option value="transport">Active transport mechanisms into urinary tract</option>
+<option value="metabolism">Local urinary metabolism concentrates the drug</option>
+</select>
+<span id="quiz-penetration-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**8. ESBL Coverage: What makes ertapenem particularly effective against ESBL+ E. coli in UTIs?**
+<select id="quiz-coverage" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<option value="">Select your answer...</option>
+<option value="stable">β-lactamase stability and carbapenem structure resistant to ESBL hydrolysis</option>
+<option value="binding">Higher protein binding increases effectiveness</option>
+<option value="ph">pH-dependent activity optimized for urinary tract</option>
+<option value="absorption">Better oral absorption than other options</option>
+</select>
+<span id="quiz-coverage-feedback" class="quiz-feedback"></span>
+:::
+
 <div style="text-align: center; margin: 15px 0;">
 <button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">Check Answers</button>
 <button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
@@ -1578,6 +1611,42 @@ function checkQuizAnswers() {
     cssAvgFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCssAvg.toFixed(2)} mg/L`;
     cssAvgFeedback.className = 'quiz-feedback incorrect';
   }
+  
+  // 6. Ertapenem ionization percentage
+  const userIonized = parseFloat(document.getElementById('quiz-ionized').value);
+  const pKa = 2.8;
+  const pH = 7.4;
+  const correctIonized = 100 * Math.pow(10, pH - pKa) / (1 + Math.pow(10, pH - pKa));
+  const ionizedFeedback = document.getElementById('quiz-ionized-feedback');
+  if (Math.abs(userIonized - correctIonized) / correctIonized <= 0.05) { // 5% tolerance for percentage
+    ionizedFeedback.textContent = `✓ Correct! (${correctIonized.toFixed(1)}%)`;
+    ionizedFeedback.className = 'quiz-feedback correct';
+  } else {
+    ionizedFeedback.textContent = `✗ Incorrect. Correct answer: ${correctIonized.toFixed(1)}%`;
+    ionizedFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 7. Urinary tract penetration
+  const userPenetration = document.getElementById('quiz-penetration').value;
+  const penetrationFeedback = document.getElementById('quiz-penetration-feedback');
+  if (userPenetration === 'renal') {
+    penetrationFeedback.textContent = '✓ Correct! High renal clearance (90%) concentrates drug 10-100× higher in urine than plasma.';
+    penetrationFeedback.className = 'quiz-feedback correct';
+  } else {
+    penetrationFeedback.textContent = '✗ Incorrect. High renal clearance (90%) concentrates drug 10-100× higher in urine than plasma.';
+    penetrationFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 8. ESBL coverage mechanism
+  const userCoverage = document.getElementById('quiz-coverage').value;
+  const coverageFeedback = document.getElementById('quiz-coverage-feedback');
+  if (userCoverage === 'stable') {
+    coverageFeedback.textContent = '✓ Correct! β-lactamase stability and carbapenem structure resistant to ESBL hydrolysis.';
+    coverageFeedback.className = 'quiz-feedback correct';
+  } else {
+    coverageFeedback.textContent = '✗ Incorrect. β-lactamase stability and carbapenem structure resistant to ESBL hydrolysis.';
+    coverageFeedback.className = 'quiz-feedback incorrect';
+  }
 }
 
 function resetQuiz() {
@@ -1587,6 +1656,9 @@ function resetQuiz() {
   document.getElementById('quiz-vss').value = '';
   document.getElementById('quiz-tss').value = '';
   document.getElementById('quiz-cssavg').value = '';
+  document.getElementById('quiz-ionized').value = '';
+  document.getElementById('quiz-penetration').value = '';
+  document.getElementById('quiz-coverage').value = '';
   
   // Clear all feedback
   const feedbacks = document.querySelectorAll('.quiz-feedback');
