@@ -41,16 +41,16 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.drug-name-section}
 <div style="margin-bottom: 2px;">
 <label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
-<input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+<input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" value="Vancomycin" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
 </div>
 
 <label for="formulation-select">Formulation:</label>
 <select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
 <option value="slow">Slow (Extended Release)</option>
-<option value="medium" selected>Medium (Standard Oral)</option>
-<option value="fast">Fast (IV Bolus)</option>
+<option value="medium">Medium (Standard Oral)</option>
+<option value="fast" selected>Fast (IV Bolus)</option>
 </select>
-<span id="formulation-value">Medium (Standard Oral)</span>
+<span id="formulation-value">Fast (IV Bolus)</span>
 :::
 
 :::
@@ -65,26 +65,26 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="bioavailability-slider">Bioavailability (F):</label>
-<input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05">
-<span id="bioavailability-value">0.8</span>
+<input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="1.0" step="0.05">
+<span id="bioavailability-value">1.0</span>
 :::
 
 ::: {.control-group-compact}
 <label for="fraction-unbound-slider">Fraction Unbound:</label>
-<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.92" step="0.01">
-<span id="fraction-unbound-value">0.1</span>
+<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.9" step="0.01">
+<span id="fraction-unbound-value">0.9</span>
 :::
 
 ::: {.control-group-compact}
 <label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.08" max="0.12" value="0.1" step="0.01">
-<span id="volume-value">0.7</span> L/kg
+<input type="range" id="volume-slider" min="0.4" max="0.9" value="0.65" step="0.01">
+<span id="volume-value">0.65</span> L/kg
 :::
 
 ::: {.control-group-compact}
 <label for="f-renal-slider">Fraction Renally Cleared:</label>
-<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.5" step="0.05">
-<span id="f-renal-value">0.8</span>
+<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.85" step="0.05">
+<span id="f-renal-value">0.85</span>
 :::
 
 
@@ -97,20 +97,20 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <button id="download-btn" onclick="downloadData()">Download Data</button>
 ::: {.control-group-compact}
 <label for="loading-dose-slider">Loading Dose (mg):</label>
-<input type="range" id="loading-dose-slider" min="0" max="3000" value="250" step="50">
-<span id="loading-dose-value">0</span> mg
+<input type="range" id="loading-dose-slider" min="0" max="3000" value="1250" step="50">
+<span id="loading-dose-value">1250</span> mg
 :::
 
 ::: {.control-group-compact}
 <label for="dose-slider">Dose (mg):</label>
-<input type="range" id="dose-slider" min="400" max="800" value="600" step="50">
-<span id="dose-value">250</span> mg
+<input type="range" id="dose-slider" min="400" max="800" value="750" step="50">
+<span id="dose-value">750</span> mg
 :::
 
 ::: {.control-group-compact}
 <label for="interval-slider">Dosing Interval (hrs):</label>
-<input type="range" id="interval-slider" min="1" max="48" value="24" step="1">
-<span id="interval-value">24</span> hrs
+<input type="range" id="interval-slider" min="1" max="48" value="12" step="1">
+<span id="interval-value">12</span> hrs
 :::
 
 ::: {.control-group-compact}
@@ -735,11 +735,11 @@ let currentPatient = {
 
 // PK Model parameters
 const baseParams = {
-  clearance: 5.0,      // L/h
-  volume: 0.7,         // L/kg (drug-specific volume per kg)
-  dose: 250,           // mg
-  bioavailability: 0.8,
-  interval: 24,        // dosing interval (h)
+  clearance: 4.5,      // L/h (vancomycin)
+  volume: 0.65,        // L/kg (vancomycin volume per kg)
+  dose: 750,           // mg (typical vancomycin maintenance dose)
+  bioavailability: 1.0, // IV administration
+  interval: 12,        // dosing interval (h) - typical q12h
   numDoses: 10
 };
 
@@ -812,7 +812,7 @@ function generateSubjects() {
   // Base PK parameters from sliders
   const baseClearance = 5.0; // Fixed base clearance (L/h)
   const fRenal = parseFloat(document.getElementById('f-renal-slider')?.value || 0.8);
-  const baseVolumePerKg = parseFloat(document.getElementById('volume-slider')?.value || 0.7);
+  const baseVolumePerKg = parseFloat(document.getElementById('volume-slider')?.value || 0.65);
   const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8);
   const fractionUnbound = parseFloat(document.getElementById('fraction-unbound-slider')?.value || 0.1);
   
@@ -868,9 +868,9 @@ function generateSubjects() {
   
   // Dosing parameters
   const drugName = document.getElementById('drug-name-input')?.value || '';
-  const loadingDose = parseFloat(document.getElementById('loading-dose-slider')?.value || 250);
-  const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
-  const interval = parseFloat(document.getElementById('interval-slider')?.value || 24);
+  const loadingDose = parseFloat(document.getElementById('loading-dose-slider')?.value || 1250);
+  const dose = parseFloat(document.getElementById('dose-slider')?.value || 750);
+  const interval = parseFloat(document.getElementById('interval-slider')?.value || 12);
   const duration = parseFloat(document.getElementById('duration-slider')?.value || 10);
   
   subjects = [];
@@ -1344,9 +1344,9 @@ function downloadData() {
     timestamp: new Date().toISOString(),
     parameters: {
       fRenal: parseFloat(document.getElementById('f-renal-slider')?.value || 0.8),
-      volume: parseFloat(document.getElementById('volume-slider')?.value || 0.7),
+      volume: parseFloat(document.getElementById('volume-slider')?.value || 0.65),
       bioavailability: parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8),
-      dose: parseFloat(document.getElementById('')?.value || 250),
+      dose: parseFloat(document.getElementById('')?.value || 750),
       interval: parseFloat(document.getElementById('interval-slider')?.value || 24),
       duration: parseFloat(document.getElementById('duration-slider')?.value || 10),
       toxicityThreshold: parseFloat(document.getElementById('toxicity-slider')?.value || 20),
@@ -1416,14 +1416,14 @@ function downloadPlotImage() {
 function resetSimulation() {
   const sliderDefaults = {
     // Core PK parameters
-    'f-renal-slider': 0.8,
-    'volume-slider': 0.7,
-    'bioavailability-slider': 0.8,
-    'fraction-unbound-slider': 0.1,
+    'f-renal-slider': 0.85,
+    'volume-slider': 0.65,
+    'bioavailability-slider': 1.0,
+    'fraction-unbound-slider': 0.9,
     // Dosing parameters
-    'loading-dose-slider': 250,
-    'dose-slider': 250,
-    'interval-slider': 24,
+    'loading-dose-slider': 1250,
+    'dose-slider': 750,
+    'interval-slider': 12,
     'duration-slider': 10,
     // Reference lines
     'toxicity-slider': 20,
