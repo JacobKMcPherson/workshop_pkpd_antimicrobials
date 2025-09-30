@@ -15,13 +15,18 @@ editor: source
 
 :::::: grid
 
-::: {.g-col-md-6 .g-col-12}
+::: {.g-col-md-4 .g-col-12}
 [🧪 pH-Dependent Drug Distribution](exercise_logd.html){.btn .btn-outline-primary}
 :::
 
 
-::: {.g-col-md-6 .g-col-12}
+::: {.g-col-md-4 .g-col-12}
 [💊 Multiple Dosing PK/PD](exercise.html){.btn .btn-outline-primary}
+:::
+
+
+::: {.g-col-md-4 .g-col-12}
+[📊 R: Two-Compartment PK Analysis](exercise_r_twocomp.html){.btn .btn-outline-primary}
 :::
 
 
