@@ -14,13 +14,17 @@ editor: source
 ## Exercises
 
 :::::: grid
-::: {.g-col-md-6 .g-col-12}
-💊 [Multiple Dosing PK/PD](exercise.html){.btn .btn-outline-primary}
-:::
 
 ::: {.g-col-md-6 .g-col-12}
 🧪 [pH-Dependent Drug Distribution](exercise_logd.html){.btn .btn-outline-primary}
 :::
+
+
+::: {.g-col-md-6 .g-col-12}
+💊 [Multiple Dosing PK/PD](exercise.html){.btn .btn-outline-primary}
+:::
+
+
 ::::::
 
 <br><br>
