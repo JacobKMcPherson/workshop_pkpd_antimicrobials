@@ -11,6 +11,12 @@ execute:
 
 **Drug of Choice**: Vancomycin
 
+**Physicochemical Properties**: 
+- **pKa**: 7.75 (basic drug; partially ionized at physiological pH)
+- **logP**: -3.1 (highly hydrophilic; very limited lipid solubility)
+
+**Tissue Distribution Rationale**: Vancomycin's very low logP (-3.1) and basic pKa (7.75) result in predominantly hydrophilic distribution with limited tissue penetration. Its large molecular size and hydrophilic nature restrict it mainly to extracellular fluid, making it ideal for bloodstream infections where high systemic concentrations are achieved.
+
 **PK/PD Target**: AUC/MIC ≥ 400-600 (higher for resistant organisms)
 
 **Key PK Parameters for Bacteremia**: - **Volume of Distribution**: 0.4-0.9 L/kg (good systemic penetration) - **Protein Binding**: \~90% (free fraction = 0.1) - **Renal Clearance**: \~80% unchanged in urine

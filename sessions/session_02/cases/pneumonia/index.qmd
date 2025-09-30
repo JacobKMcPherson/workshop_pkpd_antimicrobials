@@ -11,6 +11,12 @@ execute:
 
 **Drug of Choice**: Cefepime
 
+**Physicochemical Properties**: 
+- **pKa**: 2.5 (acidic drug; predominantly ionized at physiological pH)
+- **logP**: -1.0 (hydrophilic; limited lipid solubility)
+
+**Tissue Distribution Rationale**: Cefepime's low logP (-1.0) and ionized state at physiological pH (pKa 2.5) limit passive membrane diffusion but enable good hydrophilic tissue penetration. Its excellent lung penetration (ELF/plasma ratio 0.6-1.0) makes it ideal for pneumonia treatment, particularly against resistant Pseudomonas aeruginosa.
+
 **PK/PD Target**: %T>MIC ≥ 70% (or %T>4×MIC ≥ 50% for Pseudomonas)
 
 **Key PK Parameters for Pneumonia**:
@@ -278,6 +284,39 @@ Test your understanding by calculating the following parameters for the current 
 <span id="quiz-cssavg-feedback" class="quiz-feedback"></span>
 :::
 
+::: {.quiz-question}
+**6. Cefepime PK/PD: Based on cefepime's pKa (2.5) and physiological pH (7.4), what percentage of the drug is ionized?**
+<input type="number" id="quiz-ionized" placeholder="Enter percentage (0-100)" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-ionized-feedback" class="quiz-feedback"></span>
+<div class="quiz-hint" style="font-size: 0.9em; color: #666; margin-top: 5px;">
+*Hint: Use Henderson-Hasselbalch equation. For acids: ionized % = 100 × 10^(pH-pKa)/(1 + 10^(pH-pKa))*
+</div>
+:::
+
+::: {.quiz-question}
+**7. Tissue Penetration: Given cefepime's logP (-1.0), explain why it achieves good lung penetration despite low lipophilicity:**
+<select id="quiz-penetration" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<option value="">Select your answer...</option>
+<option value="active">Active transport mechanisms</option>
+<option value="hydrophilic">Hydrophilic drugs access lung ELF via paracellular routes</option>
+<option value="lipophilic">High lipophilicity despite negative logP</option>
+<option value="metabolism">Local metabolism increases penetration</option>
+</select>
+<span id="quiz-penetration-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**8. PK/PD Target: For Pseudomonas pneumonia, what %T>MIC target should be achieved for optimal cefepime efficacy?**
+<select id="quiz-target" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<option value="">Select your answer...</option>
+<option value="40">≥ 40%</option>
+<option value="50">≥ 50% (T>4×MIC)</option>
+<option value="70">≥ 70%</option>
+<option value="100">100%</option>
+</select>
+<span id="quiz-target-feedback" class="quiz-feedback"></span>
+:::
+
 <div style="text-align: center; margin: 15px 0;">
 <button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">Check Answers</button>
 <button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
@@ -367,6 +406,10 @@ main.content {
 
 .quiz-feedback.incorrect {
   color: #dc3545;
+}
+
+.quiz-feedback.partial {
+  color: #ffc107;
 }
 
 .drug-name-section {
@@ -1572,6 +1615,45 @@ function checkQuizAnswers() {
     cssAvgFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCssAvg.toFixed(2)} mg/L`;
     cssAvgFeedback.className = 'quiz-feedback incorrect';
   }
+  
+  // 6. Ionization percentage for cefepime (pKa = 2.5, pH = 7.4)
+  const userIonized = parseFloat(document.getElementById('quiz-ionized').value);
+  const pKa = 2.5;
+  const pH = 7.4;
+  const correctIonized = 100 * Math.pow(10, pH - pKa) / (1 + Math.pow(10, pH - pKa));
+  const ionizedFeedback = document.getElementById('quiz-ionized-feedback');
+  if (Math.abs(userIonized - correctIonized) / correctIonized <= 0.05) { // 5% tolerance for percentage
+    ionizedFeedback.textContent = `✓ Correct! (${correctIonized.toFixed(1)}%)`;
+    ionizedFeedback.className = 'quiz-feedback correct';
+  } else {
+    ionizedFeedback.textContent = `✗ Incorrect. Correct answer: ${correctIonized.toFixed(1)}%`;
+    ionizedFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 7. Tissue penetration mechanism
+  const userPenetration = document.getElementById('quiz-penetration').value;
+  const penetrationFeedback = document.getElementById('quiz-penetration-feedback');
+  if (userPenetration === 'hydrophilic') {
+    penetrationFeedback.textContent = '✓ Correct! Hydrophilic drugs access lung ELF via paracellular routes.';
+    penetrationFeedback.className = 'quiz-feedback correct';
+  } else {
+    penetrationFeedback.textContent = '✗ Incorrect. Hydrophilic drugs access lung ELF via paracellular routes.';
+    penetrationFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 8. PK/PD target for Pseudomonas
+  const userTarget = document.getElementById('quiz-target').value;
+  const targetFeedback = document.getElementById('quiz-target-feedback');
+  if (userTarget === '50') {
+    targetFeedback.textContent = '✓ Correct! For Pseudomonas, %T>4×MIC ≥ 50% is the target.';
+    targetFeedback.className = 'quiz-feedback correct';
+  } else if (userTarget === '70') {
+    targetFeedback.textContent = '~ Partially correct. %T>MIC ≥ 70% is general target, but %T>4×MIC ≥ 50% is preferred for Pseudomonas.';
+    targetFeedback.className = 'quiz-feedback partial';
+  } else {
+    targetFeedback.textContent = '✗ Incorrect. For Pseudomonas, %T>4×MIC ≥ 50% is the target.';
+    targetFeedback.className = 'quiz-feedback incorrect';
+  }
 }
 
 function resetQuiz() {
@@ -1581,6 +1663,9 @@ function resetQuiz() {
   document.getElementById('quiz-vss').value = '';
   document.getElementById('quiz-tss').value = '';
   document.getElementById('quiz-cssavg').value = '';
+  document.getElementById('quiz-ionized').value = '';
+  document.getElementById('quiz-penetration').value = '';
+  document.getElementById('quiz-target').value = '';
   
   // Clear all feedback
   const feedbacks = document.querySelectorAll('.quiz-feedback');
