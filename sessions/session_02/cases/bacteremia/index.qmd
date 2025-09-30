@@ -17,216 +17,228 @@ execute:
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
-::::::::::::::::::::::::::::::::::::: content-section
-:::::::::::::::::::::: main-layout
-:::::::: controls-column-1
+::: {.content-section}
+
+::: {.main-layout}
+
+::: {.controls-column-1}
 ### Patient Generator
-
-::::: patient-generator
-:::: {style="margin-bottom: 8px;"}
-<button id="generate-patient-btn" onclick="generateRandomPatient()">
-
-New Patient
-
-</button>
-
-::: {#patient-info style="margin-top: 8px;"}
+::: {.patient-generator}
+<div style="margin-bottom: 8px;">
+<button id="generate-patient-btn" onclick="generateRandomPatient()">New Patient</button>
+<div id="patient-info" style="margin-top: 8px;">
 <ul style="list-style-type: none; padding-left: 0;">
-
-<li><strong>Age:</strong> <u>[-]{#patient-age}</u> years</li>
-
-<li><strong>Sex:</strong> <u>[-]{#patient-sex}</u></li>
-
-<li><strong>Height:</strong> <u>[-]{#patient-height}</u> cm</li>
-
-<li><strong>Weight:</strong> <u>[-]{#patient-weight}</u> kg</li>
-
-<li><strong>Creatinine:</strong> <u>[-]{#patient-creatinine}</u> mg/dL</li>
-
+<li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
+<li><strong>Sex:</strong> <u><span id="patient-sex">-</span></u></li>
+<li><strong>Height:</strong> <u><span id="patient-height">-</span></u> cm</li>
+<li><strong>Weight:</strong> <u><span id="patient-weight">-</span></u> kg</li>
+<li><strong>Creatinine:</strong> <u><span id="patient-creatinine">-</span></u> mg/dL</li>
 </ul>
-:::
-::::
-:::::
-
-:::: drug-name-section
-::: {style="margin-bottom: 2px;"}
-<label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label> <input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+</div>
+</div>
 :::
 
-<label for="formulation-select">Formulation:</label> <select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;"> <option value="slow">Slow (Extended Release)</option> <option value="medium" selected>Medium (Standard Oral)</option> <option value="fast">Fast (IV Bolus)</option> </select> [Medium (Standard Oral)]{#formulation-value}
-::::
-::::::::
+::: {.drug-name-section}
+<div style="margin-bottom: 2px;">
+<label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
+<input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+</div>
 
-::::::::: controls-column-2
+<label for="formulation-select">Formulation:</label>
+<select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+<option value="slow">Slow (Extended Release)</option>
+<option value="medium" selected>Medium (Standard Oral)</option>
+<option value="fast">Fast (IV Bolus)</option>
+</select>
+<span id="formulation-value">Medium (Standard Oral)</span>
+:::
+
+:::
+
+::: {.controls-column-2}
 ### PK Parameters
+::: {.pk-properties-compact}
+<div class="small-buttons" style="margin-top: 2px;">
+<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
+<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
+</div>
 
-:::::::: pk-properties-compact
-::: {.small-buttons style="margin-top: 2px;"}
-<button id="reset-btn" onclick="resetSimulation()" class="small-btn">
-
-Reset Parameters
-
-</button>
-
-<button id="random-btn" onclick="randomizeParameters()" class="small-btn">
-
-Random Simulation
-
-</button>
+::: {.control-group-compact}
+<label for="bioavailability-slider">Bioavailability (F):</label>
+<input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05">
+<span id="bioavailability-value">0.8</span>
 :::
 
-::: control-group-compact
-<label for="bioavailability-slider">Bioavailability (F):</label> <input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05"> [0.8]{#bioavailability-value}
+::: {.control-group-compact}
+<label for="fraction-unbound-slider">Fraction Unbound:</label>
+<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.92" step="0.01">
+<span id="fraction-unbound-value">0.1</span>
 :::
 
-::: control-group-compact
-<label for="fraction-unbound-slider">Fraction Unbound:</label> <input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.1" step="0.01"> [0.1]{#fraction-unbound-value}
+::: {.control-group-compact}
+<label for="volume-slider">Volume of Distribution (L/kg):</label>
+<input type="range" id="volume-slider" min="0.08" max="0.12" value="0.1" step="0.01">
+<span id="volume-value">0.7</span> L/kg
 :::
 
-::: control-group-compact
-<label for="volume-slider">Volume of Distribution (L/kg):</label> <input type="range" id="volume-slider" min="0.4" max="0.9" value="0.7" step="0.1"> [0.7]{#volume-value} L/kg
+::: {.control-group-compact}
+<label for="f-renal-slider">Fraction Renally Cleared:</label>
+<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.5" step="0.05">
+<span id="f-renal-value">0.8</span>
 :::
 
-::: control-group-compact
-<label for="f-renal-slider">Fraction Renally Cleared:</label> <input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05"> [0.8]{#f-renal-value}
-:::
-::::::::
-:::::::::
 
-:::::::: controls-column-3
+:::
+:::
+
+::: {.controls-column-3}
 ### Dosing
-
-::::::: pk-properties-compact
-<button id="download-btn" onclick="downloadData()">
-
-Download Data
-
-</button>
-
-::: control-group-compact
-<label for="loading-dose-slider">Loading Dose (mg):</label> <input type="range" id="loading-dose-slider" min="0" max="3000" value="250" step="50"> [0]{#loading-dose-value} mg
+::: {.pk-properties-compact}
+<button id="download-btn" onclick="downloadData()">Download Data</button>
+::: {.control-group-compact}
+<label for="loading-dose-slider">Loading Dose (mg):</label>
+<input type="range" id="loading-dose-slider" min="0" max="3000" value="250" step="50">
+<span id="loading-dose-value">0</span> mg
 :::
 
-::: control-group-compact
-<label for="dose-slider">Dose (mg):</label> <input type="range" id="dose-slider" min="0" max="3000" value="250" step="50"> [250]{#dose-value} mg
+::: {.control-group-compact}
+<label for="dose-slider">Dose (mg):</label>
+<input type="range" id="dose-slider" min="400" max="800" value="600" step="50">
+<span id="dose-value">250</span> mg
 :::
 
-::: control-group-compact
-<label for="interval-slider">Dosing Interval (hrs):</label> <input type="range" id="interval-slider" min="1" max="48" value="24" step="1"> [24]{#interval-value} hrs
+::: {.control-group-compact}
+<label for="interval-slider">Dosing Interval (hrs):</label>
+<input type="range" id="interval-slider" min="1" max="48" value="24" step="1">
+<span id="interval-value">24</span> hrs
 :::
 
-::: control-group-compact
-<label for="duration-slider">Treatment Duration (days):</label> <input type="range" id="duration-slider" min="1" max="14" value="10" step="1"> [10]{#duration-value} days
+::: {.control-group-compact}
+<label for="duration-slider">Treatment Duration (days):</label>
+<input type="range" id="duration-slider" min="14" max="42" value="28" step="1">
+<span id="duration-value">10</span> days
 :::
-:::::::
-::::::::
-::::::::::::::::::::::
 
-:::::::::::::::: panel-tabset
+:::
+
+:::
+
+:::
+
+::: {.panel-tabset}
+
 ### Plot
 
-:::: {#concentration-plot}
-::: {#chart-fallback}
-<p>Loading interactive chart...</p>
+::: {#concentration-plot}
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="1920" height="1080"></canvas>
+</div>
 
-<canvas id="pk-chart" width="1920" height="1080">
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
 
-</canvas>
 :::
-
-<button id="scale-toggle-btn" onclick="toggleScale()">
-
-Switch to Linear
-
-</button>
-::::
 
 ### Reference Lines
-
-::::: reference-properties
-::: control-group
-<label for="toxicity-slider">Toxicity Threshold (mg/L):</label> <input type="range" id="toxicity-slider" min="15" max="30" value="20" step="1"> [20]{#toxicity-value} mg/L
+::: {.reference-properties}
+::: {.control-group}
+<label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
+<input type="range" id="toxicity-slider" min="50" max="100" value="75" step="5">
+<span id="toxicity-value">20</span> mg/L
 :::
 
-::: control-group
-<label for="efficacy-slider">Efficacy Threshold (mg/L):</label> <input type="range" id="efficacy-slider" min="10" max="20" value="15" step="0.5"> [5]{#efficacy-value} mg/L
+::: {.control-group}
+<label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
+<input type="range" id="efficacy-slider" min="20" max="35" value="25" step="1">
+<span id="efficacy-value">5</span> mg/L
 :::
-:::::
+:::
 
 ### Data
 
 ::: {#subject-table}
-<table>
+<table id="pk-table" class="table table-striped">
 <thead>
 <tr>
-<th><p>Subject</p></th>
-<th><p>Drug Name</p></th>
-<th><p>Age</p></th>
-<th><p>Sex</p></th>
-<th><p>Ht (cm)</p></th>
-<th><p>Wt (kg)</p></th>
-<th><p>BMI</p></th>
-<th><p>IBW (kg)</p></th>
-<th><p>Adj IBW (kg)</p></th>
-<th><p>Creatinine (mg/dL)</p></th>
-<th><p>CrCl (mL/min)</p></th>
-<th><p>Loading Dose (mg)</p></th>
-<th><p>Dose (mg)</p></th>
-<th><p>Interval (hrs)</p></th>
-<th><p>Duration (days)</p></th>
-<th><p>Clearance (L/h)</p></th>
-<th><p>Volume (L)</p></th>
-<th><p>Fraction Unbound</p></th>
-<th><p>V<sub>ss,u</sub> (L)</p></th>
-<th><p>Bioavailability</p></th>
-<th><p>Half-life (h)</p></th>
-<th><p>C<sub>ss,avg</sub></p></th>
-<th><p>AUC<sub>0-24h</sub></p></th>
-<th><p>C<sub>max</sub></p></th>
-<th><p>AUC/Efficacy</p></th>
-<th><p>C<sub>max</sub>/Efficacy</p></th>
-<th><p>Time&gt;Efficacy (%)</p></th>
+<th>Subject</th>
+<th>Drug Name</th>
+<th>Age</th>
+<th>Sex</th>
+<th>Ht (cm)</th>
+<th>Wt (kg)</th>
+<th>BMI</th>
+<th>IBW (kg)</th>
+<th>Adj IBW (kg)</th>
+<th>Creatinine (mg/dL)</th>
+<th>CrCl (mL/min)</th>
+<th>Loading Dose (mg)</th>
+<th>Dose (mg)</th>
+<th>Interval (hrs)</th>
+<th>Duration (days)</th>
+<th>Clearance (L/h)</th>
+<th>Volume (L)</th>
+<th>Fraction Unbound</th>
+<th>V<sub>ss,u</sub> (L)</th>
+<th>Bioavailability</th>
+<th>Half-life (h)</th>
+<th>C<sub>ss,avg</sub></th>
+<th>AUC<sub>0-24h</sub></th>
+<th>C<sub>max</sub></th>
+<th>AUC/Efficacy</th>
+<th>C<sub>max</sub>/Efficacy</th>
+<th>Time>Efficacy (%)</th>
 </tr>
 </thead>
-<tbody>
+<tbody id="pk-table-body">
 </tbody>
 </table>
 :::
 
 ### Education
 
-#### Bacteremia-Specific Pharmacokinetic Concepts
+#### Endocarditis-Specific Pharmacokinetic Concepts
 
-**Systemic Circulation Target**: For bacteremia caused by MRSA, the primary site of infection is the bloodstream itself. This makes vancomycin an ideal choice as it achieves excellent systemic exposure with minimal tissue penetration requirements.
+**Cardiac Tissue Penetration Challenges**: Endocarditis involves infected cardiac valves with poor vascularization and biofilm formation. Daptomycin has limited tissue penetration (Vd = 0.1 L/kg) but high systemic exposure compensates.
 
-**Volume of Distribution for Bacteremia**: Vancomycin has a relatively small Vd (0.4-0.9 L/kg) which means it stays primarily in the vascular space and extracellular fluid - exactly where it's needed for bloodstream infections.
+**High-Dose Strategy for VRE Endocarditis**: Target AUC₀₋₂₄/MIC ≥ 666 and Cmin ≥ 24.3 mg/L requires aggressive dosing (8-10 mg/kg/day). Higher doses may be needed for complex cases (up to 12 mg/kg/day).
 
-**AUC/MIC Target for MRSA Bacteremia**: The target AUC₀₋₂₄/MIC ≥ 400-600 ensures adequate exposure throughout the dosing interval. Higher targets (≥600) may be needed for more resistant organisms or severe infections.
+**Calcium-Dependent Activity**: Daptomycin requires physiologic calcium concentrations for antimicrobial activity. Serum calcium should be monitored and maintained >8.5 mg/dL.
 
-**Protein Binding Considerations**: Vancomycin is \~90% protein bound, meaning only 10% is pharmacologically active. However, for bacteremia, the high protein binding actually helps maintain therapeutic concentrations in plasma.
+**Protein Binding Considerations**: Low protein binding (~8%) means 92% is active, contributing to excellent antimicrobial effect despite poor tissue penetration.
 
-**Renal Clearance Monitoring**: With 80% renal elimination, creatinine clearance directly impacts vancomycin dosing. Dose adjustments are critical in renal impairment to prevent accumulation and nephrotoxicity.
+**Unique Monitoring Requirements**: 
+- **CPK levels**: Monitor for myopathy (dose-related toxicity)
+- **Pulmonary function**: Rare but serious eosinophilic pneumonia
+- **Renal function**: Potential nephrotoxicity with high doses
 
-**Trough vs. AUC Monitoring**: While trough levels (15-20 mg/L) were historically used, AUC-guided dosing is now preferred for optimizing efficacy while minimizing nephrotoxicity risk.
+**Extended Treatment Duration**: Endocarditis requires 4-6 weeks of therapy. Some cases may need surgical intervention combined with antimicrobial therapy for optimal outcomes.
 
 #### Blood Sampling Strategy
 
 In this simulation, blood samples are collected every 1 hour to provide a detailed view of how pharmacokinetic data is collected in clinical practice. This sampling frequency allows us to:
 
--   Capture both peak and trough concentrations
--   Observe the full absorption and elimination phases
--   Reduce the burden on patients compared to more frequent sampling
--   Provide sufficient data points for pharmacokinetic analysis
+- Capture both peak and trough concentrations
+- Observe the full absorption and elimination phases
+- Reduce the burden on patients compared to more frequent sampling
+- Provide sufficient data points for pharmacokinetic analysis
 
 #### Simplified Pharmacokinetic Model
 
 This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
 
-**Essential PK Parameters:** - **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation - **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight - **Bioavailability (F)**: Fraction of dose reaching systemic circulation
+**Essential PK Parameters:**
+- **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation
+- **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight
+- **Bioavailability (F)**: Fraction of dose reaching systemic circulation
 
-**Patient-Specific Factors:** - **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = \[(140 - age) × weight × (0.85 if female)\] / (72 × serum creatinine) - **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
+**Patient-Specific Factors:**
+- **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
+- **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
 
-**Dosing Parameters:** - **Dose**: Amount of drug administered per dose - **Dosing Interval**: Time between doses - **Treatment Duration**: Total length of treatment
+**Dosing Parameters:**
+- **Dose**: Amount of drug administered per dose
+- **Dosing Interval**: Time between doses
+- **Treatment Duration**: Total length of treatment
 
 This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
 
@@ -234,41 +246,43 @@ This approach incorporates key patient-specific factors (age, sex, weight, creat
 
 Test your understanding by calculating the following parameters for the current patient:
 
-::::::::: quiz-section
-::: quiz-question
-**1. Creatinine Clearance (mL/min):** <input type="number" id="quiz-crcl" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+::: {.quiz-section}
+::: {.quiz-question}
+**1. Creatinine Clearance (mL/min):**
+<input type="number" id="quiz-crcl" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-crcl-feedback" class="quiz-feedback"></span>
 :::
 
-::: quiz-question
-**2. Adjusted Body Weight (kg):** <input type="number" id="quiz-adjbw" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+::: {.quiz-question}
+**2. Adjusted Body Weight (kg):**
+<input type="number" id="quiz-adjbw" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-adjbw-feedback" class="quiz-feedback"></span>
 :::
 
-::: quiz-question
-**3. Volume of Distribution of Unbound Drug (L):** <input type="number" id="quiz-vss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+::: {.quiz-question}
+**3. Volume of Distribution of Unbound Drug (L):**
+<input type="number" id="quiz-vss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-vss-feedback" class="quiz-feedback"></span>
 :::
 
-::: quiz-question
-**4. Time to Steady State - tss (hours):** <input type="number" id="quiz-tss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+::: {.quiz-question}
+**4. Time to Steady State - tss (hours):**
+<input type="number" id="quiz-tss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-tss-feedback" class="quiz-feedback"></span>
 :::
 
-::: quiz-question
-**5. Average Steady-State Concentration - Css,avg (mg/L):** <input type="number" id="quiz-cssavg" placeholder="Enter your calculation" step="0.01" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+::: {.quiz-question}
+**5. Average Steady-State Concentration - Css,avg (mg/L):**
+<input type="number" id="quiz-cssavg" placeholder="Enter your calculation" step="0.01" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-cssavg-feedback" class="quiz-feedback"></span>
 :::
 
-::: {style="text-align: center; margin: 15px 0;"}
-<button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">
+<div style="text-align: center; margin: 15px 0;">
+<button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">Check Answers</button>
+<button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
+</div>
 
-Check Answers
-
-</button>
-
-<button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">
-
-Reset Quiz
-
-</button>
 :::
-:::::::::
 
 ```{=html}
 <style>
@@ -1697,7 +1711,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 ```
 ::::::::::::::::
-:::::::::::::::::::::::::::::::::::::
+:::::::::::::::::
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
