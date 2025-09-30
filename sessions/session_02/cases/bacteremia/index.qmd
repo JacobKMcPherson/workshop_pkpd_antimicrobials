@@ -1366,14 +1366,31 @@ function downloadData() {
   downloadPlotImage();
 }
 
-// Download plot as image
+// Download plot as SVG
 function downloadPlotImage() {
   if (!canvas) return;
   
-  // Create download link for canvas image
+  // Create SVG element
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", canvas.width);
+  svg.setAttribute("height", canvas.height);
+  svg.setAttribute("viewBox", `0 0 ${canvas.width} ${canvas.height}`);
+  
+  // Convert canvas to data URL and embed in SVG
+  const dataURL = canvas.toDataURL("image/png");
+  const image = document.createElementNS(svgNS, "image");
+  image.setAttribute("href", dataURL);
+  image.setAttribute("width", canvas.width);
+  image.setAttribute("height", canvas.height);
+  svg.appendChild(image);
+  
+  // Create download link
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const svgBlob = new Blob([svgData], { type: 'image/svg+xml' });
   const link = document.createElement('a');
-  link.href = canvas.toDataURL('image/png');
-  link.download = `pk_simulation_plot_${new Date().toISOString().split('T')[0]}.png`;
+  link.href = URL.createObjectURL(svgBlob);
+  link.download = `pk_simulation_plot_${new Date().toISOString().split('T')[0]}.svg`;
   
   // Trigger download
   document.body.appendChild(link);
