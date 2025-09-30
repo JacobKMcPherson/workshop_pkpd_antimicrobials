@@ -9,11 +9,11 @@ editor: source
 
 ## Slides
 
-🖥️ [Slides](slides.qmd){.btn .btn-outline-primary}
+[🖥 Slides](slides.qmd){.btn .btn-outline-primary}
 
 ## Exercise
 
-💪🏻[Exercise](exercise.qmd){.btn .btn-outline-primary} (see cases below)
+[💪🏻 Exercise](exercise.qmd){.btn .btn-outline-primary} (see cases below)
 
 ::: {style="font-size: 0.875em;"}
 :::

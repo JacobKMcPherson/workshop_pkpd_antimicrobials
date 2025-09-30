@@ -1288,6 +1288,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <div>
-[PK/PD Exercise →](exercise.qmd){.btn .btn-outline-primary}
+[💊 Multiple Dosing PK/PD Exercise →](exercise.qmd){.btn .btn-outline-primary}
 </div>
 :::::

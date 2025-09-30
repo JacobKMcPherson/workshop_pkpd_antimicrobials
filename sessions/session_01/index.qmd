@@ -9,19 +9,19 @@ editor: source
 
 ## Slides
 
-🖥️ [Slides](slides.html){.btn .btn-outline-primary}
+ [🖥Slides](slides.html){.btn .btn-outline-primary}
 
 ## Exercises
 
 :::::: grid
 
 ::: {.g-col-md-6 .g-col-12}
-🧪 [pH-Dependent Drug Distribution](exercise_logd.html){.btn .btn-outline-primary}
+[🧪 pH-Dependent Drug Distribution](exercise_logd.html){.btn .btn-outline-primary}
 :::
 
 
 ::: {.g-col-md-6 .g-col-12}
-💊 [Multiple Dosing PK/PD](exercise.html){.btn .btn-outline-primary}
+[💊 Multiple Dosing PK/PD](exercise.html){.btn .btn-outline-primary}
 :::
 
 

@@ -1713,7 +1713,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div>
 
-[LogD Exercise →](exercise_logd.qmd){.btn .btn-outline-primary}
+[🧪 pH-Dependent Drug Distribution Exercise →](exercise_logd.qmd){.btn .btn-outline-primary}
 
 </div>
 :::::
