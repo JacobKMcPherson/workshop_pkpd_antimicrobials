@@ -287,6 +287,39 @@ Test your understanding by calculating the following parameters for the current 
 <span id="quiz-cssavg-feedback" class="quiz-feedback"></span>
 :::
 
+::: {.quiz-question}
+**6. Daptomycin PK/PD: Based on daptomycin's pKa (2.8) and physiological pH (7.4), what percentage of the drug is ionized?**
+<input type="number" id="quiz-ionized" placeholder="Enter percentage (0-100)" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-ionized-feedback" class="quiz-feedback"></span>
+<div class="quiz-hint" style="font-size: 0.9em; color: #666; margin-top: 5px;">
+*Hint: Use Henderson-Hasselbalch equation. For acids: ionized % = 100 × 10^(pH-pKa)/(1 + 10^(pH-pKa))*
+</div>
+:::
+
+::: {.quiz-question}
+**7. Cardiac Penetration: Why does daptomycin require high systemic exposure (8-10 mg/kg/day) for endocarditis treatment?**
+<select id="quiz-penetration" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<option value="">Select your answer...</option>
+<option value="penetration">Limited cardiac tissue penetration requires high systemic exposure</option>
+<option value="resistance">Higher doses prevent VRE resistance development</option>
+<option value="binding">High protein binding reduces free drug availability</option>
+<option value="metabolism">Rapid cardiac metabolism requires higher doses</option>
+</select>
+<span id="quiz-penetration-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**8. Mechanism Dependency: What unique feature of daptomycin's mechanism affects its tissue distribution?**
+<select id="quiz-mechanism" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<option value="">Select your answer...</option>
+<option value="calcium">Calcium-dependent mechanism requires adequate tissue calcium concentrations</option>
+<option value="ph">pH-dependent activity requires specific tissue pH</option>
+<option value="oxygen">Oxygen-dependent mechanism limits anaerobic effectiveness</option>
+<option value="temperature">Temperature-sensitive mechanism affects distribution</option>
+</select>
+<span id="quiz-mechanism-feedback" class="quiz-feedback"></span>
+:::
+
 <div style="text-align: center; margin: 15px 0;">
 <button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">Check Answers</button>
 <button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
@@ -1581,6 +1614,42 @@ function checkQuizAnswers() {
     cssAvgFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCssAvg.toFixed(2)} mg/L`;
     cssAvgFeedback.className = 'quiz-feedback incorrect';
   }
+  
+  // 6. Daptomycin ionization percentage
+  const userIonized = parseFloat(document.getElementById('quiz-ionized').value);
+  const pKa = 2.8;
+  const pH = 7.4;
+  const correctIonized = 100 * Math.pow(10, pH - pKa) / (1 + Math.pow(10, pH - pKa));
+  const ionizedFeedback = document.getElementById('quiz-ionized-feedback');
+  if (Math.abs(userIonized - correctIonized) / correctIonized <= 0.05) { // 5% tolerance for percentage
+    ionizedFeedback.textContent = `✓ Correct! (${correctIonized.toFixed(1)}%)`;
+    ionizedFeedback.className = 'quiz-feedback correct';
+  } else {
+    ionizedFeedback.textContent = `✗ Incorrect. Correct answer: ${correctIonized.toFixed(1)}%`;
+    ionizedFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 7. Cardiac penetration and dosing
+  const userPenetration = document.getElementById('quiz-penetration').value;
+  const penetrationFeedback = document.getElementById('quiz-penetration-feedback');
+  if (userPenetration === 'penetration') {
+    penetrationFeedback.textContent = '✓ Correct! Limited cardiac tissue penetration requires high systemic exposure.';
+    penetrationFeedback.className = 'quiz-feedback correct';
+  } else {
+    penetrationFeedback.textContent = '✗ Incorrect. Limited cardiac tissue penetration requires high systemic exposure.';
+    penetrationFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 8. Calcium-dependent mechanism
+  const userMechanism = document.getElementById('quiz-mechanism').value;
+  const mechanismFeedback = document.getElementById('quiz-mechanism-feedback');
+  if (userMechanism === 'calcium') {
+    mechanismFeedback.textContent = '✓ Correct! Calcium-dependent mechanism requires adequate tissue calcium concentrations.';
+    mechanismFeedback.className = 'quiz-feedback correct';
+  } else {
+    mechanismFeedback.textContent = '✗ Incorrect. Calcium-dependent mechanism requires adequate tissue calcium concentrations.';
+    mechanismFeedback.className = 'quiz-feedback incorrect';
+  }
 }
 
 function resetQuiz() {
@@ -1590,6 +1659,9 @@ function resetQuiz() {
   document.getElementById('quiz-vss').value = '';
   document.getElementById('quiz-tss').value = '';
   document.getElementById('quiz-cssavg').value = '';
+  document.getElementById('quiz-ionized').value = '';
+  document.getElementById('quiz-penetration').value = '';
+  document.getElementById('quiz-mechanism').value = '';
   
   // Clear all feedback
   const feedbacks = document.querySelectorAll('.quiz-feedback');
