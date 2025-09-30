@@ -226,36 +226,25 @@ In this simulation, blood samples are collected every 1 hour to provide a detail
 - Reduce the burden on patients compared to more frequent sampling
 - Provide sufficient data points for pharmacokinetic analysis
 
-#### PK/PD/CO Integrated Model Framework
+#### Simplified Pharmacokinetic Model
 
-This simulation demonstrates the integration of pharmacokinetics, pharmacodynamics, and clinical outcomes using a mechanistic modeling approach fundamental to antimicrobial optimization:
+This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
 
-**PK Model Component:**
-- **Drug Exposure**: One-compartment model generates concentration-time profiles
-- **Patient Covariates**: Renal function and body size affect drug exposure
-- **Multiple Dosing**: Simulates accumulation to steady-state concentrations
+**Essential PK Parameters:**
+- **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation
+- **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight
+- **Bioavailability (F)**: Fraction of dose reaching systemic circulation
 
-**PD Model Component:**
-- **Efficacy Threshold**: Represents target concentration for antimicrobial effect (e.g., MIC-based targets)
-- **PK/PD Indices**: Calculate key exposure metrics:
-  - **AUC/MIC**: Total exposure relative to pathogen susceptibility
-  - **Time > MIC**: Duration above efficacy threshold
-  - **Cmax/MIC**: Peak concentration ratio
-- **Toxicity Threshold**: Upper concentration limit for safety monitoring
+**Patient-Specific Factors:**
+- **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
+- **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
 
-**Clinical Outcome Integration:**
-- **Therapeutic Window**: Visualize concentration range between efficacy and toxicity
-- **Target Attainment**: Assess probability of achieving PK/PD targets
-- **Dose Optimization**: Adjust dosing to maximize efficacy while minimizing toxicity risk
-- **Patient-Specific Factors**: Account for altered PK in different populations
+**Dosing Parameters:**
+- **Dose**: Amount of drug administered per dose
+- **Dosing Interval**: Time between doses
+- **Treatment Duration**: Total length of treatment
 
-**Translational Applications:**
-- **Precision Dosing**: Individualize therapy based on patient characteristics and PK/PD targets
-- **Resistance Prevention**: Optimize exposure to prevent resistance development
-- **Safety Monitoring**: Predict concentrations associated with adverse events
-- **Clinical Decision Support**: Guide therapeutic drug monitoring strategies
-
-This framework illustrates how integrating PK, PD, and clinical outcome data enables evidence-based antimicrobial dosing decisions that balance efficacy and safety for individual patients.
+This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
 
 ### Quiz
 
