@@ -19,10 +19,10 @@ This interactive module demonstrates gastroenteric absorption and distribution o
 <label for="preset-drug-dropdown" style="font-weight: bold; color: #495057; margin-bottom: 6px;">Select Antibiotic Preset:</label>
 <select id="preset-drug-dropdown" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
   <option value="">-- Choose a drug --</option>
-  <option value="cefepime">Cefepime</option>
   <option value="vancomycin">Vancomycin</option>
-  <option value="ciprofloxacin">Ciprofloxacin</option>
-  <option value="gentamicin">Gentamicin</option>
+  <option value="levofloxacin">Levofloxacin</option>
+  <option value="doxycycline">Doxycycline</option>
+  <option value="amoxicillin">Amoxicillin</option>
 </select>
 ::::
 
@@ -99,11 +99,6 @@ This interactive module demonstrates gastroenteric absorption and distribution o
 ::::::::
 
 
-<button id="reset-logd-btn" onclick="resetLogDSimulation()" class="small-btn">
-Reset Parameters
-</button>
-:::::::::
-
 :::::::: controls-column-3
 ### Calculations
 
@@ -135,6 +130,10 @@ Reset Parameters
 </div>
 :::
 :::::
+
+<button id="reset-logd-btn" onclick="resetLogDSimulation()" class="small-btn">
+Reset Parameters
+</button>
 ::::::::
 ::::::::::::::::::::::
 
@@ -526,13 +525,6 @@ let pHEnvironments = {
 
 // Drug presets with realistic antibiotic values
 const drugPresets = {
-  cefepime: {
-    name: 'Cefepime',
-    logP: -1.02,
-    pKa: 2.5,
-    type: 'acid',
-    tpsa: 138.03
-  },
   vancomycin: {
     name: 'Vancomycin', 
     logP: -3.1,
@@ -540,19 +532,26 @@ const drugPresets = {
     type: 'base',
     tpsa: 472.70
   },
-  ciprofloxacin: {
-    name: 'Ciprofloxacin',
-    logP: 0.28,
-    pKa: 6.09,
+  levofloxacin: {
+    name: 'Levofloxacin',
+    logP: -0.35,
+    pKa: 6.05,
     type: 'acid',
-    tpsa: 74.57
+    tpsa: 73.28
   },
-  gentamicin: {
-    name: 'Gentamicin',
-    logP: -3.0,
-    pKa: 8.2,
-    type: 'base',
-    tpsa: 226.74
+  doxycycline: {
+    name: 'Doxycycline',
+    logP: -0.02,
+    pKa: 3.02,
+    type: 'acid',
+    tpsa: 181.62
+  },
+  amoxicillin: {
+    name: 'Amoxicillin',
+    logP: -2.69,
+    pKa: 2.67,
+    type: 'acid',
+    tpsa: 138.03
   }
 };
 

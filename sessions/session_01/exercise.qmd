@@ -18,7 +18,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.patient-generator}
 <div style="margin-bottom: 8px;">
 <button id="generate-patient-btn" onclick="generateRandomPatient()">New Patient</button>
-<button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button>
 <div id="patient-info" style="margin-top: 8px;">
 <ul style="list-style-type: none; padding-left: 0;">
 <li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
@@ -129,6 +128,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 </div>
 
 <button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+<button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button>
 
 :::
 
@@ -716,6 +716,7 @@ let canvas = null;
 let ctx = null;
 let isLogScale = true; // Track current scale type
 let randomSimulationData = null; // Store the random simulation for gray line
+let initialSimulationData = null; // Store the initial simulation state
 
 // Patient data
 let currentPatient = {
@@ -1081,6 +1082,14 @@ function runSimulation() {
   // Update chart and table
   drawChart();
   updateTable();
+  
+  // Capture initial state for gray line (only once, when initialSimulationData is null)
+  if (initialSimulationData === null && subjects.length > 0) {
+    initialSimulationData = {
+      subject: { ...subjects[0] },
+      timePoints: [...timePoints]
+    };
+  }
 }
 
 // Trapezoidal rule for AUC calculation
@@ -1535,11 +1544,11 @@ function resetSimulation() {
 
 // Randomize parameters for interesting simulations
 function randomizeParameters() {
-  // First, save current state as the "incorrectly dosed" patient for gray line
-  if (subjects.length > 0) {
+  // Use the initial simulation state for the gray line
+  if (initialSimulationData) {
     randomSimulationData = {
-      subject: { ...subjects[0] },
-      timePoints: [...timePoints]
+      subject: { ...initialSimulationData.subject },
+      timePoints: [...initialSimulationData.timePoints]
     };
   }
   
