@@ -18,6 +18,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.patient-generator}
 <div style="margin-bottom: 8px;">
 <button id="generate-patient-btn" onclick="generateRandomPatient()">New Patient</button>
+<button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button>
 <div id="patient-info" style="margin-top: 8px;">
 <ul style="list-style-type: none; padding-left: 0;">
 <li><strong>Age:</strong> <u><span id="patient-age">-</span></u> years</li>
@@ -708,10 +709,13 @@ main.content {
 <script>
 // Global variables
 let subjects = [];
+let savedPatients = []; // Array to store all saved patients
+let subjectCounter = 0; // Counter for subject IDs
 let timePoints = [];
 let canvas = null;
 let ctx = null;
 let isLogScale = true; // Track current scale type
+let randomSimulationData = null; // Store the random simulation for gray line
 
 // Patient data
 let currentPatient = {
@@ -871,7 +875,7 @@ function generateSubjects() {
   const halfLife = 0.693 * vssUnbound / clearance;
   
   subjects.push({
-    id: 1,
+    id: currentPatient.subjectId || 'temp',
     // Drug information
     drugName: drugName,
     // Patient demographics
@@ -919,6 +923,9 @@ function randomNormal() {
 
 // Generate random patient with demographics
 function generateRandomPatient() {
+  // Increment subject counter
+  subjectCounter++;
+  
   // Generate random values
   const age = Math.floor(Math.random() * (90 - 18 + 1)) + 18;
   const sex = Math.random() < 0.5 ? "Male" : "Female";
@@ -935,8 +942,15 @@ function generateRandomPatient() {
     creatinine = (Math.random() * (10.0 - 3.0) + 3.0).toFixed(2);
   }
 
-  // Update global patient data
-  currentPatient = { age, sex, height, weight, creatinine: parseFloat(creatinine) };
+  // Update global patient data with subject ID
+  currentPatient = { 
+    subjectId: subjectCounter,
+    age, 
+    sex, 
+    height, 
+    weight, 
+    creatinine: parseFloat(creatinine) 
+  };
 
   // Update the UI
   document.getElementById('patient-age').innerText = age;
@@ -950,6 +964,38 @@ function generateRandomPatient() {
   
   // Recalculate and update simulation with new patient-specific parameters
   runSimulation();
+}
+
+// Save current patient with dosing strategy to the Data tab
+function saveCurrentPatient() {
+  if (!currentPatient.subjectId) {
+    alert('Please generate a patient first!');
+    return;
+  }
+  
+  if (subjects.length === 0) {
+    alert('Please run a simulation first!');
+    return;
+  }
+  
+  // Get the current subject data
+  const currentSubject = subjects[0];
+  
+  // Check if this patient is already saved
+  const existingPatientIndex = savedPatients.findIndex(p => p.id === currentPatient.subjectId);
+  
+  if (existingPatientIndex !== -1) {
+    // Update existing patient
+    savedPatients[existingPatientIndex] = { ...currentSubject, id: currentPatient.subjectId };
+    alert(`Patient ${currentPatient.subjectId} dosing strategy updated!`);
+  } else {
+    // Add new patient
+    savedPatients.push({ ...currentSubject, id: currentPatient.subjectId });
+    alert(`Patient ${currentPatient.subjectId} saved successfully!`);
+  }
+  
+  // Update the data table to show all saved patients
+  updateTable();
 }
 
 // One-compartment PK model with first-order absorption and multiple dosing
@@ -1198,6 +1244,27 @@ function drawChart() {
   // Reset line dash for other drawings
   ctx.setLineDash([]);
   
+  // Draw random simulation (incorrectly dosed patient) as light gray line
+  if (randomSimulationData && randomSimulationData.subject && randomSimulationData.timePoints) {
+    ctx.strokeStyle = '#cccccc'; // Light gray color for random simulation
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    
+    let firstPoint = true;
+    for (let i = 0; i < randomSimulationData.timePoints.length && i < randomSimulationData.subject.concentrations.length; i++) {
+      const x = margin.left + (randomSimulationData.timePoints[i] / maxTime) * width;
+      const y = valueToY(randomSimulationData.subject.concentrations[i]);
+      
+      if (firstPoint) {
+        ctx.moveTo(x, y);
+        firstPoint = false;
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+    ctx.stroke();
+  }
+  
   // Draw concentration profile for single subject
   const singleSubjectColor = '#007bff'; // Blue color for single subject
   
@@ -1292,10 +1359,46 @@ function updateTable() {
   
   tbody.innerHTML = '';
   
-  subjects.forEach(subject => {
+  // Show all saved patients first
+  savedPatients.forEach(subject => {
     const row = tbody.insertRow();
     row.innerHTML = `
       <td>${subject.id}</td>
+      <td>${subject.drugName || 'N/A'}</td>
+      <td>${subject.age}</td>
+      <td>${subject.sex}</td>
+      <td>${subject.height}</td>
+      <td>${subject.weight}</td>
+      <td>${subject.bmi.toFixed(1)}</td>
+      <td>${subject.ibw.toFixed(1)}</td>
+      <td>${subject.adjustedIbw.toFixed(1)}</td>
+      <td>${subject.creatinine ? subject.creatinine.toFixed(2) : 'N/A'}</td>
+      <td>${subject.creatinineClearanceMlMin ? subject.creatinineClearanceMlMin.toFixed(1) : 'N/A'}</td>
+      <td>${subject.loadingDose}</td>
+      <td>${subject.dose}</td>
+      <td>${subject.interval}</td>
+      <td>${subject.duration}</td>
+      <td>${subject.clearance.toFixed(2)}</td>
+      <td>${subject.volume.toFixed(1)}</td>
+      <td>${subject.fractionUnbound.toFixed(3)}</td>
+      <td>${subject.vssUnbound.toFixed(1)}</td>
+      <td>${subject.bioavailability.toFixed(2)}</td>
+      <td>${subject.halfLife.toFixed(1)}</td>
+      <td>${subject.cssAvg.toFixed(2)}</td>
+      <td>${subject.auc.toFixed(1)}</td>
+      <td>${subject.cmax.toFixed(2)}</td>
+      <td>${subject.aucEfficacyRatio.toFixed(1)}</td>
+      <td>${subject.cmaxEfficacyRatio.toFixed(1)}</td>
+      <td>${subject.timeAboveEfficacy.toFixed(1)}</td>
+    `;
+  });
+  
+  // Then show current simulation if exists (highlighted in blue)
+  subjects.forEach(subject => {
+    const row = tbody.insertRow();
+    row.style.backgroundColor = '#e3f2fd';
+    row.innerHTML = `
+      <td>${subject.id} (Current)</td>
       <td>${subject.drugName || 'N/A'}</td>
       <td>${subject.age}</td>
       <td>${subject.sex}</td>
@@ -1432,6 +1535,14 @@ function resetSimulation() {
 
 // Randomize parameters for interesting simulations
 function randomizeParameters() {
+  // First, save current state as the "incorrectly dosed" patient for gray line
+  if (subjects.length > 0) {
+    randomSimulationData = {
+      subject: { ...subjects[0] },
+      timePoints: [...timePoints]
+    };
+  }
+  
   // Define parameter ranges for randomization (aligned with HTML constraints)
   const randomParams = {
     // Core PK parameters - reasonable clinical ranges
@@ -1623,6 +1734,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!currentPatient.creatinine) {
       currentPatient.creatinine = 1.0;
     }
+    // Update subject counter if there's a saved subject ID
+    if (currentPatient.subjectId) {
+      subjectCounter = Math.max(subjectCounter, currentPatient.subjectId);
+    }
+  } else {
+    // No saved patient, so we need to generate one initially
+    generateRandomPatient();
+    return; // generateRandomPatient will handle the rest of initialization
   }
   
   // Update patient display

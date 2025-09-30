@@ -54,6 +54,12 @@ This interactive module demonstrates gastroenteric absorption and distribution o
 <input type="range" id="pka-slider" min="1" max="12" value="9.5" step="0.1"> 
 [9.5]{#pka-value}
 :::
+
+::: control-group-compact
+<label for="tpsa-slider">TPSA (Å²):</label> 
+<input type="range" id="tpsa-slider" min="0" max="200" value="75" step="5"> 
+[75]{#tpsa-value}
+:::
 ::::::::
 ::::::::
 
@@ -79,6 +85,12 @@ This interactive module demonstrates gastroenteric absorption and distribution o
 [7.0]{#tissue-ph-value}
 :::
 
+::: control-group-compact
+<label for="enteric-ph-slider">Enteric pH:</label>
+<input type="range" id="enteric-ph-slider" min="6.5" max="7.5" value="7.2" step="0.1">
+[7.2]{#enteric-ph-value}
+:::
+
 ::: control-group-compact  
 <label for="urine-ph-slider">Urine pH:</label>
 <input type="range" id="urine-ph-slider" min="4.5" max="8.5" value="6.0" step="0.1">
@@ -100,6 +112,7 @@ Reset Parameters
 <div style="background-color: #f8f9fa; padding: 8px; border-radius: 8px; border: 1px solid #dee2e6;">
 <h4 style="margin-top: 0; color: #495057;">logD Values</h4>
 <p><strong>Stomach:</strong> <span id="logd-stomach">-</span></p>
+<p><strong>Enteric (Small Intestine):</strong> <span id="logd-enteric">-</span></p>
 <p><strong>Blood:</strong> <span id="logd-blood">-</span></p>
 <p><strong>Tissue:</strong> <span id="logd-tissue">-</span></p>
 <p><strong>Urine:</strong> <span id="logd-urine">-</span></p>
@@ -108,6 +121,7 @@ Reset Parameters
 <div style="background-color: #f8f9fa; padding: 8px; border-radius: 8px; border: 1px solid #dee2e6; margin-top: 10px;">
 <h4 style="margin-top: 0; color: #495057;">Ionization (%)</h4>
 <p><strong>Stomach:</strong> <span id="ionized-stomach">-</span>%</p>
+<p><strong>Enteric (Small Intestine):</strong> <span id="ionized-enteric">-</span>%</p>
 <p><strong>Blood:</strong> <span id="ionized-blood">-</span>%</p>
 <p><strong>Tissue:</strong> <span id="ionized-tissue">-</span>%</p>
 <p><strong>Urine:</strong> <span id="ionized-urine">-</span>%</p>
@@ -498,13 +512,15 @@ let currentLogD = {
   logP: 2.0,
   pKa: 9.5,
   drugType: 'base', // 'acid', 'base', or 'neutral'
-  drugName: ''
+  drugName: '',
+  tpsa: 75 // Topological Polar Surface Area in Ų
 };
 
 let pHEnvironments = {
   stomach: 1.5,
   blood: 7.4, 
   tissue: 7.0,
+  enteric: 7.2, // Small intestine pH for proper absorption modeling
   urine: 6.0
 };
 
@@ -514,25 +530,29 @@ const drugPresets = {
     name: 'Cefepime',
     logP: -1.02,
     pKa: 2.5,
-    type: 'acid'
+    type: 'acid',
+    tpsa: 138.03
   },
   vancomycin: {
     name: 'Vancomycin', 
     logP: -3.1,
     pKa: 7.75,
-    type: 'base'
+    type: 'base',
+    tpsa: 472.70
   },
   ciprofloxacin: {
     name: 'Ciprofloxacin',
     logP: 0.28,
     pKa: 6.09,
-    type: 'acid'
+    type: 'acid',
+    tpsa: 74.57
   },
   gentamicin: {
     name: 'Gentamicin',
     logP: -3.0,
     pKa: 8.2,
-    type: 'base'
+    type: 'base',
+    tpsa: 226.74
   }
 };
 
@@ -546,12 +566,14 @@ function loadPreset(drugKey) {
   currentLogD.pKa = preset.pKa;
   currentLogD.drugType = preset.type;
   currentLogD.drugName = preset.name;
+  currentLogD.tpsa = preset.tpsa;
   
   // Update UI elements
   document.getElementById('drug-name-logd').value = preset.name;
   document.getElementById('drug-type-select').value = preset.type;
   document.getElementById('logp-slider').value = preset.logP;
   document.getElementById('pka-slider').value = preset.pKa;
+  document.getElementById('tpsa-slider').value = preset.tpsa;
   
   // Update displays
   updateLogDSliderValues();
@@ -598,13 +620,29 @@ function calculatePercentIonized(pKa, pH, drugType) {
   return percentIonized;
 }
 
-// Assess permeability based on logD
-function assessPermeability(logD) {
-  if (logD < -1) return 'Very Low';
-  if (logD < 0) return 'Low';
-  if (logD < 2) return 'Moderate';
-  if (logD < 4) return 'High';
-  return 'Very High';
+// Assess permeability based on logD and TPSA
+function assessPermeability(logD, tpsa = null) {
+  let permeabilityScore = 0;
+  
+  // LogD contribution to permeability
+  if (logD < -1) permeabilityScore += 1;
+  else if (logD < 0) permeabilityScore += 2;
+  else if (logD < 2) permeabilityScore += 3;
+  else if (logD < 4) permeabilityScore += 4;
+  else permeabilityScore += 5;
+  
+  // TPSA contribution (if provided)
+  if (tpsa !== null) {
+    if (tpsa > 140) permeabilityScore -= 2; // High TPSA reduces permeability
+    else if (tpsa > 90) permeabilityScore -= 1; // Moderate TPSA slightly reduces permeability
+    // Low TPSA (<90) doesn't modify the score
+  }
+  
+  // Ensure score stays within bounds
+  permeabilityScore = Math.max(1, Math.min(5, permeabilityScore));
+  
+  const permeabilityLabels = ['Very Low', 'Low', 'Moderate', 'High', 'Very High'];
+  return permeabilityLabels[permeabilityScore - 1];
 }
 
 // Calculate and display all logD values and related metrics
@@ -623,21 +661,24 @@ function calculateAndDisplayLogD() {
   
   // Update logD displays
   document.getElementById('logd-stomach').textContent = logDValues.stomach.toFixed(2);
+  document.getElementById('logd-enteric').textContent = logDValues.enteric.toFixed(2);
   document.getElementById('logd-blood').textContent = logDValues.blood.toFixed(2);
   document.getElementById('logd-tissue').textContent = logDValues.tissue.toFixed(2);
   document.getElementById('logd-urine').textContent = logDValues.urine.toFixed(2);
   
   // Update ionization percentages
   document.getElementById('ionized-stomach').textContent = ionizedPercentages.stomach.toFixed(1);
+  document.getElementById('ionized-enteric').textContent = ionizedPercentages.enteric.toFixed(1);
   document.getElementById('ionized-blood').textContent = ionizedPercentages.blood.toFixed(1);
   document.getElementById('ionized-tissue').textContent = ionizedPercentages.tissue.toFixed(1);
   document.getElementById('ionized-urine').textContent = ionizedPercentages.urine.toFixed(1);
   
-  // Update permeability assessments
-  document.getElementById('gastric-permeability').textContent = assessPermeability(logDValues.stomach);
-  // Intestinal pH is typically around 7, so use tissue pH as proxy
-  document.getElementById('intestinal-permeability').textContent = assessPermeability(logDValues.tissue);
-  document.getElementById('bbb-permeability').textContent = assessPermeability(logDValues.blood);
+  // Update permeability assessments (using TPSA for enhanced accuracy)
+  const tpsa = currentLogD.tpsa;
+  document.getElementById('gastric-permeability').textContent = assessPermeability(logDValues.stomach, tpsa);
+  // Use proper enteric pH for intestinal absorption instead of tissue pH
+  document.getElementById('intestinal-permeability').textContent = assessPermeability(logDValues.enteric, tpsa);
+  document.getElementById('bbb-permeability').textContent = assessPermeability(logDValues.blood, tpsa);
   
   // Update plots
   drawLogDPlot();
@@ -1039,13 +1080,15 @@ function resetLogDSimulation() {
     logP: 2.0,
     pKa: 9.5,
     drugType: 'base',
-    drugName: ''
+    drugName: '',
+    tpsa: 75
   };
   
   pHEnvironments = {
     stomach: 1.5,
     blood: 7.4,
     tissue: 7.0,
+    enteric: 7.2,
     urine: 6.0
   };
   
@@ -1054,9 +1097,11 @@ function resetLogDSimulation() {
   document.getElementById('drug-type-select').value = 'base';
   document.getElementById('logp-slider').value = 2.0;
   document.getElementById('pka-slider').value = 9.5;
+  document.getElementById('tpsa-slider').value = 75;
   document.getElementById('stomach-ph-slider').value = 1.5;
   document.getElementById('blood-ph-slider').value = 7.4;
   document.getElementById('tissue-ph-slider').value = 7.0;
+  document.getElementById('enteric-ph-slider').value = 7.2;
   document.getElementById('urine-ph-slider').value = 6.0;
   
   updateLogDSliderValues();
@@ -1068,9 +1113,11 @@ function updateLogDSliderValues() {
   const updates = [
     { slider: 'logp-slider', display: 'logp-value' },
     { slider: 'pka-slider', display: 'pka-value' },
+    { slider: 'tpsa-slider', display: 'tpsa-value' },
     { slider: 'stomach-ph-slider', display: 'stomach-ph-value' },
     { slider: 'blood-ph-slider', display: 'blood-ph-value' },
     { slider: 'tissue-ph-slider', display: 'tissue-ph-value' },
+    { slider: 'enteric-ph-slider', display: 'enteric-ph-value' },
     { slider: 'urine-ph-slider', display: 'urine-ph-value' }
   ];
   
@@ -1228,8 +1275,8 @@ function downloadIonizationPlot() {
 document.addEventListener('DOMContentLoaded', function() {
   // Add event listeners to sliders and inputs
   const sliderIds = [
-    'logp-slider', 'pka-slider', 
-    'stomach-ph-slider', 'blood-ph-slider', 'tissue-ph-slider', 'urine-ph-slider'
+    'logp-slider', 'pka-slider', 'tpsa-slider',
+    'stomach-ph-slider', 'blood-ph-slider', 'tissue-ph-slider', 'enteric-ph-slider', 'urine-ph-slider'
   ];
   
   sliderIds.forEach(id => {
@@ -1241,6 +1288,8 @@ document.addEventListener('DOMContentLoaded', function() {
           currentLogD.logP = parseFloat(this.value);
         } else if (id === 'pka-slider') {
           currentLogD.pKa = parseFloat(this.value);
+        } else if (id === 'tpsa-slider') {
+          currentLogD.tpsa = parseFloat(this.value);
         } else if (id.includes('ph-slider')) {
           const compartment = id.replace('-ph-slider', '');
           pHEnvironments[compartment] = parseFloat(this.value);
