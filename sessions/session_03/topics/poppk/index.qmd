@@ -221,29 +221,25 @@ In this simulation, blood samples are collected every 1 hour to provide a detail
 - Reduce the burden on patients compared to more frequent sampling
 - Provide sufficient data points for pharmacokinetic analysis
 
-#### Population PK Structural Model
+#### Simplified Pharmacokinetic Model
 
-This simulation demonstrates population pharmacokinetic concepts using a one-compartment model with covariate relationships that are fundamental to PopPK modeling:
+This simulation uses a simplified one-compartment model with first-order absorption that focuses on the minimum essential parameters needed to generate a multiple dosing pharmacokinetic plot:
 
-**Structural Model Features:**
-- **One-Compartment Model**: Base structural model with first-order absorption and elimination
-- **Typical Parameter Values**: Population-level clearance and volume parameters
-- **Between-Subject Variability**: Patient-specific differences illustrated through covariate effects
+**Essential PK Parameters:**
+- **Clearance (CL)**: Automatically calculated from patient's creatinine clearance using Cockcroft-Gault equation
+- **Volume of Distribution (Vd)**: Drug-specific volume per kg multiplied by patient weight
+- **Bioavailability (F)**: Fraction of dose reaching systemic circulation
 
-**Covariate Implementation:**
-- **Renal Function (CrCl)**: Primary covariate on clearance for renally eliminated antimicrobials
-  - CL = CL_typical × (CrCl_patient / CrCl_typical)
-- **Body Size (Weight)**: Covariate on volume of distribution
-  - Vd = Vd_typical × (Weight_patient / 70 kg)
-- **Age and Sex**: Incorporated through renal function equation (Cockcroft-Gault)
+**Patient-Specific Factors:**
+- **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
+- **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
 
-**Population PK Principles Demonstrated:**
-- **Individual Parameter Estimation**: Each patient's parameters derived from population values and covariates
-- **Allometric Scaling**: Weight-based adjustment of PK parameters
-- **Physiological Covariates**: Mechanistic relationships between patient factors and drug disposition
-- **Dose Individualization**: Patient-specific dosing based on covariate-adjusted parameters
+**Dosing Parameters:**
+- **Dose**: Amount of drug administered per dose
+- **Dosing Interval**: Time between doses
+- **Treatment Duration**: Total length of treatment
 
-This framework illustrates how population PK models quantify the impact of patient covariates on antimicrobial pharmacokinetics, enabling personalized dosing strategies and supporting regulatory submissions for diverse patient populations.
+This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
 
 ### Quiz
 
