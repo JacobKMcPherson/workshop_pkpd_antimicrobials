@@ -1696,7 +1696,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div>
 
-[Session 2 →](../session_02/index.qmd){.btn .btn-outline-primary}
+[pH-Dependent Drug Distribution Exercise →](exercise_logD.qmd){.btn .btn-outline-primary}
 
 </div>
 :::::
