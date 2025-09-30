@@ -715,7 +715,6 @@ let timePoints = [];
 let canvas = null;
 let ctx = null;
 let isLogScale = true; // Track current scale type
-let randomSimulationData = null; // Store the random simulation for gray line
 let initialSimulationData = null; // Store the initial simulation state
 
 // Patient data
@@ -1083,7 +1082,7 @@ function runSimulation() {
   drawChart();
   updateTable();
   
-  // Capture initial state for gray line (only once, when initialSimulationData is null)
+  // Capture initial state (only once, when initialSimulationData is null)
   if (initialSimulationData === null && subjects.length > 0) {
     initialSimulationData = {
       subject: { ...subjects[0] },
@@ -1253,26 +1252,7 @@ function drawChart() {
   // Reset line dash for other drawings
   ctx.setLineDash([]);
   
-  // Draw random simulation (incorrectly dosed patient) as light gray line
-  if (randomSimulationData && randomSimulationData.subject && randomSimulationData.timePoints) {
-    ctx.strokeStyle = '#cccccc'; // Light gray color for random simulation
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    
-    let firstPoint = true;
-    for (let i = 0; i < randomSimulationData.timePoints.length && i < randomSimulationData.subject.concentrations.length; i++) {
-      const x = margin.left + (randomSimulationData.timePoints[i] / maxTime) * width;
-      const y = valueToY(randomSimulationData.subject.concentrations[i]);
-      
-      if (firstPoint) {
-        ctx.moveTo(x, y);
-        firstPoint = false;
-      } else {
-        ctx.lineTo(x, y);
-      }
-    }
-    ctx.stroke();
-  }
+
   
   // Draw concentration profile for single subject
   const singleSubjectColor = '#007bff'; // Blue color for single subject
@@ -1544,14 +1524,6 @@ function resetSimulation() {
 
 // Randomize parameters for interesting simulations
 function randomizeParameters() {
-  // Use the initial simulation state for the gray line
-  if (initialSimulationData) {
-    randomSimulationData = {
-      subject: { ...initialSimulationData.subject },
-      timePoints: [...initialSimulationData.timePoints]
-    };
-  }
-  
   // Define parameter ranges for randomization (aligned with HTML constraints)
   const randomParams = {
     // Core PK parameters - reasonable clinical ranges
