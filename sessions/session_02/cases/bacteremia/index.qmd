@@ -292,6 +292,39 @@ Test your understanding by calculating the following parameters for the current 
 <span id="quiz-cssavg-feedback" class="quiz-feedback"></span>
 :::
 
+::: {.quiz-question}
+**6. Vancomycin PK/PD: Based on vancomycin's pKa (7.75) and physiological pH (7.4), what percentage of the drug is unionized?**
+<input type="number" id="quiz-unionized" placeholder="Enter percentage (0-100)" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<span id="quiz-unionized-feedback" class="quiz-feedback"></span>
+<div class="quiz-hint" style="font-size: 0.9em; color: #666; margin-top: 5px;">
+*Hint: For bases: unionized % = 100/(1 + 10^(pH-pKa))*
+</div>
+:::
+
+::: {.quiz-question}
+**7. Distribution: Why is vancomycin primarily restricted to extracellular fluid?**
+<select id="quiz-distribution" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<option value="">Select your answer...</option>
+<option value="hydrophilic">Very low logP (-3.1) and large molecular size limit membrane penetration</option>
+<option value="protein">High protein binding prevents distribution</option>
+<option value="active">Active efflux pumps remove it from cells</option>
+<option value="metabolism">Rapid metabolism prevents tissue accumulation</option>
+</select>
+<span id="quiz-distribution-feedback" class="quiz-feedback"></span>
+:::
+
+::: {.quiz-question}
+**8. PK/PD Target: What is the optimal AUC/MIC target for vancomycin against MRSA?**
+<select id="quiz-auc-mic" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
+<option value="">Select your answer...</option>
+<option value="200">≥ 200</option>
+<option value="400">≥ 400-600</option>
+<option value="800">≥ 800</option>
+<option value="1000">≥ 1000</option>
+</select>
+<span id="quiz-auc-mic-feedback" class="quiz-feedback"></span>
+:::
+
 <div style="text-align: center; margin: 15px 0;">
 <button id="check-answers-btn" onclick="checkQuizAnswers()" style="background-color: #28a745; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px;">Check Answers</button>
 <button id="reset-quiz-btn" onclick="resetQuiz()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 14px; margin-left: 10px;">Reset Quiz</button>
@@ -381,6 +414,10 @@ main.content {
 
 .quiz-feedback.incorrect {
   color: #dc3545;
+}
+
+.quiz-feedback.partial {
+  color: #ffc107;
 }
 
 .drug-name-section {
@@ -1586,6 +1623,42 @@ function checkQuizAnswers() {
     cssAvgFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCssAvg.toFixed(2)} mg/L`;
     cssAvgFeedback.className = 'quiz-feedback incorrect';
   }
+  
+  // 6. Unionized percentage for vancomycin (pKa = 7.75, pH = 7.4)
+  const userUnionized = parseFloat(document.getElementById('quiz-unionized').value);
+  const pKa = 7.75;
+  const pH = 7.4;
+  const correctUnionized = 100 / (1 + Math.pow(10, pH - pKa));
+  const unionizedFeedback = document.getElementById('quiz-unionized-feedback');
+  if (Math.abs(userUnionized - correctUnionized) / correctUnionized <= 0.05) {
+    unionizedFeedback.textContent = `✓ Correct! (${correctUnionized.toFixed(1)}%)`;
+    unionizedFeedback.className = 'quiz-feedback correct';
+  } else {
+    unionizedFeedback.textContent = `✗ Incorrect. Correct answer: ${correctUnionized.toFixed(1)}%`;
+    unionizedFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 7. Distribution mechanism
+  const userDistribution = document.getElementById('quiz-distribution').value;
+  const distributionFeedback = document.getElementById('quiz-distribution-feedback');
+  if (userDistribution === 'hydrophilic') {
+    distributionFeedback.textContent = '✓ Correct! Very low logP and large size limit membrane penetration.';
+    distributionFeedback.className = 'quiz-feedback correct';
+  } else {
+    distributionFeedback.textContent = '✗ Incorrect. Very low logP (-3.1) and large molecular size limit membrane penetration.';
+    distributionFeedback.className = 'quiz-feedback incorrect';
+  }
+  
+  // 8. AUC/MIC target
+  const userAucMic = document.getElementById('quiz-auc-mic').value;
+  const aucMicFeedback = document.getElementById('quiz-auc-mic-feedback');
+  if (userAucMic === '400') {
+    aucMicFeedback.textContent = '✓ Correct! AUC/MIC ≥ 400-600 is the target for MRSA.';
+    aucMicFeedback.className = 'quiz-feedback correct';
+  } else {
+    aucMicFeedback.textContent = '✗ Incorrect. AUC/MIC ≥ 400-600 is the target for MRSA.';
+    aucMicFeedback.className = 'quiz-feedback incorrect';
+  }
 }
 
 function resetQuiz() {
@@ -1595,6 +1668,9 @@ function resetQuiz() {
   document.getElementById('quiz-vss').value = '';
   document.getElementById('quiz-tss').value = '';
   document.getElementById('quiz-cssavg').value = '';
+  document.getElementById('quiz-unionized').value = '';
+  document.getElementById('quiz-distribution').value = '';
+  document.getElementById('quiz-auc-mic').value = '';
   
   // Clear all feedback
   const feedbacks = document.querySelectorAll('.quiz-feedback');
