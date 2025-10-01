@@ -37,3 +37,6 @@ quarto-*/
 # Generated HTML files (rendered from .qmd)
 *.html
 !_site/**/*.html
+
+# Freeze directory (Quarto cache)
+_freeze/
