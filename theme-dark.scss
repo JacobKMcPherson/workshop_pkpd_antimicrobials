@@ -55,3 +55,29 @@ $input-bg: #242424;
   background-size: 2em;
   background-position: 0.5em 0.5em;
 }
+
+/* Make left sidebar flush left (fully to the left side of the screen) */
+.sidebar,
+.sidebar-navigation,
+#quarto-sidebar,
+.sidebar-menu-container {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  left: 0 !important;
+}
+
+.sidebar > .sidebar-menu-container {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* Ensure sidebar items also start from the left edge */
+.sidebar nav[role="navigation"] {
+  padding-left: 0 !important;
+}
+
+/* Remove any offset from the sidebar container */
+.sidebar-item-container {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
