@@ -29,3 +29,14 @@ _site/
 /.quarto/
 
 **/*.quarto_ipynb
+
+# Quarto installation
+quarto-*-linux-amd64.tar.gz
+quarto-*/
+
+# Generated HTML files (rendered from .qmd)
+*.html
+!_site/**/*.html
+
+# Freeze directory (Quarto cache)
+_freeze/
