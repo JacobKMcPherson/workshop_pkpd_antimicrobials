@@ -76,7 +76,7 @@ body.docked .sidebar.sidebar-navigation,
   padding-left: 1.6em !important;
 }
 
-/* Greatly increase central column width and add flush right sidebar */
+/* Greatly increase central column width */
 @media(min-width: 992px) {
   /* Make the main content area much wider by spanning more grid columns */
   body.floating #quarto-content,
@@ -89,20 +89,5 @@ body.docked .sidebar.sidebar-navigation,
   #quarto-content article {
     max-width: 1400px !important;
     padding-right: 2em !important;
-  }
-}
-
-/* Make right sidebar (margin-sidebar) flush right with no padding/margin */
-.sidebar.margin-sidebar {
-  padding-right: 0 !important;
-  margin-right: 0 !important;
-  padding-left: 1em !important;
-}
-
-/* Override grid-column for right sidebar to extend to screen edge (flush right) */
-@media(min-width: 992px) {
-  body.floating .sidebar.margin-sidebar,
-  body.docked .sidebar.margin-sidebar {
-    grid-column: page-end / screen-end !important;
   }
 }
