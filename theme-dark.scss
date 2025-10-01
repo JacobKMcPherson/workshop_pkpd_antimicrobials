@@ -81,3 +81,59 @@ $input-bg: #242424;
   padding-left: 0 !important;
   margin-left: 0 !important;
 }
+
+/* Override grid-column to start from screen-start instead of page-start */
+body.floating .sidebar.sidebar-navigation,
+body.docked .sidebar.sidebar-navigation,
+.sidebar.toc-left {
+  grid-column: screen-start / body-start !important;
+}
+
+/* Remove left padding/margin from sidebar navigation items */
+.sidebar nav[role="doc-toc"] ul {
+  padding-left: 0.45em !important;
+}
+
+.sidebar nav[role="doc-toc"] ul li a {
+  padding-left: 0.4em !important;
+}
+
+/* Adjust nested TOC items to maintain hierarchy while staying left-aligned */
+.sidebar nav[role="doc-toc"] ul > li > ul > li > a {
+  padding-left: 0.8em !important;
+}
+
+.sidebar nav[role="doc-toc"] ul > li > ul > li > ul > li > a {
+  padding-left: 1.6em !important;
+}
+
+/* Greatly increase central column width and add flush right sidebar */
+@media(min-width: 992px) {
+  /* Make the main content area much wider by spanning more grid columns */
+  body.floating #quarto-content,
+  body.docked #quarto-content {
+    grid-column: body-start / page-end !important;
+    max-width: none !important;
+  }
+  
+  /* Make the article/main content itself wider */
+  #quarto-content article {
+    max-width: 1400px !important;
+    padding-right: 2em !important;
+  }
+}
+
+/* Make right sidebar (margin-sidebar) flush right with no padding/margin */
+.sidebar.margin-sidebar {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 1em !important;
+}
+
+/* Override grid-column for right sidebar to extend to screen edge (flush right) */
+@media(min-width: 992px) {
+  body.floating .sidebar.margin-sidebar,
+  body.docked .sidebar.margin-sidebar {
+    grid-column: page-end / screen-end !important;
+  }
+}
