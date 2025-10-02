@@ -1,7 +1,6 @@
 ---
 title: "Pharmacokinetics/Pharmacodynamics of Antimicrobials"
 subtitle: "A workshop for graduate students, pharmacy students, and postdocs"
-format: html
 ---
 
 ::: hero-banner

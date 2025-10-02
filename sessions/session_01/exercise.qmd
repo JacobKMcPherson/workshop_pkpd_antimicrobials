@@ -9,12 +9,17 @@ execute:
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
-::: {.content-section}
+::: {.panel-tabset}
+### Concentration Plot
+::: {.plot-section}
+::: {#concentration-plot}
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="1920" height="1080"></canvas>
+</div>
 
 ::: {.main-layout}
-
-::: {.controls-column-1}
-### Patient Information
+::: {.controls-section}
 ::: {.patient-generator}
 <div style="margin-bottom: 8px;">
 <button id="generate-patient-btn" onclick="generateRandomPatient()">New Patient</button>
@@ -29,19 +34,11 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 </div>
 </div>
 :::
-
 ::: {.drug-name-section}
 <div style="margin-bottom: 2px;">
 <label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
 <input type="text" id="drug-name-input" placeholder="Enter drug name (e.g., Vancomycin)" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
 </div>
-
-<label for="pk-model-select" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px; margin-top: 10px;">PK Model:</label>
-<select id="pk-model-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;" onchange="handleModelChange()">
-<option value="one-compartment" selected>One-Compartment</option>
-<option value="two-compartment">Two-Compartment</option>
-<option value="nca">Non-Compartmental Analysis (NCA)</option>
-</select>
 
 <label for="formulation-select">Formulation:</label>
 <select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
@@ -50,6 +47,20 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <option value="fast">Fast (IV Bolus)</option>
 </select>
 <span id="formulation-value">Medium (Standard Oral)</span>
+
+:::
+
+:::
+
+::: {.controls-middle}
+::: {.controls-section}
+<label for="pk-model-select" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px; margin-top: 10px;">PK Model:</label>
+<select id="pk-model-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;" onchange="handleModelChange()">
+<option value="one-compartment" selected>One-Compartment</option>
+<option value="two-compartment">Two-Compartment</option>
+<option value="nca">Non-Compartmental Analysis (NCA)</option>
+</select>
+
 
 <label for="kinetics-select" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px; margin-top: 10px;">Elimination Kinetics:</label>
 <select id="kinetics-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;" onchange="runSimulation()">
@@ -60,88 +71,75 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <option value="non-linear">Non-Linear (Michaelis-Menten)</option>
 </select>
 <span id="kinetics-value">Zero-Order</span>
+
+
+<label for="bioavailability-slider">Bioavailability (F):</label>
+<input type="range" id="bioavailability-slider" min="0" max="1.0" value="1.0" step="0.05">
+<span id="bioavailability-value">1.0</span>
+
+<label for="fraction-unbound-slider">Fraction Unbound:</label>
+<input type="range" id="fraction-unbound-slider" min="0" max="1.0" value="1.0" step="0.05">
+<span id="fraction-unbound-value">1.0</span>
+
+<label for="volume-slider">Volume of Distribution (L/kg):</label>
+<input type="range" id="volume-slider" min="0.1" max="10.00" value="0.70" step="0.1">
+<span id="volume-value">0.7</span> L/kg
+
+<label for="f-renal-slider">Fraction Renally Cleared:</label>
+<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="1.0" step="0.05">
+<span id="f-renal-value">1.0</span>
+
 :::
+:::
+
+::: {.controls-middle}
+
+<label for="toxicity-slider">Toxicity (mg/L):</label>
+<input type="range" id="toxicity-slider" min="0.000" max="100" value="20" step="1">
+<span id="toxicity-value">20</span> mg/L
+
+<label for="efficacy-slider">Efficacy (mg/L):</label>
+<input type="range" id="efficacy-slider" min="0" max="100" value="2" step="0.5">
+<span id="efficacy-value">5</span> mg/L
+
+<div id="two-compartment-params" style="display: none;">
+<label for="v2-slider">Peripheral Volume V2 (L/kg):</label>
+<input type="range" id="v2-slider" min="0.1" max="10" value="0.5" step="0.1">
+<span id="v2-value">0.5</span> L/kg
+<label for="q-slider">Intercompartmental Clearance Q (L/h):</label>
+<input type="range" id="q-slider" min="0.5" max="10.0" value="2.0" step="0.5">
+<span id="q-value">2.0</span> L/h
+</div>
+
+
+<label for="loading-dose-slider">Loading Dose (mg):</label>
+<input type="range" id="loading-dose-slider" min="0" max="3000" value="250" step="50">
+<span id="loading-dose-value">0</span> mg
+
+<label for="dose-slider">Dose (mg):</label>
+<input type="range" id="dose-slider" min="0" max="3000" value="250" step="50">
+<span id="dose-value">250</span> mg
+
+<label for="interval-slider">Dosing Interval (hrs):</label>
+<input type="range" id="interval-slider" min="1" max="48" value="24" step="1">
+<span id="interval-value">24</span> hrs
+
+<label for="duration-slider">Treatment Duration (days):</label>
+<input type="range" id="duration-slider" min="1" max="14" value="10" step="1">
+<span id="duration-value">10</span> days
 
 :::
 
-::: {.controls-column-2}
-### PK Parameters
-::: {.pk-properties-compact}
+::: {.controls-middle}
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+<button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button> 
+<button id="download-btn" onclick="downloadData()">Download Data</button>
 <div class="small-buttons" style="margin-top: 2px;">
 <button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
 <button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
 </div>
-
-::: {.control-group-compact}
-<label for="bioavailability-slider">Bioavailability (F):</label>
-<input type="range" id="bioavailability-slider" min="0" max="1.0" value="1.0" step="0.05">
-<span id="bioavailability-value">1.0</span>
 :::
 
-::: {.control-group-compact}
-<label for="fraction-unbound-slider">Fraction Unbound:</label>
-<input type="range" id="fraction-unbound-slider" min="0" max="1.0" value="1.0" step="0.05">
-<span id="fraction-unbound-value">1.0</span>
-:::
-
-::: {.control-group-compact}
-<label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.1" max="10.00" value="0.70" step="0.1">
-<span id="volume-value">0.7</span> L/kg
-:::
-
-::: {.control-group-compact}
-<label for="f-renal-slider">Fraction Renally Cleared:</label>
-<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="1.0" step="0.05">
-<span id="f-renal-value">1.0</span>
-:::
-
-<div id="two-compartment-params" style="display: none;">
-
-::: {.control-group-compact}
-<label for="v2-slider">Peripheral Volume V2 (L/kg):</label>
-<input type="range" id="v2-slider" min="0.1" max="10" value="0.5" step="0.1">
-<span id="v2-value">0.5</span> L/kg
-:::
-
-::: {.control-group-compact}
-<label for="q-slider">Intercompartmental Clearance Q (L/h):</label>
-<input type="range" id="q-slider" min="0.5" max="10.0" value="2.0" step="0.5">
-<span id="q-value">2.0</span> L/h
-:::
-
-</div>
-
-:::
-:::
-
-::: {.controls-column-3}
-### Dosing Parameters
-::: {.pk-properties-compact}
-<button id="download-btn" onclick="downloadData()">Download Data</button>
-::: {.control-group-compact}
-<label for="loading-dose-slider">Loading Dose (mg):</label>
-<input type="range" id="loading-dose-slider" min="0" max="3000" value="250" step="50">
-<span id="loading-dose-value">0</span> mg
-:::
-
-::: {.control-group-compact}
-<label for="dose-slider">Dose (mg):</label>
-<input type="range" id="dose-slider" min="0" max="3000" value="250" step="50">
-<span id="dose-value">250</span> mg
-:::
-
-::: {.control-group-compact}
-<label for="interval-slider">Dosing Interval (hrs):</label>
-<input type="range" id="interval-slider" min="1" max="48" value="24" step="1">
-<span id="interval-value">24</span> hrs
-:::
-
-::: {.control-group-compact}
-<label for="duration-slider">Treatment Duration (days):</label>
-<input type="range" id="duration-slider" min="1" max="14" value="10" step="1">
-<span id="duration-value">10</span> days
-:::
 
 :::
 
@@ -149,40 +147,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 :::
 
-::: {.plot-section}
-### Plot
-
-::: {#concentration-plot}
-<div id="chart-fallback">
-  <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="1920" height="1080"></canvas>
-</div>
-
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-<button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button>
-
-:::
-
-:::
-
-:::
-
-::: {.panel-tabset}
-
-### Reference Lines
-::: {.reference-properties}
-::: {.control-group}
-<label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
-<input type="range" id="toxicity-slider" min="0.000" max="100" value="20" step="1">
-<span id="toxicity-value">20</span> mg/L
-:::
-
-::: {.control-group}
-<label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
-<input type="range" id="efficacy-slider" min="0" max="100" value="2" step="0.5">
-<span id="efficacy-value">5</span> mg/L
-:::
-:::
 
 ### Data
 
@@ -370,6 +334,11 @@ Test your understanding by calculating the following parameters for the current 
 </div>
 
 :::
+
+:::
+
+
+
 
 ```{=html}
 <style>
@@ -2244,12 +2213,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 ```
-::::::::::::::::
-:::::::::::::::::
-
 
 
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
+
 <div>
 
 [← Session 1](index.qmd){.btn .btn-outline-primary}
