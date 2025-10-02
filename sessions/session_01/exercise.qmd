@@ -16,10 +16,18 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <div id="chart-fallback">
   <p>Loading interactive chart...</p>
   <canvas id="pk-chart" width="1920" height="1080"></canvas>
+  
+  
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+<button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button> 
+<button id="download-btn" onclick="downloadData()">Download Data</button>
+<div class="small-buttons" style="margin-top: 2px;">
+</div>
 </div>
 
 ::: {.main-layout}
 ::: {.controls-section}
+
 ::: {.patient-generator}
 <div style="margin-bottom: 8px;">
 <button id="generate-patient-btn" onclick="generateRandomPatient()">New Patient</button>
@@ -33,7 +41,9 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 </ul>
 </div>
 </div>
+
 :::
+
 ::: {.drug-name-section}
 <div style="margin-bottom: 2px;">
 <label for="drug-name-input" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px;">Drug Name:</label>
@@ -47,13 +57,14 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <option value="fast">Fast (IV Bolus)</option>
 </select>
 <span id="formulation-value">Medium (Standard Oral)</span>
-
 :::
 
 :::
 
-::: {.controls-middle}
-::: {.controls-section}
+::: {.controls-column-1}
+
+<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
+
 <label for="pk-model-select" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px; margin-top: 10px;">PK Model:</label>
 <select id="pk-model-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;" onchange="handleModelChange()">
 <option value="one-compartment" selected>One-Compartment</option>
@@ -90,10 +101,9 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <span id="f-renal-value">1.0</span>
 
 :::
-:::
 
-::: {.controls-middle}
-
+::: {.controls-column-2}
+<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
 <label for="toxicity-slider">Toxicity (mg/L):</label>
 <input type="range" id="toxicity-slider" min="0.000" max="100" value="20" step="1">
 <span id="toxicity-value">20</span> mg/L
@@ -128,16 +138,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <input type="range" id="duration-slider" min="1" max="14" value="10" step="1">
 <span id="duration-value">10</span> days
 
-:::
-
-::: {.controls-middle}
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-<button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button> 
-<button id="download-btn" onclick="downloadData()">Download Data</button>
-<div class="small-buttons" style="margin-top: 2px;">
-<button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
-<button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
-</div>
 :::
 
 
