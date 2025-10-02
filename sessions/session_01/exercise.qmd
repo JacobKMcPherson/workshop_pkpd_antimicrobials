@@ -918,8 +918,8 @@ function initializeSimulation() {
   canvas = document.getElementById('pk-chart');
   if (canvas) {
     ctx = canvas.getContext('2d');
-    canvas.width = 800;
-    canvas.height = 400;
+    canvas.width = 1200;
+    canvas.height = 800;
   }
   // Get slider elements
 const loadingDoseSlider = document.getElementById('loading-dose-slider');
