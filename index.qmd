@@ -20,9 +20,9 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 
 ### [**Pre-Workshop: Materials and Instructions**](sessions/pre-workshop/pre-workshop-materials.html)
 
-[📺 View Primer](sessions/pre-workshop/pre-workshop-primer.html){.btn .btn-primary .btn-lg target="_blank"}
+[📺 View Primer](content/pre-workshop-primer.html){.btn .btn-outline-primary}
 
-[📝 Take Survey](sessions/pre-workshop/pre-workshop-survey.html){.btn .btn-primary .btn-lg target="_blank"}
+[📝 Take Survey](content/pre-workshop-survey.html){.btn .btn-outline-primary}
 
 ## Workshop Sessions
 
@@ -30,9 +30,9 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 ::: {.g-col-md-4 .g-col-12}
 ### [**Session 1: Fundamentals**](sessions/session_01/index.qmd)
 
-[📊 View Presentation](sessions/session_01/slides.html){.btn .btn-primary .btn-lg target="_blank"}
+[📊 View Presentation](sessions/session_01/slides.html){.btn .btn-outline-primary}
 
-[💪🏻 View Exercise(s)](sessions/session_01/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
+[💪🏻 View Exercise(s)](sessions/session_01/exercise.html){.btn .btn-outline-primary}
 
 Introduction to PK/PD concepts and antimicrobial mechanisms.
 :::
@@ -40,9 +40,9 @@ Introduction to PK/PD concepts and antimicrobial mechanisms.
 ::: {.g-col-md-4 .g-col-12}
 ### [**Session 2: Applications**](sessions/session_02/index.qmd)
 
-[📊 View Presentation](sessions/session_02/slides.html){.btn .btn-primary .btn-lg target="_blank"}
+[📊 View Presentation](sessions/session_02/slides.html){.btn .btn-outline-primary}
 
-[💪🏻 View Exercise(s)](sessions/session_02/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
+[💪🏻 View Exercise(s)](sessions/session_02/exercise.html){.btn .btn-outline-primary}
 
 Practical applications and clinical considerations.
 :::
@@ -50,9 +50,9 @@ Practical applications and clinical considerations.
 ::: {.g-col-md-4 .g-col-12}
 ### [**Session 3: Advanced Topics**](sessions/session_03/index.qmd)
 
-[📊 View Presentation](sessions/session_03/slides.html){.btn .btn-primary .btn-lg target="_blank"}
+[📊 View Presentation](sessions/session_03/slides.html){.btn .btn-outline-primary}
 
-[💪🏻 View Exercise(s)](sessions/session_03/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
+[💪🏻 View Exercise(s)](sessions/session_03/exercise.html){.btn .btn-outline-primary}
 
 Advanced modeling and optimization strategies.
 :::
@@ -60,7 +60,7 @@ Advanced modeling and optimization strategies.
 
 ## Post-Workshop Evaluation
 
-[📝 Take Survey](content/post-workshop-survey.html){.btn .btn-primary .btn-lg target="_blank"}
+[📝 Take Survey](content/post-workshop-survey.html){.btn .btn-outline-primary}
 
 ## Agenda
 

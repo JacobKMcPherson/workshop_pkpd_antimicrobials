@@ -33,6 +33,8 @@ editor: source
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
+[← Home](../../index.qmd){.btn .btn-outline-primary}
+
 </div>
 
 <div>
