@@ -64,13 +64,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 <label for="kinetics-select" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px; margin-top: 10px;">Elimination Kinetics:</label>
 <select id="kinetics-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;" onchange="runSimulation()">
-<option value="zero-order" selected>Zero-Order</option>
-<option value="first-order">First-Order</option>
+<option value="zero-order">Zero-Order</option>
+<option value="first-order" selected>First-Order</option>
 <option value="second-order">Second-Order</option>
 <option value="third-order">Third-Order</option>
 <option value="non-linear">Non-Linear (Michaelis-Menten)</option>
 </select>
-<span id="kinetics-value">Zero-Order</span>
+<span id="kinetics-value">First-Order</span>
 
 
 <label for="bioavailability-slider">Bioavailability (F):</label>
@@ -1917,6 +1917,18 @@ function resetSimulation() {
     }
   });
   
+  // Reset PK Model and Elimination Kinetics to defaults
+  const pkModelSelect = document.getElementById('pk-model-select');
+  if (pkModelSelect) {
+    pkModelSelect.value = 'one-compartment';
+    handleModelChange();
+  }
+  
+  const kineticsSelect = document.getElementById('kinetics-select');
+  if (kineticsSelect) {
+    kineticsSelect.value = 'first-order';
+  }
+  
   updateSliderValues();
   runSimulation();
 }
@@ -1960,6 +1972,23 @@ function randomizeParameters() {
   const loadingDoseElement = document.getElementById('loading-dose-slider');
   if (doseElement && loadingDoseElement) {
     loadingDoseElement.value = doseElement.value;
+  }
+  
+  // Randomize PK Model
+  const pkModelSelect = document.getElementById('pk-model-select');
+  if (pkModelSelect) {
+    const pkModels = ['one-compartment', 'two-compartment', 'nca'];
+    const randomModel = pkModels[Math.floor(Math.random() * pkModels.length)];
+    pkModelSelect.value = randomModel;
+    handleModelChange();
+  }
+  
+  // Randomize Elimination Kinetics
+  const kineticsSelect = document.getElementById('kinetics-select');
+  if (kineticsSelect) {
+    const kineticsOptions = ['zero-order', 'first-order', 'second-order', 'third-order', 'non-linear'];
+    const randomKinetics = kineticsOptions[Math.floor(Math.random() * kineticsOptions.length)];
+    kineticsSelect.value = randomKinetics;
   }
   
   // Generate reference lines ensuring toxicity > efficacy
