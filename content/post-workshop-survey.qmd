@@ -7,11 +7,7 @@ format: html
 
 <fieldset data-qid="q1" data-answer="Clearance">
 
-<legend>1) Which PK parameter determines how quickly a drug is eliminated from the body?</legend>
-<label><input type="radio" name="q1" value="Volume" required> Volume of distribution</label><br>
-<label><input type="radio" name="q1" value="Clearance"> Clearance</label><br>
-<label><input type="radio" name="q1" value="Bioavailability"> Bioavailability</label><br>
-<label><input type="radio" name="q1" value="idk"> I don't know</label>
+<legend>1) Which PK parameter determines how quickly a drug is eliminated from the body?</legend> <label><input type="radio" name="q1" value="Volume" required> Volume of distribution</label><br> <label><input type="radio" name="q1" value="Clearance"> Clearance</label><br> <label><input type="radio" name="q1" value="Bioavailability"> Bioavailability</label><br> <label><input type="radio" name="q1" value="idk"> I don't know</label>
 
 <p class="feedback" aria-live="polite">
 
@@ -21,11 +17,7 @@ format: html
 
 <fieldset data-qid="q2" data-answer="Cmax">
 
-<legend>2) Which parameter changes with oral bioavailability (all else equal)?</legend>
-<label><input type="radio" name="q2" value="Cmax" required> Cmax</label><br>
-<label><input type="radio" name="q2" value="Vd"> Vd</label><br>
-<label><input type="radio" name="q2" value="t1/2"> t1/2</label><br>
-<label><input type="radio" name="q2" value="idk"> I don't know</label>
+<legend>2) Which parameter changes with oral bioavailability (all else equal)?</legend> <label><input type="radio" name="q2" value="Cmax" required> Cmax</label><br> <label><input type="radio" name="q2" value="Vd"> Vd</label><br> <label><input type="radio" name="q2" value="t1/2"> t1/2</label><br> <label><input type="radio" name="q2" value="idk"> I don't know</label>
 
 <p class="feedback" aria-live="polite">
 
@@ -33,13 +25,9 @@ format: html
 
 </fieldset>
 
-<fieldset data-qid="q3" data-answer="T>MIC">
+<fieldset data-qid="q3" data-answer="T&gt;MIC">
 
-<legend>3) Which PK/PD index is most important for β-lactam antibiotics?</legend>
-<label><input type="radio" name="q3" value="AUC/MIC" required> AUC/MIC</label><br>
-<label><input type="radio" name="q3" value="Cmax/MIC"> Cmax/MIC</label><br>
-<label><input type="radio" name="q3" value="T>MIC"> Time > MIC (T>MIC)</label><br>
-<label><input type="radio" name="q3" value="idk"> I don't know</label>
+<legend>3) Which PK/PD index is most important for β-lactam antibiotics?</legend> <label><input type="radio" name="q3" value="AUC/MIC" required> AUC/MIC</label><br> <label><input type="radio" name="q3" value="Cmax/MIC"> Cmax/MIC</label><br> <label><input type="radio" name="q3" value="T>MIC"> Time \> MIC (T\>MIC)</label><br> <label><input type="radio" name="q3" value="idk"> I don't know</label>
 
 <p class="feedback" aria-live="polite">
 
@@ -49,11 +37,7 @@ format: html
 
 <fieldset data-qid="q4" data-answer="400-600">
 
-<legend>4) What is the target AUC/MIC ratio for vancomycin against MRSA?</legend>
-<label><input type="radio" name="q4" value="200" required> ≥ 200</label><br>
-<label><input type="radio" name="q4" value="400-600"> ≥ 400-600</label><br>
-<label><input type="radio" name="q4" value="800"> ≥ 800</label><br>
-<label><input type="radio" name="q4" value="idk"> I don't know</label>
+<legend>4) What is the target AUC/MIC ratio for vancomycin against MRSA?</legend> <label><input type="radio" name="q4" value="200" required> ≥ 200</label><br> <label><input type="radio" name="q4" value="400-600"> ≥ 400-600</label><br> <label><input type="radio" name="q4" value="800"> ≥ 800</label><br> <label><input type="radio" name="q4" value="idk"> I don't know</label>
 
 <p class="feedback" aria-live="polite">
 
@@ -63,11 +47,7 @@ format: html
 
 <fieldset data-qid="q5" data-answer="Aminoglycosides">
 
-<legend>5) Which antimicrobial class is primarily concentration-dependent (Cmax/MIC)?</legend>
-<label><input type="radio" name="q5" value="Beta-lactams" required> β-lactams</label><br>
-<label><input type="radio" name="q5" value="Aminoglycosides"> Aminoglycosides</label><br>
-<label><input type="radio" name="q5" value="Macrolides"> Macrolides</label><br>
-<label><input type="radio" name="q5" value="idk"> I don't know</label>
+<legend>5) Which antimicrobial class is primarily concentration-dependent (Cmax/MIC)?</legend> <label><input type="radio" name="q5" value="Beta-lactams" required> β-lactams</label><br> <label><input type="radio" name="q5" value="Aminoglycosides"> Aminoglycosides</label><br> <label><input type="radio" name="q5" value="Macrolides"> Macrolides</label><br> <label><input type="radio" name="q5" value="idk"> I don't know</label>
 
 <p class="feedback" aria-live="polite">
 
@@ -77,11 +57,7 @@ format: html
 
 <fieldset data-qid="q6" data-answer="CrCl">
 
-<legend>6) Which patient-specific parameter is most important for adjusting antimicrobial doses?</legend>
-<label><input type="radio" name="q6" value="Age" required> Age</label><br>
-<label><input type="radio" name="q6" value="Weight"> Weight</label><br>
-<label><input type="radio" name="q6" value="CrCl"> Creatinine clearance (CrCl)</label><br>
-<label><input type="radio" name="q6" value="idk"> I don't know</label>
+<legend>6) Which patient-specific parameter is most important for adjusting antimicrobial doses?</legend> <label><input type="radio" name="q6" value="Age" required> Age</label><br> <label><input type="radio" name="q6" value="Weight"> Weight</label><br> <label><input type="radio" name="q6" value="CrCl"> Creatinine clearance (CrCl)</label><br> <label><input type="radio" name="q6" value="idk"> I don't know</label>
 
 <p class="feedback" aria-live="polite">
 
@@ -97,7 +73,9 @@ Submit
 
 </form>
 
-<p id="quiz-status" style="margin-top: 10px; font-weight: bold;"></p>
+<p id="quiz-status" style="margin-top: 10px; font-weight: bold;">
+
+</p>
 
 ```{=html}
 <script>

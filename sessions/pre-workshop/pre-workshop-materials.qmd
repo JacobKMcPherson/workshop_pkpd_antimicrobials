@@ -17,11 +17,11 @@ editor: source
 
 ## Pre-Workshop Slides
 
-[📺 View Primer](content/pre-workshop-primer.html){.btn .btn-outline-primary}
+[📺 View Primer](../../content/pre-workshop-primer.html){.btn .btn-outline-primary}
 
 ## Pre-Workshop Evaluation
 
-[📝 Take Survey](content/pre-workshop-survey.qmd){.btn .btn-primary target="_blank"}
+[📝 Take Survey](../../content/pre-workshop-survey.qmd){.btn .btn-outline-primary}
 
 <br><br>
 

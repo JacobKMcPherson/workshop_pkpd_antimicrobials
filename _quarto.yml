@@ -36,7 +36,7 @@ website:
             text: Contributing
           - href: info/SUPABASE_SETUP.qmd
             text: Supabase Setup
-          - href: license.qmd
+          - href: LICENSE.qmd
             text: License
       - text: Resources
         icon: globe2

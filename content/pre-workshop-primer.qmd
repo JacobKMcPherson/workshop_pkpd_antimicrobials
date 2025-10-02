@@ -23,7 +23,7 @@ Their discussion highlights the critical need for enhanced education in **pharma
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← Pre-Workshop Materials](../pre-workshop-materials.qmd){.btn .btn-outline-primary}
+[← Pre-Workshop Materials](../../sessions/pre-workshop/pre-workshop-materials.qmd){.btn .btn-outline-primary}
 
 </div>
 
