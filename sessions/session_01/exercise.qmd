@@ -16,10 +16,10 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <div id="chart-fallback">
   <p>Loading interactive chart...</p>
   <canvas id="pk-chart" width="1920" height="1080"></canvas>
-  
-  
+
+
 <button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-<button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button> 
+<button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button>
 <button id="download-btn" onclick="downloadData()">Download Data</button>
 <div class="small-buttons" style="margin-top: 2px;">
 </div>
@@ -530,13 +530,13 @@ main.content {
   .content-section {
     padding: 15px;
   }
-  
+
   /* Stack layout vertically on smaller screens */
   .main-layout {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .controls-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -804,7 +804,7 @@ const baseParams = {
 function getAbsorptionRate(formulation) {
   const absorptionRates = {
     'slow': 0.3,    // Extended release formulation (slow absorption)
-    'medium': 1.2,  // Standard oral formulation (medium absorption)  
+    'medium': 1.2,  // Standard oral formulation (medium absorption)
     'fast': 10.0    // IV bolus (very fast absorption, effectively instantaneous)
   };
   return absorptionRates[formulation] || 1.2; // default to medium
@@ -815,12 +815,12 @@ function handleModelChange() {
   const pkModel = document.getElementById('pk-model-select')?.value || 'one-compartment';
   const twoCompartmentParams = document.getElementById('two-compartment-params');
   const pkModelValue = document.getElementById('pk-model-value');
-  
+
   // Show/hide two-compartment specific parameters
   if (twoCompartmentParams) {
     twoCompartmentParams.style.display = pkModel === 'two-compartment' ? 'block' : 'none';
   }
-  
+
   // Update model label
   if (pkModelValue) {
     const modelNames = {
@@ -830,7 +830,7 @@ function handleModelChange() {
     };
     pkModelValue.textContent = modelNames[pkModel] || 'One-Compartment';
   }
-  
+
   // Re-run simulation with new model
   runSimulation();
 }
@@ -840,38 +840,38 @@ function calculateNCAParameters(concentrations, timePoints, interval) {
   // Find Cmax and Tmax
   let cmax = 0;
   let tmax = 0;
-  
+
   for (let i = 0; i < concentrations.length; i++) {
     if (concentrations[i] > cmax) {
       cmax = concentrations[i];
       tmax = timePoints[i];
     }
   }
-  
+
   // Calculate AUC using trapezoidal rule for steady-state (last dosing interval)
   // Find the start of the last dosing interval
   const lastDoseStartTime = Math.floor(timePoints[timePoints.length - 1] / interval) * interval;
   const lastDoseEndTime = lastDoseStartTime + interval;
-  
+
   let auc = 0;
   for (let i = 1; i < concentrations.length; i++) {
     const t1 = timePoints[i - 1];
     const t2 = timePoints[i];
     const c1 = concentrations[i - 1];
     const c2 = concentrations[i];
-    
+
     if (t1 >= lastDoseStartTime && t2 <= lastDoseEndTime) {
       // Trapezoidal rule: AUC = (C1 + C2) / 2 * (T2 - T1)
       auc += (c1 + c2) / 2 * (t2 - t1);
     }
   }
-  
+
   // Calculate terminal half-life using the last 3-5 points
   // Find terminal elimination phase (log-linear regression)
   const TERMINAL_PHASE_POINTS = 10; // Number of points to use for terminal phase selection
   const terminalPoints = [];
   const startTerminalIdx = Math.max(0, concentrations.length - TERMINAL_PHASE_POINTS);
-  
+
   for (let i = startTerminalIdx; i < concentrations.length; i++) {
     if (concentrations[i] > 0) {
       terminalPoints.push({
@@ -880,22 +880,22 @@ function calculateNCAParameters(concentrations, timePoints, interval) {
       });
     }
   }
-  
+
   // Linear regression on log-concentration vs time
   let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
   const n = terminalPoints.length;
-  
+
   for (let point of terminalPoints) {
     sumX += point.time;
     sumY += point.logConc;
     sumXY += point.time * point.logConc;
     sumX2 += point.time * point.time;
   }
-  
+
   const slope = n > 1 ? (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX) : 0;
   const lambda_z = -slope; // Terminal elimination rate constant
   const terminalHalfLife = lambda_z > 0 ? 0.693 / lambda_z : 0;
-  
+
   return {
     cmax: cmax,
     tmax: tmax,
@@ -911,7 +911,7 @@ function initializeSimulation() {
   for (let t = 0; t <= 240; t += 1) {
     timePoints.push(t);
   }
-  
+
   // Initialize canvas
   canvas = document.getElementById('pk-chart');
   if (canvas) {
@@ -966,37 +966,37 @@ function generateSubjects() {
   const baseVolumePerKg = parseFloat(document.getElementById('volume-slider')?.value || 0.7);
   const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 1.0);
   const fractionUnbound = parseFloat(document.getElementById('fraction-unbound-slider')?.value || 1.0);
-  
+
   // Calculate patient-specific clearance using new formula
   const { age, sex, height, weight, creatinine } = currentPatient;
-  
+
   // Cockcroft-Gault equation for creatinine clearance (mL/min)
   // CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
   let creatinineClearance = ((140 - age) * weight) / (72 * creatinine);
   if (sex === 'Female') {
     creatinineClearance *= 0.85;
   }
-  
+
   // Store creatinine clearance in mL/min for display purposes
   const creatinineClearanceMlMin = creatinineClearance;
-  
+
   // Convert creatinine clearance from mL/min to L/h for PK calculations
   creatinineClearance = creatinineClearance * 0.06; // mL/min to L/h conversion
-  
+
   // Calculate clearance using new formula: clearance_patient = base_clearance × (1 - f_renal) + base_clearance × f_renal × (CrCl_patient / CrCl_normal)
   // Assuming a typical creatinine clearance of ~120 mL/min (7.2 L/h) for normalization
   const normalCrCl = 7.2; // L/h
   const clearance = baseClearance * (1 - fRenal) + baseClearance * fRenal * (creatinineClearance / normalCrCl);
-  
+
   // Calculate volume of distribution using drug-specific L/kg value multiplied by patient weight
   const volume = baseVolumePerKg * weight;
-  
+
   // Calculate volume of distribution at steady state of unbound drug (Vss,u)
   const vssUnbound = fractionUnbound * volume;
-  
+
   // Calculate BMI, IBW, and Adjusted IBW
   const bmi = weight / Math.pow(height / 100, 2); // BMI = weight(kg) / height(m)^2
-  
+
   // Ideal Body Weight (IBW) calculations
   // Males: IBW = 50 + 2.3 × (height in inches - 60)
   // Females: IBW = 45.5 + 2.3 × (height in inches - 60)
@@ -1008,7 +1008,7 @@ function generateSubjects() {
     ibw = 45.5 + 2.3 * (heightInches - 60);
   }
   ibw = Math.max(ibw, 40); // Minimum IBW of 40 kg
-  
+
   // Adjusted IBW = IBW + 0.4 × (actual weight - IBW) if actual weight > IBW
   let adjustedIbw;
   if (weight > ibw) {
@@ -1016,30 +1016,30 @@ function generateSubjects() {
   } else {
     adjustedIbw = weight; // Use actual weight if it's less than or equal to IBW
   }
-  
+
   // Dosing parameters
   const drugName = document.getElementById('drug-name-input')?.value || '';
   const loadingDose = parseFloat(document.getElementById('loading-dose-slider')?.value || 250);
   const dose = parseFloat(document.getElementById('dose-slider')?.value || 250);
   const interval = parseFloat(document.getElementById('interval-slider')?.value || 24);
   const duration = parseFloat(document.getElementById('duration-slider')?.value || 10);
-  
+
   // Two-compartment specific parameters
   const v2PerKg = parseFloat(document.getElementById('v2-slider')?.value || 0.5);
   const q = parseFloat(document.getElementById('q-slider')?.value || 2.0);
-  
+
   // PK model and kinetics selection
   const pkModel = document.getElementById('pk-model-select')?.value || 'one-compartment';
   const kinetics = document.getElementById('kinetics-select')?.value || 'first-order';
-  
+
   subjects = [];
-  
+
   // Calculate number of doses based on duration
   const numDoses = Math.ceil((duration * 24) / interval);
-  
+
   // Calculate half-life using unbound volume
   const halfLife = 0.693 * vssUnbound / clearance;
-  
+
   subjects.push({
     id: currentPatient.subjectId || 'temp',
     // Drug information
@@ -1098,7 +1098,7 @@ function randomNormal() {
 function generateRandomPatient() {
   // Increment subject counter
   subjectCounter++;
-  
+
   // Generate random values
   const age = Math.floor(Math.random() * (90 - 18 + 1)) + 18;
   const sex = Math.random() < 0.5 ? "Male" : "Female";
@@ -1116,13 +1116,13 @@ function generateRandomPatient() {
   }
 
   // Update global patient data with subject ID
-  currentPatient = { 
+  currentPatient = {
     subjectId: subjectCounter,
-    age, 
-    sex, 
-    height, 
-    weight, 
-    creatinine: parseFloat(creatinine) 
+    age,
+    sex,
+    height,
+    weight,
+    creatinine: parseFloat(creatinine)
   };
 
   // Update the UI
@@ -1134,7 +1134,7 @@ function generateRandomPatient() {
 
   // Store in localStorage
   localStorage.setItem('currentPatient', JSON.stringify(currentPatient));
-  
+
   // Recalculate and update simulation with new patient-specific parameters
   runSimulation();
 }
@@ -1145,18 +1145,18 @@ function saveCurrentPatient() {
     alert('Please generate a patient first!');
     return;
   }
-  
+
   if (subjects.length === 0) {
     alert('Please run a simulation first!');
     return;
   }
-  
+
   // Get the current subject data
   const currentSubject = subjects[0];
-  
+
   // Check if this patient is already saved
   const existingPatientIndex = savedPatients.findIndex(p => p.id === currentPatient.subjectId);
-  
+
   if (existingPatientIndex !== -1) {
     // Update existing patient
     savedPatients[existingPatientIndex] = { ...currentSubject, id: currentPatient.subjectId };
@@ -1166,7 +1166,7 @@ function saveCurrentPatient() {
     savedPatients.push({ ...currentSubject, id: currentPatient.subjectId });
     alert(`Patient ${currentPatient.subjectId} saved successfully!`);
   }
-  
+
   // Update the data table to show all saved patients
   updateTable();
 }
@@ -1177,37 +1177,37 @@ function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, k
   // Absorption phase - always first-order
   const absorbedFraction = 1 - Math.exp(-ka * time);
   const amountAbsorbed = dose * bioavailability * absorbedFraction;
-  
+
   // Initial concentration after absorption (assuming instantaneous distribution)
   const C0 = (dose * bioavailability * ka) / vssUnbound;
-  
+
   // Calculate concentration based on elimination kinetics
   switch (kinetics) {
     case 'first-order':
       // Standard first-order: C = C0 * (exp(-ke*t) - exp(-ka*t)) / (ka - ke)
       return C0 * (Math.exp(-ke * time) - Math.exp(-ka * time)) / (ka - ke);
-      
+
     case 'zero-order':
       // Zero-order: constant elimination rate until drug is depleted
       // During absorption: amount increases, during elimination: linear decline
-      
+
       if (time === 0) return 0;
-      
+
       // Amount absorbed up to time t
       const amountAbsorbed_t = dose * bioavailability * (1 - Math.exp(-ka * time));
-      
+
       // Zero-order elimination rate (constant mg/h)
       const k0 = ke * vssUnbound; // mg/h
-      
+
       // Amount eliminated up to time t (integral of k0 from 0 to t)
       const amountEliminated = k0 * time;
-      
+
       // Net amount in body
       const amountInBody = Math.max(0, amountAbsorbed_t - amountEliminated);
-      
+
       // Concentration
       return amountInBody / vssUnbound;
-      
+
     case 'second-order':
       // Second-order: dC/dt = -k2 * C^2
       // This requires numerical integration due to simultaneous absorption and elimination
@@ -1215,7 +1215,7 @@ function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, k
       const dt_second = 0.1; // time step
       const steps_second = Math.floor(time / dt_second);
       const k2 = ke / 10; // Scaled second-order rate constant
-      
+
       for (let i = 0; i < steps_second; i++) {
         const t = i * dt_second;
         // Absorption rate at time t
@@ -1226,9 +1226,9 @@ function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, k
         C_second += (dCabs_dt - dCelim_dt) * dt_second;
         C_second = Math.max(0, C_second);
       }
-      
+
       return C_second;
-      
+
     case 'third-order':
       // Third-order: dC/dt = -k3 * C^3
       // Requires numerical integration
@@ -1236,7 +1236,7 @@ function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, k
       const dt_third = 0.1; // time step
       const steps_third = Math.floor(time / dt_third);
       const k3 = ke / 100; // Scaled third-order rate constant
-      
+
       for (let i = 0; i < steps_third; i++) {
         const t = i * dt_third;
         // Absorption rate at time t
@@ -1247,21 +1247,21 @@ function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, k
         C_third += (dCabs_dt - dCelim_dt) * dt_third;
         C_third = Math.max(0, C_third);
       }
-      
+
       return C_third;
-      
+
     case 'non-linear':
       // Michaelis-Menten kinetics: dC/dt = -Vmax*C / (Km + C)
       // Approximate using numerical integration (Euler method)
       // Vmax and Km are derived from ke and typical concentrations
       const Vmax = ke * vssUnbound * 10; // Maximum elimination rate (mg/h)
       const Km = 5; // Michaelis constant (mg/L) - can be adjusted
-      
+
       // Start with initial concentration after absorption
       let C = 0;
       const dt = 0.1; // time step for numerical integration
       const steps = Math.floor(time / dt);
-      
+
       for (let i = 0; i < steps; i++) {
         const t = i * dt;
         // Absorption rate
@@ -1272,9 +1272,9 @@ function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, k
         C += (dCabs_dt - dCelim_dt) * dt;
         C = Math.max(0, C); // Concentration cannot be negative
       }
-      
+
       return C;
-      
+
     default:
       // Default to first-order
       return C0 * (Math.exp(-ke * time) - Math.exp(-ka * time)) / (ka - ke);
@@ -1284,7 +1284,7 @@ function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, k
 // One-compartment PK model with first-order absorption and multiple dosing
 function calculateConcentration(subject, time) {
   const pkModel = document.getElementById('pk-model-select')?.value || 'one-compartment';
-  
+
   if (pkModel === 'two-compartment') {
     return calculateConcentrationTwoCompartment(subject, time);
   } else if (pkModel === 'nca') {
@@ -1298,14 +1298,14 @@ function calculateConcentration(subject, time) {
 function calculateConcentrationOneCompartment(subject, time) {
   const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose, kinetics } = subject;
   const ke = clearance / vssUnbound;  // elimination rate constant using unbound volume
-  
+
   // Get absorption rate based on selected formulation
   const formulation = document.getElementById('formulation-select')?.value || 'medium';
   const ka = getAbsorptionRate(formulation);
-  
+
   const tau = interval;
   const kineticsType = kinetics || 'first-order';
-  
+
   let concentration = 0;
 
   // Apply loading dose at time 0
@@ -1315,7 +1315,7 @@ function calculateConcentrationOneCompartment(subject, time) {
     );
     concentration += conc;
   }
-  
+
   // Apply maintenance doses from the second dose onward
   for (let n = 1; n < numDoses; n++) {
     const doseTime = n * tau;
@@ -1327,65 +1327,65 @@ function calculateConcentrationOneCompartment(subject, time) {
       concentration += conc;
     }
   }
-  
+
   return Math.max(0, concentration);
 }
 
 // Two-compartment model calculation
 function calculateConcentrationTwoCompartment(subject, time) {
   const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose, v2PerKg, q, weight, kinetics } = subject;
-  
+
   // Note: Two-compartment models with non-first-order kinetics are mathematically complex
   // For now, we only support first-order kinetics for two-compartment models
   const kineticsType = kinetics || 'first-order';
   if (kineticsType !== 'first-order') {
     console.warn('Two-compartment model currently only supports first-order kinetics. Using first-order.');
   }
-  
+
   // Get absorption rate based on selected formulation
   const formulation = document.getElementById('formulation-select')?.value || 'medium';
   const ka = getAbsorptionRate(formulation);
-  
+
   const v1 = vssUnbound; // Central compartment volume
   const v2 = v2PerKg * weight; // Peripheral compartment volume
-  
+
   // Micro-constants
   const k10 = clearance / v1;
   const k12 = q / v1;
   const k21 = q / v2;
-  
+
   // Macro-constants (hybrid rate constants)
   const alpha = 0.5 * (k12 + k21 + k10 + Math.sqrt(Math.pow(k12 + k21 + k10, 2) - 4 * k21 * k10));
   const beta = 0.5 * (k12 + k21 + k10 - Math.sqrt(Math.pow(k12 + k21 + k10, 2) - 4 * k21 * k10));
-  
+
   const tau = interval;
   let concentration = 0;
-  
+
   // Apply loading dose at time 0
   if (loadingDose > 0 && time >= 0) {
     const A = (loadingDose * bioavailability / v1) * (ka - alpha) / ((ka - alpha) * (beta - alpha));
     const B = (loadingDose * bioavailability / v1) * (ka - beta) / ((ka - beta) * (alpha - beta));
     const C = (loadingDose * bioavailability / v1) * ((alpha - ka) * (beta - ka)) / ((ka - alpha) * (ka - beta));
-    
+
     const conc = A * Math.exp(-alpha * time) + B * Math.exp(-beta * time) + C * Math.exp(-ka * time);
     concentration += conc;
   }
-  
+
   // Apply maintenance doses from the second dose onward
   for (let n = 1; n < numDoses; n++) {
     const doseTime = n * tau;
     if (time >= doseTime) {
       const timeSinceDose = time - doseTime;
-      
+
       const A = (dose * bioavailability / v1) * (ka - alpha) / ((ka - alpha) * (beta - alpha));
       const B = (dose * bioavailability / v1) * (ka - beta) / ((ka - beta) * (alpha - beta));
       const C = (dose * bioavailability / v1) * ((alpha - ka) * (beta - ka)) / ((ka - alpha) * (ka - beta));
-      
+
       const conc = A * Math.exp(-alpha * timeSinceDose) + B * Math.exp(-beta * timeSinceDose) + C * Math.exp(-ka * timeSinceDose);
       concentration += conc;
     }
   }
-  
+
   return Math.max(0, concentration);
 }
 
@@ -1397,31 +1397,31 @@ function calculateConcentrationNCA(subject, time) {
 // Run the simulation
 function runSimulation() {
   generateSubjects();
-  
+
   // Get efficacy threshold for calculations
   const efficacyThreshold = parseFloat(document.getElementById('efficacy-slider')?.value || 5);
-  
+
   // Calculate concentrations for each subject
   subjects.forEach(subject => {
     subject.concentrations = timePoints.map(time => calculateConcentration(subject, time));
-    
+
     // Calculate AUC for first 24 hours (steady-state)
     const startIdx = timePoints.findIndex(t => t >= 216); // Day 9 start
     const endIdx = timePoints.findIndex(t => t >= 240);   // Day 10 end
     if (startIdx !== -1 && endIdx !== -1) {
       subject.auc = trapezoidalRule(
-        timePoints.slice(startIdx, endIdx), 
+        timePoints.slice(startIdx, endIdx),
         subject.concentrations.slice(startIdx, endIdx)
       );
-      
+
       // Calculate Css,avg (average steady-state concentration)
       const steadyStateConcentrations = subject.concentrations.slice(startIdx, endIdx);
       subject.cssAvg = steadyStateConcentrations.reduce((sum, conc) => sum + conc, 0) / steadyStateConcentrations.length;
-      
+
       // Calculate time above efficacy as percentage
       const timePointsAboveEfficacy = steadyStateConcentrations.filter(conc => conc >= efficacyThreshold).length;
       subject.timeAboveEfficacy = (timePointsAboveEfficacy / steadyStateConcentrations.length) * 100;
-      
+
       // Find Cmax and Tmax in steady-state period
       let maxConc = 0;
       let maxTime = 0;
@@ -1434,7 +1434,7 @@ function runSimulation() {
       subject.cmax = maxConc;
       subject.tmax = maxTime - 216; // Relative to start of steady-state interval
     }
-    
+
     // Calculate efficacy ratios
     if (efficacyThreshold > 0) {
       subject.aucEfficacyRatio = subject.auc / efficacyThreshold;
@@ -1443,7 +1443,7 @@ function runSimulation() {
       subject.aucEfficacyRatio = 0;
       subject.cmaxEfficacyRatio = 0;
     }
-    
+
     // For NCA model, calculate additional NCA-specific parameters
     if (subject.pkModel === 'nca') {
       const ncaParams = calculateNCAParameters(subject.concentrations, timePoints, subject.interval);
@@ -1453,11 +1453,11 @@ function runSimulation() {
       subject.ncaAUC = ncaParams.auc;
     }
   });
-  
+
   // Update chart and table
   drawChart();
   updateTable();
-  
+
   // Capture initial state (only once, when initialSimulationData is null)
   if (initialSimulationData === null && subjects.length > 0) {
     initialSimulationData = {
@@ -1481,7 +1481,7 @@ function trapezoidalRule(timeArray, concArray) {
 // Simple canvas-based chart drawing
 function drawChart() {
   if (!ctx || !canvas) return;
-  
+
   // Hide the loading message and show the canvas
   const chartFallback = document.getElementById('chart-fallback');
   if (chartFallback) {
@@ -1491,36 +1491,36 @@ function drawChart() {
     }
     canvas.style.display = 'block';
   }
-  
+
   // Clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   // Chart dimensions
   const margin = { top: 40, right: 40, bottom: 60, left: 80 };
   const width = canvas.width - margin.left - margin.right;
   const height = canvas.height - margin.top - margin.bottom;
-  
+
   // Find scales
   const maxTime = Math.max(...timePoints);
   const rawMaxConc = Math.max(...subjects.flatMap(s => s.concentrations));
-  
+
   // Get reference line values for dynamic scaling
   const toxicityThreshold = parseFloat(document.getElementById('toxicity-slider')?.value || 20);
   const efficacyThreshold = parseFloat(document.getElementById('efficacy-slider')?.value || 5);
   const maxReferenceValue = Math.max(toxicityThreshold, efficacyThreshold);
-  
+
   let minConc, maxConc, valueToY, gridValues, axisLabel;
-  
+
   if (isLogScale) {
     // Log scale y-axis range: dynamically scaled to 20% above the greater reference line
     minConc = 0.1;
     maxConc = Math.max(maxReferenceValue * 1.2, 10); // Minimum of 10 mg/L for reasonable scale
     axisLabel = 'Concentration (mg/L, log scale)';
-    
+
     // Helper functions for log scale
     const logScale = (value) => Math.log10(Math.max(value, minConc));
     valueToY = (value) => margin.top + height - ((logScale(value) - logScale(minConc)) / (logScale(maxConc) - logScale(minConc))) * height;
-    
+
     // Generate logarithmic grid values based on the scale
     gridValues = [];
     let currentValue = 0.1;
@@ -1541,10 +1541,10 @@ function drawChart() {
     minConc = 0;
     maxConc = Math.max(maxReferenceValue * 1.2, 10); // Minimum of 10 mg/L for reasonable scale
     axisLabel = 'Concentration (mg/L)';
-    
+
     // Helper function for linear scale
     valueToY = (value) => margin.top + height - (value / maxConc) * height;
-    
+
     // Generate linear grid values based on the scale
     const interval = Math.ceil(maxConc / 10);
     gridValues = [];
@@ -1552,15 +1552,15 @@ function drawChart() {
       gridValues.push(i * interval);
     }
   }
-  
+
   // Draw background
   ctx.fillStyle = '#f8f9fa';
   ctx.fillRect(margin.left, margin.top, width, height);
-  
+
   // Draw grid lines
   ctx.strokeStyle = '#e9ecef';
   ctx.lineWidth = 1;
-  
+
   // Vertical grid lines (time)
   for (let i = 0; i <= 10; i++) {
     const x = margin.left + (i / 10) * width;
@@ -1569,7 +1569,7 @@ function drawChart() {
     ctx.lineTo(x, margin.top + height);
     ctx.stroke();
   }
-  
+
   // Horizontal grid lines
   gridValues.forEach(tick => {
     if (tick >= minConc && tick <= maxConc) {
@@ -1580,7 +1580,7 @@ function drawChart() {
       ctx.stroke();
     }
   });
-  
+
   // Draw axes
   ctx.strokeStyle = '#000';
   ctx.lineWidth = 2;
@@ -1589,7 +1589,7 @@ function drawChart() {
   ctx.lineTo(margin.left, margin.top + height);
   ctx.lineTo(margin.left + width, margin.top + height);
   ctx.stroke();
-  
+
   // Draw reference lines (toxicity and efficacy thresholds)
   if (toxicityThreshold > 0 && toxicityThreshold >= minConc && toxicityThreshold <= maxConc) {
     const toxicityY = valueToY(toxicityThreshold);
@@ -1600,14 +1600,14 @@ function drawChart() {
     ctx.moveTo(margin.left, toxicityY);
     ctx.lineTo(margin.left + width, toxicityY);
     ctx.stroke();
-    
+
     // Label for toxicity line
     ctx.fillStyle = '#dc3545';
     ctx.font = '12px Arial';
     ctx.textAlign = 'left';
     ctx.fillText(`Toxicity (${toxicityThreshold} mg/L)`, margin.left + 10, toxicityY - 5);
   }
-  
+
   if (efficacyThreshold > 0 && efficacyThreshold >= minConc && efficacyThreshold <= maxConc) {
     const efficacyY = valueToY(efficacyThreshold);
     ctx.strokeStyle = '#28a745'; // Green for efficacy
@@ -1617,32 +1617,32 @@ function drawChart() {
     ctx.moveTo(margin.left, efficacyY);
     ctx.lineTo(margin.left + width, efficacyY);
     ctx.stroke();
-    
+
     // Label for efficacy line
     ctx.fillStyle = '#28a745';
     ctx.font = '12px Arial';
     ctx.textAlign = 'left';
     ctx.fillText(`Efficacy (${efficacyThreshold} mg/L)`, margin.left + 10, efficacyY - 5);
   }
-  
+
   // Reset line dash for other drawings
   ctx.setLineDash([]);
-  
 
-  
+
+
   // Draw concentration profile for single subject
   const singleSubjectColor = '#007bff'; // Blue color for single subject
-  
+
   subjects.forEach((subject, subjectIndex) => {
     ctx.strokeStyle = singleSubjectColor;
     ctx.lineWidth = 3; // Thicker line for better visibility
     ctx.beginPath();
-    
+
     let firstPoint = true;
     for (let i = 0; i < timePoints.length; i++) {
       const x = margin.left + (timePoints[i] / maxTime) * width;
       const y = valueToY(subject.concentrations[i]);
-      
+
       if (firstPoint) {
         ctx.moveTo(x, y);
         firstPoint = false;
@@ -1651,27 +1651,27 @@ function drawChart() {
       }
     }
     ctx.stroke();
-    
+
     // Draw data points to show 1-hour sampling
     ctx.fillStyle = singleSubjectColor;
     for (let i = 0; i < timePoints.length; i++) {
       const x = margin.left + (timePoints[i] / maxTime) * width;
       const y = valueToY(subject.concentrations[i]);
-      
+
       ctx.beginPath();
       ctx.arc(x, y, 4, 0, 2 * Math.PI);
       ctx.fill();
     }
   });
-  
+
   // Add labels
   ctx.fillStyle = '#000';
   ctx.font = '14px Arial';
-  
+
   // X-axis label
   ctx.textAlign = 'center';
   ctx.fillText('Time (hours)', margin.left + width/2, canvas.height - 10);
-  
+
   // Y-axis label
   ctx.save();
   ctx.translate(20, margin.top + height/2);
@@ -1679,12 +1679,12 @@ function drawChart() {
   ctx.textAlign = 'center';
   ctx.fillText(axisLabel, 0, 0);
   ctx.restore();
-  
+
   // Title
   ctx.textAlign = 'center';
   ctx.font = 'bold 16px Arial';
   const scaleType = isLogScale ? 'Log Scale' : 'Linear Scale';
-  
+
   // Get current kinetics model
   const kinetics = document.getElementById('kinetics-select')?.value || 'first-order';
   const kineticsNames = {
@@ -1695,20 +1695,20 @@ function drawChart() {
     'non-linear': 'Non-Linear (Michaelis-Menten)'
   };
   const kineticsLabel = kineticsNames[kinetics] || 'First-Order';
-  
+
   ctx.fillText(`Plasma Concentration-Time Profile (${scaleType}, ${kineticsLabel} Kinetics)`, canvas.width/2, 25);
-  
+
   // Add axis ticks and values
   ctx.font = '12px Arial';
   ctx.textAlign = 'center';
-  
+
   // X-axis ticks
   for (let i = 0; i <= 10; i++) {
     const x = margin.left + (i / 10) * width;
     const timeValue = (i / 10) * maxTime;
     ctx.fillText(Math.round(timeValue), x, margin.top + height + 20);
   }
-  
+
   // Y-axis ticks
   ctx.textAlign = 'right';
   gridValues.forEach(tick => {
@@ -1733,9 +1733,9 @@ function toggleScale() {
 function updateTable() {
   const tbody = document.getElementById('pk-table-body');
   if (!tbody) return;
-  
+
   tbody.innerHTML = '';
-  
+
   // Show all saved patients first
   savedPatients.forEach(subject => {
     const row = tbody.insertRow();
@@ -1772,7 +1772,7 @@ function updateTable() {
       <td>${subject.timeAboveEfficacy.toFixed(1)}</td>
     `;
   });
-  
+
   // Then show current simulation if exists (highlighted in blue)
   subjects.forEach(subject => {
     const row = tbody.insertRow();
@@ -1836,21 +1836,21 @@ function downloadData() {
       cmax: subject.cmax
     }))
   };
-  
+
   // Create downloadable file
   const dataStr = JSON.stringify(data, null, 2);
   const dataBlob = new Blob([dataStr], { type: 'application/json' });
-  
+
   // Create download link
   const link = document.createElement('a');
   link.href = URL.createObjectURL(dataBlob);
   link.download = `pk_simulation_data_${new Date().toISOString().split('T')[0]}.json`;
-  
+
   // Trigger download
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  
+
   // Also download plot as image
   downloadPlotImage();
 }
@@ -1858,14 +1858,14 @@ function downloadData() {
 // Download plot as SVG
 function downloadPlotImage() {
   if (!canvas) return;
-  
+
   // Create SVG element
   const svgNS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgNS, "svg");
   svg.setAttribute("width", canvas.width);
   svg.setAttribute("height", canvas.height);
   svg.setAttribute("viewBox", `0 0 ${canvas.width} ${canvas.height}`);
-  
+
   // Convert canvas to data URL and embed in SVG
   const dataURL = canvas.toDataURL("image/png");
   const image = document.createElementNS(svgNS, "image");
@@ -1873,14 +1873,14 @@ function downloadPlotImage() {
   image.setAttribute("width", canvas.width);
   image.setAttribute("height", canvas.height);
   svg.appendChild(image);
-  
+
   // Create download link
   const svgData = new XMLSerializer().serializeToString(svg);
   const svgBlob = new Blob([svgData], { type: 'image/svg+xml' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(svgBlob);
   link.download = `pk_simulation_plot_${new Date().toISOString().split('T')[0]}.svg`;
-  
+
   // Trigger download
   document.body.appendChild(link);
   link.click();
@@ -1907,26 +1907,26 @@ function resetSimulation() {
     'toxicity-slider': 20,
     'efficacy-slider': 5
   };
-  
+
   Object.entries(sliderDefaults).forEach(([id, value]) => {
     const element = document.getElementById(id);
     if (element) {
       element.value = value;
     }
   });
-  
+
   // Reset PK Model and Elimination Kinetics to defaults
   const pkModelSelect = document.getElementById('pk-model-select');
   if (pkModelSelect) {
     pkModelSelect.value = 'one-compartment';
     handleModelChange();
   }
-  
+
   const kineticsSelect = document.getElementById('kinetics-select');
   if (kineticsSelect) {
     kineticsSelect.value = 'first-order';
   }
-  
+
   updateSliderValues();
   runSimulation();
 }
@@ -1946,7 +1946,7 @@ function randomizeParameters() {
     // Duration parameter
     'duration-slider': { min: 3, max: 14 }
   };
-  
+
   // Randomize parameters
   Object.entries(randomParams).forEach(([id, range]) => {
     const element = document.getElementById(id);
@@ -1964,14 +1964,14 @@ function randomizeParameters() {
       element.value = finalValue;
     }
   });
-  
+
   // Set Loading Dose equal to Dose after randomization
   const doseElement = document.getElementById('dose-slider');
   const loadingDoseElement = document.getElementById('loading-dose-slider');
   if (doseElement && loadingDoseElement) {
     loadingDoseElement.value = doseElement.value;
   }
-  
+
   // Randomize PK Model
   const pkModelSelect = document.getElementById('pk-model-select');
   if (pkModelSelect) {
@@ -1980,7 +1980,7 @@ function randomizeParameters() {
     pkModelSelect.value = randomModel;
     handleModelChange();
   }
-  
+
   // Randomize Elimination Kinetics
   const kineticsSelect = document.getElementById('kinetics-select');
   if (kineticsSelect) {
@@ -1988,23 +1988,23 @@ function randomizeParameters() {
     const randomKinetics = kineticsOptions[Math.floor(Math.random() * kineticsOptions.length)];
     kineticsSelect.value = randomKinetics;
   }
-  
+
   // Generate reference lines ensuring toxicity > efficacy
   const efficacyMin = 2;
   const efficacyMax = 50;  // Increased to allow higher efficacy thresholds
   const efficacyThreshold = Math.round((Math.random() * (efficacyMax - efficacyMin) + efficacyMin) * 2) / 2; // Round to 0.5
-  
+
   // Toxicity should be at least 5 mg/L higher than efficacy, up to 100 mg/L
   const toxicityMin = efficacyThreshold + 5;
   const toxicityMax = 100;  // Increased to match new maximum
   const toxicityThreshold = Math.round(Math.random() * (toxicityMax - toxicityMin) + toxicityMin);
-  
+
   const efficacyElement = document.getElementById('efficacy-slider');
   const toxicityElement = document.getElementById('toxicity-slider');
-  
+
   if (efficacyElement) efficacyElement.value = efficacyThreshold;
   if (toxicityElement) toxicityElement.value = toxicityThreshold;
-  
+
   updateSliderValues();
   runSimulation();
 }
@@ -2015,10 +2015,10 @@ function checkQuizAnswers() {
     alert('Please generate a patient first!');
     return;
   }
-  
+
   const subject = subjects[0];
   const tolerance = 0.1; // 10% tolerance for answers
-  
+
   // 1. Creatinine Clearance (mL/min)
   const userCrCl = parseFloat(document.getElementById('quiz-crcl').value);
   const correctCrCl = subject.creatinineClearanceMlMin;
@@ -2030,7 +2030,7 @@ function checkQuizAnswers() {
     crClFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCrCl.toFixed(1)} mL/min`;
     crClFeedback.className = 'quiz-feedback incorrect';
   }
-  
+
   // 2. Adjusted Body Weight (kg)
   const userAdjBW = parseFloat(document.getElementById('quiz-adjbw').value);
   const correctAdjBW = subject.adjustedIbw;
@@ -2042,7 +2042,7 @@ function checkQuizAnswers() {
     adjBWFeedback.textContent = `✗ Incorrect. Correct answer: ${correctAdjBW.toFixed(1)} kg`;
     adjBWFeedback.className = 'quiz-feedback incorrect';
   }
-  
+
   // 3. Volume of Distribution of Unbound Drug (L)
   const userVss = parseFloat(document.getElementById('quiz-vss').value);
   const correctVss = subject.vssUnbound;
@@ -2054,7 +2054,7 @@ function checkQuizAnswers() {
     vssFeedback.textContent = `✗ Incorrect. Correct answer: ${correctVss.toFixed(1)} L`;
     vssFeedback.className = 'quiz-feedback incorrect';
   }
-  
+
   // 4. Time to Steady State (hours) - approximately 5 half-lives
   const userTss = parseFloat(document.getElementById('quiz-tss').value);
   const correctTss = subject.halfLife * 5;
@@ -2066,7 +2066,7 @@ function checkQuizAnswers() {
     tssFeedback.textContent = `✗ Incorrect. Correct answer: ${correctTss.toFixed(1)} hours`;
     tssFeedback.className = 'quiz-feedback incorrect';
   }
-  
+
   // 5. Css,avg (mg/L)
   const userCssAvg = parseFloat(document.getElementById('quiz-cssavg').value);
   const correctCssAvg = subject.cssAvg;
@@ -2087,7 +2087,7 @@ function resetQuiz() {
   document.getElementById('quiz-vss').value = '';
   document.getElementById('quiz-tss').value = '';
   document.getElementById('quiz-cssavg').value = '';
-  
+
   // Clear all feedback
   const feedbacks = document.querySelectorAll('.quiz-feedback');
   feedbacks.forEach(feedback => {
@@ -2116,7 +2116,7 @@ function updateSliderValues() {
     { slider: 'toxicity-slider', display: 'toxicity-value' },
     { slider: 'efficacy-slider', display: 'efficacy-value' }
   ];
-  
+
   updates.forEach(update => {
     const slider = document.getElementById(update.slider);
     const display = document.getElementById(update.display);
@@ -2124,7 +2124,7 @@ function updateSliderValues() {
       display.textContent = slider.value;
     }
   });
-  
+
   // Special handling for formulation select
   const formulationSelect = document.getElementById('formulation-select');
   const formulationDisplay = document.getElementById('formulation-value');
@@ -2132,7 +2132,7 @@ function updateSliderValues() {
     const selectedOption = formulationSelect.options[formulationSelect.selectedIndex];
     formulationDisplay.textContent = selectedOption.text;
   }
-  
+
   // Special handling for kinetics select
   const kineticsSelect = document.getElementById('kinetics-select');
   const kineticsDisplay = document.getElementById('kinetics-value');
@@ -2161,14 +2161,14 @@ document.addEventListener('DOMContentLoaded', function() {
     generateRandomPatient();
     return; // generateRandomPatient will handle the rest of initialization
   }
-  
+
   // Update patient display
   document.getElementById('patient-age').innerText = currentPatient.age;
   document.getElementById('patient-sex').innerText = currentPatient.sex;
   document.getElementById('patient-height').innerText = currentPatient.height;
   document.getElementById('patient-weight').innerText = currentPatient.weight;
   document.getElementById('patient-creatinine').innerText = currentPatient.creatinine;
-  
+
   // Add event listeners to sliders
   const sliderIds = [
     // Core PK parameters
@@ -2182,7 +2182,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Reference lines
     'toxicity-slider', 'efficacy-slider'
   ];
-  
+
   sliderIds.forEach(id => {
     const element = document.getElementById(id);
     if (element) {
@@ -2200,7 +2200,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (efficacyThreshold > 0) {
               subject.aucEfficacyRatio = subject.auc / efficacyThreshold;
               subject.cmaxEfficacyRatio = subject.cmax / efficacyThreshold;
-              
+
               // Recalculate time above efficacy
               const startIdx = timePoints.findIndex(t => t >= 216); // Day 9 start
               const endIdx = timePoints.findIndex(t => t >= 240);   // Day 10 end
@@ -2224,7 +2224,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
-  
+
   // Add event listener for drug name input
   const drugNameInput = document.getElementById('drug-name-input');
   if (drugNameInput) {
@@ -2233,7 +2233,7 @@ document.addEventListener('DOMContentLoaded', function() {
       runSimulation();
     });
   }
-  
+
   // Initialize the simulation
   updateSliderValues();
   setTimeout(initializeSimulation, 100);  // Small delay to ensure DOM is ready
