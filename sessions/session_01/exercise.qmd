@@ -14,7 +14,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.main-layout}
 
 ::: {.controls-column-1}
-### Patient Generator
+### Patient Information
 ::: {.patient-generator}
 <div style="margin-bottom: 8px;">
 <button id="generate-patient-btn" onclick="generateRandomPatient()">New Patient</button>
@@ -50,6 +50,16 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <option value="fast">Fast (IV Bolus)</option>
 </select>
 <span id="formulation-value">Medium (Standard Oral)</span>
+
+<label for="kinetics-select" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px; margin-top: 10px;">Elimination Kinetics:</label>
+<select id="kinetics-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;" onchange="runSimulation()">
+<option value="zero-order" selected>Zero-Order</option>
+<option value="first-order">First-Order</option>
+<option value="second-order">Second-Order</option>
+<option value="third-order">Third-Order</option>
+<option value="non-linear">Non-Linear (Michaelis-Menten)</option>
+</select>
+<span id="kinetics-value">Zero-Order</span>
 :::
 
 :::
@@ -64,32 +74,33 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="bioavailability-slider">Bioavailability (F):</label>
-<input type="range" id="bioavailability-slider" min="0.1" max="1.0" value="0.8" step="0.05">
-<span id="bioavailability-value">0.8</span>
+<input type="range" id="bioavailability-slider" min="0" max="1.0" value="1.0" step="0.05">
+<span id="bioavailability-value">1.0</span>
 :::
 
 ::: {.control-group-compact}
 <label for="fraction-unbound-slider">Fraction Unbound:</label>
-<input type="range" id="fraction-unbound-slider" min="0.01" max="10.0" value="0.1" step="0.01">
-<span id="fraction-unbound-value">0.1</span>
+<input type="range" id="fraction-unbound-slider" min="0" max="1.0" value="1.0" step="0.05">
+<span id="fraction-unbound-value">1.0</span>
 :::
 
 ::: {.control-group-compact}
 <label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.00" max="10.00" value="0.70" step="0.05">
+<input type="range" id="volume-slider" min="0.1" max="10.00" value="0.70" step="0.1">
 <span id="volume-value">0.7</span> L/kg
 :::
 
 ::: {.control-group-compact}
 <label for="f-renal-slider">Fraction Renally Cleared:</label>
-<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
-<span id="f-renal-value">0.8</span>
+<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="1.0" step="0.05">
+<span id="f-renal-value">1.0</span>
 :::
 
 <div id="two-compartment-params" style="display: none;">
+
 ::: {.control-group-compact}
 <label for="v2-slider">Peripheral Volume V2 (L/kg):</label>
-<input type="range" id="v2-slider" min="0.2" max="1.5" value="0.5" step="0.1">
+<input type="range" id="v2-slider" min="0.1" max="10" value="0.5" step="0.1">
 <span id="v2-value">0.5</span> L/kg
 :::
 
@@ -98,13 +109,14 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <input type="range" id="q-slider" min="0.5" max="10.0" value="2.0" step="0.5">
 <span id="q-value">2.0</span> L/h
 :::
+
 </div>
 
 :::
 :::
 
 ::: {.controls-column-3}
-### Dosing
+### Dosing Parameters
 ::: {.pk-properties-compact}
 <button id="download-btn" onclick="downloadData()">Download Data</button>
 ::: {.control-group-compact}
@@ -137,8 +149,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 :::
 
-::: {.panel-tabset}
-
+::: {.plot-section}
 ### Plot
 
 ::: {#concentration-plot}
@@ -151,6 +162,12 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button>
 
 :::
+
+:::
+
+:::
+
+::: {.panel-tabset}
 
 ### Reference Lines
 ::: {.reference-properties}
@@ -175,6 +192,8 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <tr>
 <th>Subject</th>
 <th>Drug Name</th>
+<th>PK Model</th>
+<th>Kinetics</th>
 <th>Age</th>
 <th>Sex</th>
 <th>Ht (cm)</th>
@@ -197,6 +216,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <th>C<sub>ss,avg</sub></th>
 <th>AUC<sub>0-24h</sub></th>
 <th>C<sub>max</sub></th>
+<th>T<sub>max</sub> (h)</th>
 <th>AUC/Efficacy</th>
 <th>C<sub>max</sub>/Efficacy</th>
 <th>Time>Efficacy (%)</th>
@@ -208,20 +228,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 
 ### Education
-
-#### Bacteremia-Specific Pharmacokinetic Concepts
-
-**Systemic Circulation Target**: For bacteremia caused by MRSA, the primary site of infection is the bloodstream itself. This makes vancomycin an ideal choice as it achieves excellent systemic exposure with minimal tissue penetration requirements.
-
-**Volume of Distribution for Bacteremia**: Vancomycin has a relatively small Vd (0.4-0.9 L/kg) which means it stays primarily in the vascular space and extracellular fluid - exactly where it's needed for bloodstream infections.
-
-**AUC/MIC Target for MRSA Bacteremia**: The target AUC₀₋₂₄/MIC ≥ 400-600 ensures adequate exposure throughout the dosing interval. Higher targets (≥600) may be needed for more resistant organisms or severe infections.
-
-**Protein Binding Considerations**: Vancomycin is ~90% protein bound, meaning only 10% is pharmacologically active. However, for bacteremia, the high protein binding actually helps maintain therapeutic concentrations in plasma.
-
-**Renal Clearance Monitoring**: With 80% renal elimination, creatinine clearance directly impacts vancomycin dosing. Dose adjustments are critical in renal impairment to prevent accumulation and nephrotoxicity.
-
-**Trough vs. AUC Monitoring**: While trough levels (15-20 mg/L) were historically used, AUC-guided dosing is now preferred for optimizing efficacy while minimizing nephrotoxicity risk.
 
 #### Blood Sampling Strategy
 
@@ -288,6 +294,38 @@ NCA calculates pharmacokinetic parameters directly from observed concentration-t
 - Robust to sparse sampling
 - Regulatory gold standard for bioequivalence studies
 - Less prone to bias than compartmental methods
+
+##### Elimination Kinetics
+
+This simulation supports multiple elimination kinetic models:
+
+**First-Order Kinetics (Default):**
+- Elimination rate proportional to drug concentration: dC/dt = -ke × C
+- Constant half-life independent of dose
+- Most common for therapeutic drugs
+- Linear pharmacokinetics (dose proportional)
+
+**Zero-Order Kinetics:**
+- Constant elimination rate regardless of concentration: dC/dt = -k0
+- Seen when elimination pathways are saturated
+- Examples: Alcohol, phenytoin at high doses
+- Non-linear pharmacokinetics
+
+**Second-Order Kinetics:**
+- Elimination rate proportional to concentration squared: dC/dt = -k2 × C²
+- Faster elimination at higher concentrations
+- Rare in clinical practice
+
+**Third-Order Kinetics:**
+- Elimination rate proportional to concentration cubed: dC/dt = -k3 × C³
+- Even faster elimination at higher concentrations
+- Theoretical interest, rarely observed clinically
+
+**Non-Linear (Michaelis-Menten) Kinetics:**
+- Saturable elimination: dC/dt = -Vmax × C / (Km + C)
+- Combination of first-order (low C) and zero-order (high C)
+- Examples: Phenytoin, salicylates, theophylline at high doses
+- Dose-dependent half-life
 
 This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
 
@@ -452,13 +490,32 @@ main.content {
 /* Main layout for Controls, Content, and Plot Sidebar */
 .main-layout {
   display: grid;
-  grid-template-columns: 2fr 2fr 1.5fr;
+  grid-template-columns: 1fr 1fr 1fr 1.5fr;
   gap: 20px;
   align-items: start;
 }
 
 .controls-section {
   min-width: 0; /* Prevent grid overflow */
+}
+
+.controls-column-1,
+.controls-column-2,
+.controls-column-3 {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.controls-column-1 h3,
+.controls-column-2 h3,
+.controls-column-3 h3 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 1.1em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
 }
 
 .plot-section {
@@ -488,25 +545,6 @@ main.content {
 #pk-chart {
   max-width: 100%;
   height: auto;
-}
-
-.controls-column-1,
-.controls-column-2,
-.controls-column-3 {
-  background-color: #ffffff;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #dee2e6;
-}
-
-.controls-column-1 h3,
-.controls-column-2 h3,
-.controls-column-3 h3 {
-  margin: 0 0 15px 0;
-  color: #495057;
-  font-size: 1.1em;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 5px;
 }
 
 .controls-middle h3 {
@@ -614,9 +652,9 @@ main.content {
 }
 
 .pk-properties-compact {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
 }
 
 .control-group-compact {
@@ -830,7 +868,7 @@ function handleModelChange() {
   runSimulation();
 }
 
-// NCA calculations for a concentration-time profile
+// NCA real-time Plot and Data for a concentration-time profile
 function calculateNCAParameters(concentrations, timePoints, interval) {
   // Find Cmax and Tmax
   let cmax = 0;
@@ -957,10 +995,10 @@ loadingDoseSlider.addEventListener('input', function () {
 function generateSubjects() {
   // Base PK parameters from sliders
   const baseClearance = 5.0; // Fixed base clearance (L/h)
-  const fRenal = parseFloat(document.getElementById('f-renal-slider')?.value || 0.8);
+  const fRenal = parseFloat(document.getElementById('f-renal-slider')?.value || 1.0);
   const baseVolumePerKg = parseFloat(document.getElementById('volume-slider')?.value || 0.7);
-  const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8);
-  const fractionUnbound = parseFloat(document.getElementById('fraction-unbound-slider')?.value || 0.1);
+  const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 1.0);
+  const fractionUnbound = parseFloat(document.getElementById('fraction-unbound-slider')?.value || 1.0);
   
   // Calculate patient-specific clearance using new formula
   const { age, sex, height, weight, creatinine } = currentPatient;
@@ -1023,6 +1061,10 @@ function generateSubjects() {
   const v2PerKg = parseFloat(document.getElementById('v2-slider')?.value || 0.5);
   const q = parseFloat(document.getElementById('q-slider')?.value || 2.0);
   
+  // PK model and kinetics selection
+  const pkModel = document.getElementById('pk-model-select')?.value || 'one-compartment';
+  const kinetics = document.getElementById('kinetics-select')?.value || 'first-order';
+  
   subjects = [];
   
   // Calculate number of doses based on duration
@@ -1035,6 +1077,9 @@ function generateSubjects() {
     id: currentPatient.subjectId || 'temp',
     // Drug information
     drugName: drugName,
+    // PK model and kinetics
+    pkModel: pkModel,
+    kinetics: kinetics,
     // Patient demographics
     age: age,
     sex: sex,
@@ -1066,6 +1111,7 @@ function generateSubjects() {
     concentrations: [],
     auc: 0,
     cmax: 0,
+    tmax: 0,
     cssAvg: 0,
     aucEfficacyRatio: 0,
     cmaxEfficacyRatio: 0,
@@ -1158,6 +1204,116 @@ function saveCurrentPatient() {
   updateTable();
 }
 
+// Helper function to calculate concentration based on real-time Plot and Data
+// For one-compartment model with first-order absorption
+function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, ka, ke, time, kinetics) {
+  // Absorption phase - always first-order
+  const absorbedFraction = 1 - Math.exp(-ka * time);
+  const amountAbsorbed = dose * bioavailability * absorbedFraction;
+  
+  // Initial concentration after absorption (assuming instantaneous distribution)
+  const C0 = (dose * bioavailability * ka) / vssUnbound;
+  
+  // Calculate concentration based on elimination kinetics
+  switch (kinetics) {
+    case 'first-order':
+      // Standard first-order: C = C0 * (exp(-ke*t) - exp(-ka*t)) / (ka - ke)
+      return C0 * (Math.exp(-ke * time) - Math.exp(-ka * time)) / (ka - ke);
+      
+    case 'zero-order':
+      // Zero-order: constant elimination rate until drug is depleted
+      // During absorption: amount increases, during elimination: linear decline
+      
+      if (time === 0) return 0;
+      
+      // Amount absorbed up to time t
+      const amountAbsorbed_t = dose * bioavailability * (1 - Math.exp(-ka * time));
+      
+      // Zero-order elimination rate (constant mg/h)
+      const k0 = ke * vssUnbound; // mg/h
+      
+      // Amount eliminated up to time t (integral of k0 from 0 to t)
+      const amountEliminated = k0 * time;
+      
+      // Net amount in body
+      const amountInBody = Math.max(0, amountAbsorbed_t - amountEliminated);
+      
+      // Concentration
+      return amountInBody / vssUnbound;
+      
+    case 'second-order':
+      // Second-order: dC/dt = -k2 * C^2
+      // This requires numerical integration due to simultaneous absorption and elimination
+      let C_second = 0;
+      const dt_second = 0.1; // time step
+      const steps_second = Math.floor(time / dt_second);
+      const k2 = ke / 10; // Scaled second-order rate constant
+      
+      for (let i = 0; i < steps_second; i++) {
+        const t = i * dt_second;
+        // Absorption rate at time t
+        const dCabs_dt = (dose * bioavailability * ka / vssUnbound) * Math.exp(-ka * t);
+        // Second-order elimination rate
+        const dCelim_dt = k2 * C_second * C_second;
+        // Net change
+        C_second += (dCabs_dt - dCelim_dt) * dt_second;
+        C_second = Math.max(0, C_second);
+      }
+      
+      return C_second;
+      
+    case 'third-order':
+      // Third-order: dC/dt = -k3 * C^3
+      // Requires numerical integration
+      let C_third = 0;
+      const dt_third = 0.1; // time step
+      const steps_third = Math.floor(time / dt_third);
+      const k3 = ke / 100; // Scaled third-order rate constant
+      
+      for (let i = 0; i < steps_third; i++) {
+        const t = i * dt_third;
+        // Absorption rate at time t
+        const dCabs_dt = (dose * bioavailability * ka / vssUnbound) * Math.exp(-ka * t);
+        // Third-order elimination rate
+        const dCelim_dt = k3 * C_third * C_third * C_third;
+        // Net change
+        C_third += (dCabs_dt - dCelim_dt) * dt_third;
+        C_third = Math.max(0, C_third);
+      }
+      
+      return C_third;
+      
+    case 'non-linear':
+      // Michaelis-Menten kinetics: dC/dt = -Vmax*C / (Km + C)
+      // Approximate using numerical integration (Euler method)
+      // Vmax and Km are derived from ke and typical concentrations
+      const Vmax = ke * vssUnbound * 10; // Maximum elimination rate (mg/h)
+      const Km = 5; // Michaelis constant (mg/L) - can be adjusted
+      
+      // Start with initial concentration after absorption
+      let C = 0;
+      const dt = 0.1; // time step for numerical integration
+      const steps = Math.floor(time / dt);
+      
+      for (let i = 0; i < steps; i++) {
+        const t = i * dt;
+        // Absorption rate
+        const dCabs_dt = (dose * bioavailability * ka / vssUnbound) * Math.exp(-ka * t);
+        // Elimination rate (Michaelis-Menten)
+        const dCelim_dt = (Vmax * C) / (Km + C) / vssUnbound;
+        // Net change
+        C += (dCabs_dt - dCelim_dt) * dt;
+        C = Math.max(0, C); // Concentration cannot be negative
+      }
+      
+      return C;
+      
+    default:
+      // Default to first-order
+      return C0 * (Math.exp(-ke * time) - Math.exp(-ka * time)) / (ka - ke);
+  }
+}
+
 // One-compartment PK model with first-order absorption and multiple dosing
 function calculateConcentration(subject, time) {
   const pkModel = document.getElementById('pk-model-select')?.value || 'one-compartment';
@@ -1173,7 +1329,7 @@ function calculateConcentration(subject, time) {
 
 // One-compartment model calculation
 function calculateConcentrationOneCompartment(subject, time) {
-  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose } = subject;
+  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose, kinetics } = subject;
   const ke = clearance / vssUnbound;  // elimination rate constant using unbound volume
   
   // Get absorption rate based on selected formulation
@@ -1181,25 +1337,26 @@ function calculateConcentrationOneCompartment(subject, time) {
   const ka = getAbsorptionRate(formulation);
   
   const tau = interval;
+  const kineticsType = kinetics || 'first-order';
   
   let concentration = 0;
 
   // Apply loading dose at time 0
   if (loadingDose > 0 && time >= 0) {
-    const conc = (loadingDose * bioavailability * ka / vssUnbound) *
-                 (Math.exp(-ke * time) - Math.exp(-ka * time)) /
-                 (ka - ke);
+    const conc = calculateConcentrationWithKinetics(
+      loadingDose, bioavailability, vssUnbound, ka, ke, time, kineticsType
+    );
     concentration += conc;
   }
   
   // Apply maintenance doses from the second dose onward
-  for (let n = 1; n < numDoses; n++) {  // <-- n = 1 starts at second dose
+  for (let n = 1; n < numDoses; n++) {
     const doseTime = n * tau;
     if (time >= doseTime) {
       const timeSinceDose = time - doseTime;
-      const conc = (dose * bioavailability * ka / vssUnbound) *
-                   (Math.exp(-ke * timeSinceDose) - Math.exp(-ka * timeSinceDose)) /
-                   (ka - ke);
+      const conc = calculateConcentrationWithKinetics(
+        dose, bioavailability, vssUnbound, ka, ke, timeSinceDose, kineticsType
+      );
       concentration += conc;
     }
   }
@@ -1209,7 +1366,14 @@ function calculateConcentrationOneCompartment(subject, time) {
 
 // Two-compartment model calculation
 function calculateConcentrationTwoCompartment(subject, time) {
-  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose, v2PerKg, q, weight } = subject;
+  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose, v2PerKg, q, weight, kinetics } = subject;
+  
+  // Note: Two-compartment models with non-first-order kinetics are mathematically complex
+  // For now, we only support first-order kinetics for two-compartment models
+  const kineticsType = kinetics || 'first-order';
+  if (kineticsType !== 'first-order') {
+    console.warn('Two-compartment model currently only supports first-order kinetics. Using first-order.');
+  }
   
   // Get absorption rate based on selected formulation
   const formulation = document.getElementById('formulation-select')?.value || 'medium';
@@ -1258,7 +1422,7 @@ function calculateConcentrationTwoCompartment(subject, time) {
   return Math.max(0, concentration);
 }
 
-// NCA-based concentration calculation (uses one-compartment as basis, then applies NCA calculations)
+// NCA-based concentration calculation (uses one-compartment as basis, then applies real-time Plot and Data)
 function calculateConcentrationNCA(subject, time) {
   return calculateConcentrationOneCompartment(subject, time);
 }
@@ -1290,11 +1454,18 @@ function runSimulation() {
       // Calculate time above efficacy as percentage
       const timePointsAboveEfficacy = steadyStateConcentrations.filter(conc => conc >= efficacyThreshold).length;
       subject.timeAboveEfficacy = (timePointsAboveEfficacy / steadyStateConcentrations.length) * 100;
-    }
-    
-    // Find Cmax in steady-state period
-    if (startIdx !== -1 && endIdx !== -1) {
-      subject.cmax = Math.max(...subject.concentrations.slice(startIdx, endIdx));
+      
+      // Find Cmax and Tmax in steady-state period
+      let maxConc = 0;
+      let maxTime = 0;
+      for (let i = startIdx; i < endIdx; i++) {
+        if (subject.concentrations[i] > maxConc) {
+          maxConc = subject.concentrations[i];
+          maxTime = timePoints[i];
+        }
+      }
+      subject.cmax = maxConc;
+      subject.tmax = maxTime - 216; // Relative to start of steady-state interval
     }
     
     // Calculate efficacy ratios
@@ -1304,6 +1475,15 @@ function runSimulation() {
     } else {
       subject.aucEfficacyRatio = 0;
       subject.cmaxEfficacyRatio = 0;
+    }
+    
+    // For NCA model, calculate additional NCA-specific parameters
+    if (subject.pkModel === 'nca') {
+      const ncaParams = calculateNCAParameters(subject.concentrations, timePoints, subject.interval);
+      subject.ncaHalfLife = ncaParams.terminalHalfLife;
+      subject.ncaCmax = ncaParams.cmax;
+      subject.ncaTmax = ncaParams.tmax;
+      subject.ncaAUC = ncaParams.auc;
     }
   });
   
@@ -1537,7 +1717,19 @@ function drawChart() {
   ctx.textAlign = 'center';
   ctx.font = 'bold 16px Arial';
   const scaleType = isLogScale ? 'Log Scale' : 'Linear Scale';
-  ctx.fillText(`Plasma Concentration-Time Profile (${scaleType}, Blood Samples Every Hour)`, canvas.width/2, 25);
+  
+  // Get current kinetics model
+  const kinetics = document.getElementById('kinetics-select')?.value || 'first-order';
+  const kineticsNames = {
+    'zero-order': 'Zero-Order',
+    'first-order': 'First-Order',
+    'second-order': 'Second-Order',
+    'third-order': 'Third-Order',
+    'non-linear': 'Non-Linear (Michaelis-Menten)'
+  };
+  const kineticsLabel = kineticsNames[kinetics] || 'First-Order';
+  
+  ctx.fillText(`Plasma Concentration-Time Profile (${scaleType}, ${kineticsLabel} Kinetics)`, canvas.width/2, 25);
   
   // Add axis ticks and values
   ctx.font = '12px Arial';
@@ -1583,6 +1775,8 @@ function updateTable() {
     row.innerHTML = `
       <td>${subject.id}</td>
       <td>${subject.drugName || 'N/A'}</td>
+      <td>${subject.pkModel || 'one-compartment'}</td>
+      <td>${subject.kinetics || 'first-order'}</td>
       <td>${subject.age}</td>
       <td>${subject.sex}</td>
       <td>${subject.height}</td>
@@ -1605,6 +1799,7 @@ function updateTable() {
       <td>${subject.cssAvg.toFixed(2)}</td>
       <td>${subject.auc.toFixed(1)}</td>
       <td>${subject.cmax.toFixed(2)}</td>
+      <td>${subject.tmax ? subject.tmax.toFixed(1) : 'N/A'}</td>
       <td>${subject.aucEfficacyRatio.toFixed(1)}</td>
       <td>${subject.cmaxEfficacyRatio.toFixed(1)}</td>
       <td>${subject.timeAboveEfficacy.toFixed(1)}</td>
@@ -1618,6 +1813,8 @@ function updateTable() {
     row.innerHTML = `
       <td>${subject.id} (Current)</td>
       <td>${subject.drugName || 'N/A'}</td>
+      <td>${subject.pkModel || 'one-compartment'}</td>
+      <td>${subject.kinetics || 'first-order'}</td>
       <td>${subject.age}</td>
       <td>${subject.sex}</td>
       <td>${subject.height}</td>
@@ -1640,6 +1837,7 @@ function updateTable() {
       <td>${subject.cssAvg.toFixed(2)}</td>
       <td>${subject.auc.toFixed(1)}</td>
       <td>${subject.cmax.toFixed(2)}</td>
+      <td>${subject.tmax ? subject.tmax.toFixed(1) : 'N/A'}</td>
       <td>${subject.aucEfficacyRatio.toFixed(1)}</td>
       <td>${subject.cmaxEfficacyRatio.toFixed(1)}</td>
       <td>${subject.timeAboveEfficacy.toFixed(1)}</td>
@@ -1726,10 +1924,10 @@ function downloadPlotImage() {
 function resetSimulation() {
   const sliderDefaults = {
     // Core PK parameters
-    'f-renal-slider': 0.8,
+    'f-renal-slider': 1.0,
     'volume-slider': 0.7,
-    'bioavailability-slider': 0.8,
-    'fraction-unbound-slider': 0.1,
+    'bioavailability-slider': 1.0,
+    'fraction-unbound-slider': 1.0,
     // Two-compartment parameters
     'v2-slider': 0.5,
     'q-slider': 2.0,
@@ -1761,8 +1959,8 @@ function randomizeParameters() {
     // Core PK parameters - reasonable clinical ranges
     'f-renal-slider': { min: 0.1, max: 1.0 },
     'volume-slider': { min: 0.2, max: 8.0 },
-    'bioavailability-slider': { min: 0.4, max: 1.0 },
-    'fraction-unbound-slider': { min: 0.01, max: 1.0 },
+    'bioavailability-slider': { min: 0, max: 1.0 },
+    'fraction-unbound-slider': { min: 0, max: 1.0 },
     // Dosing parameters
     'dose-slider': { min: 0, max: 3000 },
     'interval-slider': { min: 1, max: 48 },
@@ -1938,6 +2136,14 @@ function updateSliderValues() {
     const selectedOption = formulationSelect.options[formulationSelect.selectedIndex];
     formulationDisplay.textContent = selectedOption.text;
   }
+  
+  // Special handling for kinetics select
+  const kineticsSelect = document.getElementById('kinetics-select');
+  const kineticsDisplay = document.getElementById('kinetics-value');
+  if (kineticsSelect && kineticsDisplay) {
+    const selectedOption = kineticsSelect.options[kineticsSelect.selectedIndex];
+    kineticsDisplay.textContent = selectedOption.text;
+  }
 }
 
 // Initialize when DOM is loaded
@@ -1975,6 +2181,8 @@ document.addEventListener('DOMContentLoaded', function() {
     'v2-slider', 'q-slider',
     // Dosing parameters
     'loading-dose-slider', 'dose-slider', 'interval-slider', 'duration-slider', 'formulation-select',
+    // Kinetics selection
+    'kinetics-select',
     // Reference lines
     'toxicity-slider', 'efficacy-slider'
   ];

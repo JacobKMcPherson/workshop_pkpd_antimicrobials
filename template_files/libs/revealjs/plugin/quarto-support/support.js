@@ -291,7 +291,7 @@ window.QuartoSupport = function () {
 
   // dispatch for shiny
   // they use BS shown and hidden events to trigger rendering
-  const distpatchShinyEvents = (previous, current) => {
+  const dispatchShinyEvents = (previous, current) => {
     if (window.jQuery) {
       if (previous) {
         window.jQuery(previous).trigger("hidden");
@@ -306,7 +306,7 @@ window.QuartoSupport = function () {
 
     const fireSlideChanged = (previousSlide, currentSlide) => {
       fireSlideEnter();
-      distpatchShinyEvents(previousSlide, currentSlide);
+      dispatchShinyEvents(previousSlide, currentSlide);
     };
 
     deck.on("slidechanged", function (event) {
@@ -316,8 +316,8 @@ window.QuartoSupport = function () {
 
   function handleTabbyChanges() {
     const fireTabChanged = (previousTab, currentTab) => {
-      fireSlideEnter()
-      distpatchShinyEvents(previousTab, currentTab);
+      fireSlideEnter();
+      dispatchShinyEvents(previousTab, currentTab);
     };
     document.addEventListener("tabby", function(event) {
       fireTabChanged(event.detail.previousTab, event.detail.tab);
