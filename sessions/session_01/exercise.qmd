@@ -13,8 +13,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.main-layout}
 
-<!-- Row 1: Patient Information -->
-::: {.controls-row-1}
+::: {.controls-column-1}
 ### Patient Information
 ::: {.patient-generator}
 <div style="margin-bottom: 8px;">
@@ -65,8 +64,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 :::
 
-<!-- Row 2: PK Parameters -->
-::: {.controls-row-2}
+::: {.controls-column-2}
 ### PK Parameters
 ::: {.pk-properties-compact}
 <div class="small-buttons" style="margin-top: 2px;">
@@ -117,8 +115,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 :::
 :::
 
-<!-- Row 3: Dosing Parameters -->
-::: {.controls-row-3}
+::: {.controls-column-3}
 ### Dosing Parameters
 ::: {.pk-properties-compact}
 <button id="download-btn" onclick="downloadData()">Download Data</button>
@@ -152,8 +149,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 :::
 
-::: {.panel-tabset}
-
+::: {.plot-section}
 ### Plot
 
 ::: {#concentration-plot}
@@ -166,6 +162,12 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <button id="save-patient-btn" onclick="saveCurrentPatient()" style="margin-left: 10px; background-color: #28a745; color: white;">Save Patient</button>
 
 :::
+
+:::
+
+:::
+
+::: {.panel-tabset}
 
 ### Reference Lines
 ::: {.reference-properties}
@@ -485,46 +487,35 @@ main.content {
   margin-top: 20px;
 }
 
-/* Main layout for Controls - Row-based layout */
+/* Main layout for Controls, Content, and Plot Sidebar */
 .main-layout {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.5fr;
   gap: 20px;
-  width: 100%;
+  align-items: start;
 }
 
-.controls-row-1,
-.controls-row-2,
-.controls-row-3 {
+.controls-section {
+  min-width: 0; /* Prevent grid overflow */
+}
+
+.controls-column-1,
+.controls-column-2,
+.controls-column-3 {
   background-color: #ffffff;
   padding: 15px;
   border-radius: 8px;
   border: 1px solid #dee2e6;
-  width: 100%;
 }
 
-.controls-row-1 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.controls-row-2,
-.controls-row-3 {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 15px;
-}
-
-.controls-row-1 h3,
-.controls-row-2 h3,
-.controls-row-3 h3 {
+.controls-column-1 h3,
+.controls-column-2 h3,
+.controls-column-3 h3 {
   margin: 0 0 15px 0;
   color: #495057;
   font-size: 1.1em;
   border-bottom: 2px solid #007bff;
   padding-bottom: 5px;
-  grid-column: 1 / -1;
 }
 
 .plot-section {
@@ -575,11 +566,8 @@ main.content {
   
   /* Stack layout vertically on smaller screens */
   .main-layout {
-    flex-direction: column;
-  }
-  
-  .controls-row-1 {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
   
   .controls-grid {
@@ -589,10 +577,6 @@ main.content {
 
 @media (max-width: 768px) {
   .controls-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .controls-row-1 {
     grid-template-columns: 1fr;
   }
 }
