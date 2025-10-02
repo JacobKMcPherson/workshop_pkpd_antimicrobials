@@ -42,7 +42,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <option value="two-compartment">Two-Compartment</option>
 <option value="nca">Non-Compartmental Analysis (NCA)</option>
 </select>
-<span id="pk-model-value">One-Compartment</span>
 
 <label for="formulation-select">Formulation:</label>
 <select id="formulation-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
@@ -71,13 +70,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="fraction-unbound-slider">Fraction Unbound:</label>
-<input type="range" id="fraction-unbound-slider" min="0.0" max="1.0" value="0.1" step="0.01">
+<input type="range" id="fraction-unbound-slider" min="0.01" max="10.0" value="0.1" step="0.01">
 <span id="fraction-unbound-value">0.1</span>
 :::
 
 ::: {.control-group-compact}
 <label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.4" max="0.9" value="0.7" step="0.1">
+<input type="range" id="volume-slider" min="0.00" max="10.00" value="0.70" step="0.05">
 <span id="volume-value">0.7</span> L/kg
 :::
 
@@ -157,13 +156,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 ::: {.reference-properties}
 ::: {.control-group}
 <label for="toxicity-slider">Toxicity Threshold (mg/L):</label>
-<input type="range" id="toxicity-slider" min="15" max="30" value="20" step="1">
+<input type="range" id="toxicity-slider" min="0.000" max="100" value="20" step="1">
 <span id="toxicity-value">20</span> mg/L
 :::
 
 ::: {.control-group}
 <label for="efficacy-slider">Efficacy Threshold (mg/L):</label>
-<input type="range" id="efficacy-slider" min="10" max="20" value="15" step="0.5">
+<input type="range" id="efficacy-slider" min="0" max="100" value="2" step="0.5">
 <span id="efficacy-value">5</span> mg/L
 :::
 :::
@@ -864,8 +863,9 @@ function calculateNCAParameters(concentrations, timePoints, interval) {
   
   // Calculate terminal half-life using the last 3-5 points
   // Find terminal elimination phase (log-linear regression)
+  const TERMINAL_PHASE_POINTS = 10; // Number of points to use for terminal phase selection
   const terminalPoints = [];
-  const startTerminalIdx = Math.max(0, concentrations.length - 10);
+  const startTerminalIdx = Math.max(0, concentrations.length - TERMINAL_PHASE_POINTS);
   
   for (let i = startTerminalIdx; i < concentrations.length; i++) {
     if (concentrations[i] > 0) {
@@ -1260,9 +1260,6 @@ function calculateConcentrationTwoCompartment(subject, time) {
 
 // NCA-based concentration calculation (uses one-compartment as basis, then applies NCA calculations)
 function calculateConcentrationNCA(subject, time) {
-  // For NCA, we still need to generate concentration data first
-  // We'll use the one-compartment model as the underlying data source
-  // The NCA calculations will be performed on this data
   return calculateConcentrationOneCompartment(subject, time);
 }
 

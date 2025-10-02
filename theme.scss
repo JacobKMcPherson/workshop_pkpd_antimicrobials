@@ -30,9 +30,9 @@
 .sidebar-navigation,
 #quarto-sidebar,
 .sidebar-menu-container {
-  padding-left: 0 !important;
-  margin-left: 0 !important;
-  left: 0 !important;
+  padding-left: 40 !important;
+  margin-left: 40 !important;
+  left: 40 !important;
 }
 
 .sidebar > .sidebar-menu-container {
@@ -77,7 +77,7 @@ body.docked .sidebar.sidebar-navigation,
 }
 
 /* Greatly increase central column width */
-@media(min-width: 992px) {
+@media(min-width: 1440px) {
   /* Make the main content area much wider by spanning more grid columns */
   body.floating #quarto-content,
   body.docked #quarto-content {
@@ -87,7 +87,7 @@ body.docked .sidebar.sidebar-navigation,
   
   /* Make the article/main content itself wider */
   #quarto-content article {
-    max-width: 1400px !important;
+    max-width: 1440px !important;
     padding-right: 2em !important;
   }
 }
