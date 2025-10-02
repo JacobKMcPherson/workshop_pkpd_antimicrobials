@@ -26,7 +26,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 </div>
 
 ::: {.main-layout}
-::: {.controls-section}
+::: {.controls-column-1}
 
 ::: {.patient-generator}
 <div style="margin-bottom: 8px;">
@@ -61,7 +61,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 :::
 
-::: {.controls-column-1}
+::: {.controls-column-2}
 
 <button id="reset-btn" onclick="resetSimulation()" class="small-btn">Reset Parameters</button>
 
@@ -83,6 +83,9 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 </select>
 <span id="kinetics-value">First-Order</span>
 
+<label for="volume-slider">Volume of Distribution (L/kg):</label>
+<input type="range" id="volume-slider" min="0.1" max="10.00" value="0.70" step="0.1">
+<span id="volume-value">0.7</span> L/kg
 
 <label for="bioavailability-slider">Bioavailability (F):</label>
 <input type="range" id="bioavailability-slider" min="0" max="1.0" value="1.0" step="0.05">
@@ -92,17 +95,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <input type="range" id="fraction-unbound-slider" min="0" max="1.0" value="1.0" step="0.05">
 <span id="fraction-unbound-value">1.0</span>
 
-<label for="volume-slider">Volume of Distribution (L/kg):</label>
-<input type="range" id="volume-slider" min="0.1" max="10.00" value="0.70" step="0.1">
-<span id="volume-value">0.7</span> L/kg
-
 <label for="f-renal-slider">Fraction Renally Cleared:</label>
 <input type="range" id="f-renal-slider" min="0.0" max="1.0" value="1.0" step="0.05">
 <span id="f-renal-value">1.0</span>
 
 :::
 
-::: {.controls-column-2}
+::: {.controls-column-3}
 <button id="random-btn" onclick="randomizeParameters()" class="small-btn">Random Simulation</button>
 <label for="toxicity-slider">Toxicity (mg/L):</label>
 <input type="range" id="toxicity-slider" min="0.000" max="100" value="20" step="1">
@@ -139,7 +138,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <span id="duration-value">10</span> days
 
 :::
-
 
 :::
 
