@@ -2152,6 +2152,14 @@ function updateSliderValues() {
     const selectedOption = formulationSelect.options[formulationSelect.selectedIndex];
     formulationDisplay.textContent = selectedOption.text;
   }
+  
+  // Special handling for kinetics select
+  const kineticsSelect = document.getElementById('kinetics-select');
+  const kineticsDisplay = document.getElementById('kinetics-value');
+  if (kineticsSelect && kineticsDisplay) {
+    const selectedOption = kineticsSelect.options[kineticsSelect.selectedIndex];
+    kineticsDisplay.textContent = selectedOption.text;
+  }
 }
 
 // Initialize when DOM is loaded
@@ -2189,6 +2197,8 @@ document.addEventListener('DOMContentLoaded', function() {
     'v2-slider', 'q-slider',
     // Dosing parameters
     'loading-dose-slider', 'dose-slider', 'interval-slider', 'duration-slider', 'formulation-select',
+    // Kinetics selection
+    'kinetics-select',
     // Reference lines
     'toxicity-slider', 'efficacy-slider'
   ];
