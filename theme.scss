@@ -76,18 +76,20 @@ body.docked .sidebar.sidebar-navigation,
   padding-left: 1.6em !important;
 }
 
-/* Greatly increase central column width */
+/* Greatly increase central column width to nearly full screen */
 @media(min-width: 992px) {
-  /* Make the main content area much wider by spanning more grid columns */
+  /* Make the main content area much wider by spanning nearly full width */
   body.floating #quarto-content,
   body.docked #quarto-content {
-    grid-column: body-start / page-end !important;
+    grid-column: body-start / screen-end !important;
     max-width: none !important;
+    padding-right: 1em !important;
   }
   
-  /* Make the article/main content itself wider */
+  /* Make the article/main content itself nearly full width */
   #quarto-content article {
-    max-width: 1400px !important;
-    padding-right: 2em !important;
+    max-width: 95vw !important;
+    padding-right: 1em !important;
+    padding-left: 1em !important;
   }
 }
