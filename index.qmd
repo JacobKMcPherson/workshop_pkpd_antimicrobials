@@ -18,11 +18,11 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 
 ## Getting Started
 
-### [**Pre-Workshop: Materials and Instructions**](pre-workshop-materials.html)
+### [**Pre-Workshop: Materials and Instructions**](sessions/pre-workshop/pre-workshop-materials.html)
 
-[📺 View Primer](content/pre-workshop-primer.html){.btn .btn-primary .btn-lg target="_blank"}
+[📺 View Primer](sessions/pre-workshop/pre-workshop-primer.html){.btn .btn-primary .btn-lg target="_blank"}
 
-[📝 Take Survey](content/pre-workshop-survey.html){.btn .btn-primary .btn-lg target="_blank"}
+[📝 Take Survey](sessions/pre-workshop/pre-workshop-survey.html){.btn .btn-primary .btn-lg target="_blank"}
 
 ## Workshop Sessions
 
@@ -32,7 +32,7 @@ This workshop provides a comprehensive introduction to the pharmacokinetics and 
 
 [📊 View Presentation](sessions/session_01/slides.html){.btn .btn-primary .btn-lg target="_blank"}
 
-[💪🏻 View Exercise](sessions/session_01/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
+[💪🏻 View Exercise(s)](sessions/session_01/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
 
 Introduction to PK/PD concepts and antimicrobial mechanisms.
 :::
@@ -42,7 +42,7 @@ Introduction to PK/PD concepts and antimicrobial mechanisms.
 
 [📊 View Presentation](sessions/session_02/slides.html){.btn .btn-primary .btn-lg target="_blank"}
 
-[💪🏻 View Exercise](sessions/session_02/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
+[💪🏻 View Exercise(s)](sessions/session_02/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
 
 Practical applications and clinical considerations.
 :::
@@ -52,7 +52,7 @@ Practical applications and clinical considerations.
 
 [📊 View Presentation](sessions/session_03/slides.html){.btn .btn-primary .btn-lg target="_blank"}
 
-[💪🏻 View Exercise](sessions/session_03/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
+[💪🏻 View Exercise(s)](sessions/session_03/exercise.html){.btn .btn-primary .btn-lg target="_blank"}
 
 Advanced modeling and optimization strategies.
 :::

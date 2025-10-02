@@ -32,8 +32,12 @@ website:
             text: Support
           - href: info/faq.qmd
             text: Frequently Asked Questions
-          - href: CONTRIBUTING.qmd
+          - href: info/CONTRIBUTING.qmd
             text: Contributing
+          - href: info/SUPABASE_SETUP.qmd
+            text: Supabase Setup
+          - href: license.qmd
+            text: License
       - text: Resources
         icon: globe2
         menu: 

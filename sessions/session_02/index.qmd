@@ -7,13 +7,13 @@ editor: source
 ::: callout-important
 :::
 
-## Slides
+## Didactive Materials
 
-[🖥 Slides](slides.qmd){.btn .btn-outline-primary}
+[📊 View Presentation](slides.qmd){.btn .btn-outline-primary}
 
-## Exercise
+## Interactive Exercise(s)
 
-[💪🏻 Exercise](exercise.qmd){.btn .btn-outline-primary} (see cases below)
+[💪🏻 Exercise(s)](exercise.qmd){.btn .btn-outline-primary} (see cases below)
 
 ::: {style="font-size: 0.875em;"}
 :::

@@ -17,7 +17,7 @@ editor: source
 
 ## Pre-Workshop Slides
 
-🖥️ [View Primer](content/pre-workshop-primer.html){.btn .btn-outline-primary}
+[📺 View Primer](content/pre-workshop-primer.html){.btn .btn-outline-primary}
 
 ## Pre-Workshop Evaluation
 
@@ -37,7 +37,7 @@ editor: source
 
 <div>
 
-[Session 1 →](sessions/session_01/index.qmd){.btn .btn-outline-primary}
+[Session 1 →](../session_01/index.qmd){.btn .btn-outline-primary}
 
 </div>
 :::::

@@ -7,11 +7,11 @@ editor: source
 ::: callout-important
 :::
 
-## Slides
+## Didactive Materials
 
- [🖥Slides](slides.html){.btn .btn-outline-primary}
+[📊 View Presentation](slides.html){.btn .btn-outline-primary}
 
-## Exercises
+## Interactive Exercise(s)
 
 :::::: grid
 
@@ -37,7 +37,7 @@ editor: source
 ::::: {.d-flex .justify-content-between .border-top .pt-4 .mt-4}
 <div>
 
-[← Pre-Workshop Materials](../../pre-workshop-materials.qmd){.btn .btn-outline-primary}
+[← Pre-Workshop Materials](../pre-workshop/pre-workshop-materials.qmd){.btn .btn-outline-primary}
 
 </div>
 
