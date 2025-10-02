@@ -50,6 +50,16 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <option value="fast">Fast (IV Bolus)</option>
 </select>
 <span id="formulation-value">Medium (Standard Oral)</span>
+
+<label for="kinetics-select" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px; margin-top: 10px;">Elimination Kinetics:</label>
+<select id="kinetics-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
+<option value="first-order" selected>First-Order</option>
+<option value="zero-order">Zero-Order</option>
+<option value="second-order">Second-Order</option>
+<option value="third-order">Third-Order</option>
+<option value="non-linear">Non-Linear (Michaelis-Menten)</option>
+</select>
+<span id="kinetics-value">First-Order</span>
 :::
 
 :::
@@ -175,6 +185,8 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <tr>
 <th>Subject</th>
 <th>Drug Name</th>
+<th>PK Model</th>
+<th>Kinetics</th>
 <th>Age</th>
 <th>Sex</th>
 <th>Ht (cm)</th>
@@ -288,6 +300,38 @@ NCA calculates pharmacokinetic parameters directly from observed concentration-t
 - Robust to sparse sampling
 - Regulatory gold standard for bioequivalence studies
 - Less prone to bias than compartmental methods
+
+##### Elimination Kinetics
+
+This simulation supports multiple elimination kinetic models:
+
+**First-Order Kinetics (Default):**
+- Elimination rate proportional to drug concentration: dC/dt = -ke × C
+- Constant half-life independent of dose
+- Most common for therapeutic drugs
+- Linear pharmacokinetics (dose proportional)
+
+**Zero-Order Kinetics:**
+- Constant elimination rate regardless of concentration: dC/dt = -k0
+- Seen when elimination pathways are saturated
+- Examples: Alcohol, phenytoin at high doses
+- Non-linear pharmacokinetics
+
+**Second-Order Kinetics:**
+- Elimination rate proportional to concentration squared: dC/dt = -k2 × C²
+- Faster elimination at higher concentrations
+- Rare in clinical practice
+
+**Third-Order Kinetics:**
+- Elimination rate proportional to concentration cubed: dC/dt = -k3 × C³
+- Even faster elimination at higher concentrations
+- Theoretical interest, rarely observed clinically
+
+**Non-Linear (Michaelis-Menten) Kinetics:**
+- Saturable elimination: dC/dt = -Vmax × C / (Km + C)
+- Combination of first-order (low C) and zero-order (high C)
+- Examples: Phenytoin, salicylates, theophylline at high doses
+- Dose-dependent half-life
 
 This approach incorporates key patient-specific factors (age, sex, weight, creatinine) while maintaining the core functionality needed to understand multiple dosing pharmacokinetics and the clinical application of the Cockcroft-Gault equation.
 
@@ -1023,6 +1067,10 @@ function generateSubjects() {
   const v2PerKg = parseFloat(document.getElementById('v2-slider')?.value || 0.5);
   const q = parseFloat(document.getElementById('q-slider')?.value || 2.0);
   
+  // PK model and kinetics selection
+  const pkModel = document.getElementById('pk-model-select')?.value || 'one-compartment';
+  const kinetics = document.getElementById('kinetics-select')?.value || 'first-order';
+  
   subjects = [];
   
   // Calculate number of doses based on duration
@@ -1035,6 +1083,9 @@ function generateSubjects() {
     id: currentPatient.subjectId || 'temp',
     // Drug information
     drugName: drugName,
+    // PK model and kinetics
+    pkModel: pkModel,
+    kinetics: kinetics,
     // Patient demographics
     age: age,
     sex: sex,
@@ -1158,6 +1209,116 @@ function saveCurrentPatient() {
   updateTable();
 }
 
+// Helper function to calculate concentration based on elimination kinetics
+// For one-compartment model with first-order absorption
+function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, ka, ke, time, kinetics) {
+  // Absorption phase - always first-order
+  const absorbedFraction = 1 - Math.exp(-ka * time);
+  const amountAbsorbed = dose * bioavailability * absorbedFraction;
+  
+  // Initial concentration after absorption (assuming instantaneous distribution)
+  const C0 = (dose * bioavailability * ka) / vssUnbound;
+  
+  // Calculate concentration based on elimination kinetics
+  switch (kinetics) {
+    case 'first-order':
+      // Standard first-order: C = C0 * (exp(-ke*t) - exp(-ka*t)) / (ka - ke)
+      return C0 * (Math.exp(-ke * time) - Math.exp(-ka * time)) / (ka - ke);
+      
+    case 'zero-order':
+      // Zero-order: constant elimination rate until drug is depleted
+      // During absorption: amount increases, during elimination: linear decline
+      
+      if (time === 0) return 0;
+      
+      // Amount absorbed up to time t
+      const amountAbsorbed_t = dose * bioavailability * (1 - Math.exp(-ka * time));
+      
+      // Zero-order elimination rate (constant mg/h)
+      const k0 = ke * vssUnbound; // mg/h
+      
+      // Amount eliminated up to time t (integral of k0 from 0 to t)
+      const amountEliminated = k0 * time;
+      
+      // Net amount in body
+      const amountInBody = Math.max(0, amountAbsorbed_t - amountEliminated);
+      
+      // Concentration
+      return amountInBody / vssUnbound;
+      
+    case 'second-order':
+      // Second-order: dC/dt = -k2 * C^2
+      // This requires numerical integration due to simultaneous absorption and elimination
+      let C_second = 0;
+      const dt_second = 0.1; // time step
+      const steps_second = Math.floor(time / dt_second);
+      const k2 = ke / 10; // Scaled second-order rate constant
+      
+      for (let i = 0; i < steps_second; i++) {
+        const t = i * dt_second;
+        // Absorption rate at time t
+        const dCabs_dt = (dose * bioavailability * ka / vssUnbound) * Math.exp(-ka * t);
+        // Second-order elimination rate
+        const dCelim_dt = k2 * C_second * C_second;
+        // Net change
+        C_second += (dCabs_dt - dCelim_dt) * dt_second;
+        C_second = Math.max(0, C_second);
+      }
+      
+      return C_second;
+      
+    case 'third-order':
+      // Third-order: dC/dt = -k3 * C^3
+      // Requires numerical integration
+      let C_third = 0;
+      const dt_third = 0.1; // time step
+      const steps_third = Math.floor(time / dt_third);
+      const k3 = ke / 100; // Scaled third-order rate constant
+      
+      for (let i = 0; i < steps_third; i++) {
+        const t = i * dt_third;
+        // Absorption rate at time t
+        const dCabs_dt = (dose * bioavailability * ka / vssUnbound) * Math.exp(-ka * t);
+        // Third-order elimination rate
+        const dCelim_dt = k3 * C_third * C_third * C_third;
+        // Net change
+        C_third += (dCabs_dt - dCelim_dt) * dt_third;
+        C_third = Math.max(0, C_third);
+      }
+      
+      return C_third;
+      
+    case 'non-linear':
+      // Michaelis-Menten kinetics: dC/dt = -Vmax*C / (Km + C)
+      // Approximate using numerical integration (Euler method)
+      // Vmax and Km are derived from ke and typical concentrations
+      const Vmax = ke * vssUnbound * 10; // Maximum elimination rate (mg/h)
+      const Km = 5; // Michaelis constant (mg/L) - can be adjusted
+      
+      // Start with initial concentration after absorption
+      let C = 0;
+      const dt = 0.1; // time step for numerical integration
+      const steps = Math.floor(time / dt);
+      
+      for (let i = 0; i < steps; i++) {
+        const t = i * dt;
+        // Absorption rate
+        const dCabs_dt = (dose * bioavailability * ka / vssUnbound) * Math.exp(-ka * t);
+        // Elimination rate (Michaelis-Menten)
+        const dCelim_dt = (Vmax * C) / (Km + C) / vssUnbound;
+        // Net change
+        C += (dCabs_dt - dCelim_dt) * dt;
+        C = Math.max(0, C); // Concentration cannot be negative
+      }
+      
+      return C;
+      
+    default:
+      // Default to first-order
+      return C0 * (Math.exp(-ke * time) - Math.exp(-ka * time)) / (ka - ke);
+  }
+}
+
 // One-compartment PK model with first-order absorption and multiple dosing
 function calculateConcentration(subject, time) {
   const pkModel = document.getElementById('pk-model-select')?.value || 'one-compartment';
@@ -1173,7 +1334,7 @@ function calculateConcentration(subject, time) {
 
 // One-compartment model calculation
 function calculateConcentrationOneCompartment(subject, time) {
-  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose } = subject;
+  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose, kinetics } = subject;
   const ke = clearance / vssUnbound;  // elimination rate constant using unbound volume
   
   // Get absorption rate based on selected formulation
@@ -1181,25 +1342,26 @@ function calculateConcentrationOneCompartment(subject, time) {
   const ka = getAbsorptionRate(formulation);
   
   const tau = interval;
+  const kineticsType = kinetics || 'first-order';
   
   let concentration = 0;
 
   // Apply loading dose at time 0
   if (loadingDose > 0 && time >= 0) {
-    const conc = (loadingDose * bioavailability * ka / vssUnbound) *
-                 (Math.exp(-ke * time) - Math.exp(-ka * time)) /
-                 (ka - ke);
+    const conc = calculateConcentrationWithKinetics(
+      loadingDose, bioavailability, vssUnbound, ka, ke, time, kineticsType
+    );
     concentration += conc;
   }
   
   // Apply maintenance doses from the second dose onward
-  for (let n = 1; n < numDoses; n++) {  // <-- n = 1 starts at second dose
+  for (let n = 1; n < numDoses; n++) {
     const doseTime = n * tau;
     if (time >= doseTime) {
       const timeSinceDose = time - doseTime;
-      const conc = (dose * bioavailability * ka / vssUnbound) *
-                   (Math.exp(-ke * timeSinceDose) - Math.exp(-ka * timeSinceDose)) /
-                   (ka - ke);
+      const conc = calculateConcentrationWithKinetics(
+        dose, bioavailability, vssUnbound, ka, ke, timeSinceDose, kineticsType
+      );
       concentration += conc;
     }
   }
@@ -1209,7 +1371,14 @@ function calculateConcentrationOneCompartment(subject, time) {
 
 // Two-compartment model calculation
 function calculateConcentrationTwoCompartment(subject, time) {
-  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose, v2PerKg, q, weight } = subject;
+  const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose, v2PerKg, q, weight, kinetics } = subject;
+  
+  // Note: Two-compartment models with non-first-order kinetics are mathematically complex
+  // For now, we only support first-order kinetics for two-compartment models
+  const kineticsType = kinetics || 'first-order';
+  if (kineticsType !== 'first-order') {
+    console.warn('Two-compartment model currently only supports first-order kinetics. Using first-order.');
+  }
   
   // Get absorption rate based on selected formulation
   const formulation = document.getElementById('formulation-select')?.value || 'medium';
@@ -1583,6 +1752,8 @@ function updateTable() {
     row.innerHTML = `
       <td>${subject.id}</td>
       <td>${subject.drugName || 'N/A'}</td>
+      <td>${subject.pkModel || 'one-compartment'}</td>
+      <td>${subject.kinetics || 'first-order'}</td>
       <td>${subject.age}</td>
       <td>${subject.sex}</td>
       <td>${subject.height}</td>
@@ -1618,6 +1789,8 @@ function updateTable() {
     row.innerHTML = `
       <td>${subject.id} (Current)</td>
       <td>${subject.drugName || 'N/A'}</td>
+      <td>${subject.pkModel || 'one-compartment'}</td>
+      <td>${subject.kinetics || 'first-order'}</td>
       <td>${subject.age}</td>
       <td>${subject.sex}</td>
       <td>${subject.height}</td>
