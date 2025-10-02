@@ -53,13 +53,13 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 <label for="kinetics-select" style="font-weight: bold; color: #495057; display: block; margin-bottom: 5px; margin-top: 10px;">Elimination Kinetics:</label>
 <select id="kinetics-select" style="width: 100%; padding: 5px; border: 1px solid #ced4da; border-radius: 4px; background-color: white;">
-<option value="first-order" selected>First-Order</option>
-<option value="zero-order">Zero-Order</option>
+<option value="zero-order" selected>Zero-Order</option>
+<option value="first-order">First-Order</option>
 <option value="second-order">Second-Order</option>
 <option value="third-order">Third-Order</option>
 <option value="non-linear">Non-Linear (Michaelis-Menten)</option>
 </select>
-<span id="kinetics-value">First-Order</span>
+<span id="kinetics-value">Zero-Order</span>
 :::
 
 :::
@@ -209,6 +209,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 <th>C<sub>ss,avg</sub></th>
 <th>AUC<sub>0-24h</sub></th>
 <th>C<sub>max</sub></th>
+<th>T<sub>max</sub> (h)</th>
 <th>AUC/Efficacy</th>
 <th>C<sub>max</sub>/Efficacy</th>
 <th>Time>Efficacy (%)</th>
@@ -1117,6 +1118,7 @@ function generateSubjects() {
     concentrations: [],
     auc: 0,
     cmax: 0,
+    tmax: 0,
     cssAvg: 0,
     aucEfficacyRatio: 0,
     cmaxEfficacyRatio: 0,
@@ -1459,11 +1461,18 @@ function runSimulation() {
       // Calculate time above efficacy as percentage
       const timePointsAboveEfficacy = steadyStateConcentrations.filter(conc => conc >= efficacyThreshold).length;
       subject.timeAboveEfficacy = (timePointsAboveEfficacy / steadyStateConcentrations.length) * 100;
-    }
-    
-    // Find Cmax in steady-state period
-    if (startIdx !== -1 && endIdx !== -1) {
-      subject.cmax = Math.max(...subject.concentrations.slice(startIdx, endIdx));
+      
+      // Find Cmax and Tmax in steady-state period
+      let maxConc = 0;
+      let maxTime = 0;
+      for (let i = startIdx; i < endIdx; i++) {
+        if (subject.concentrations[i] > maxConc) {
+          maxConc = subject.concentrations[i];
+          maxTime = timePoints[i];
+        }
+      }
+      subject.cmax = maxConc;
+      subject.tmax = maxTime - 216; // Relative to start of steady-state interval
     }
     
     // Calculate efficacy ratios
@@ -1473,6 +1482,15 @@ function runSimulation() {
     } else {
       subject.aucEfficacyRatio = 0;
       subject.cmaxEfficacyRatio = 0;
+    }
+    
+    // For NCA model, calculate additional NCA-specific parameters
+    if (subject.pkModel === 'nca') {
+      const ncaParams = calculateNCAParameters(subject.concentrations, timePoints, subject.interval);
+      subject.ncaHalfLife = ncaParams.terminalHalfLife;
+      subject.ncaCmax = ncaParams.cmax;
+      subject.ncaTmax = ncaParams.tmax;
+      subject.ncaAUC = ncaParams.auc;
     }
   });
   
@@ -1776,6 +1794,7 @@ function updateTable() {
       <td>${subject.cssAvg.toFixed(2)}</td>
       <td>${subject.auc.toFixed(1)}</td>
       <td>${subject.cmax.toFixed(2)}</td>
+      <td>${subject.tmax ? subject.tmax.toFixed(1) : 'N/A'}</td>
       <td>${subject.aucEfficacyRatio.toFixed(1)}</td>
       <td>${subject.cmaxEfficacyRatio.toFixed(1)}</td>
       <td>${subject.timeAboveEfficacy.toFixed(1)}</td>
@@ -1813,6 +1832,7 @@ function updateTable() {
       <td>${subject.cssAvg.toFixed(2)}</td>
       <td>${subject.auc.toFixed(1)}</td>
       <td>${subject.cmax.toFixed(2)}</td>
+      <td>${subject.tmax ? subject.tmax.toFixed(1) : 'N/A'}</td>
       <td>${subject.aucEfficacyRatio.toFixed(1)}</td>
       <td>${subject.cmaxEfficacyRatio.toFixed(1)}</td>
       <td>${subject.timeAboveEfficacy.toFixed(1)}</td>
