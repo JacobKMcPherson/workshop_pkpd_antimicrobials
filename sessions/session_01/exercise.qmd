@@ -74,14 +74,14 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="bioavailability-slider">Bioavailability (F):</label>
-<input type="range" id="bioavailability-slider" min="0.05" max="1.0" value="0.8" step="0.05">
-<span id="bioavailability-value">0.8</span>
+<input type="range" id="bioavailability-slider" min="0" max="1.0" value="1.0" step="0.05">
+<span id="bioavailability-value">1.0</span>
 :::
 
 ::: {.control-group-compact}
 <label for="fraction-unbound-slider">Fraction Unbound:</label>
-<input type="range" id="fraction-unbound-slider" min="0.05" max="1.0" value="0.5" step="0.05">
-<span id="fraction-unbound-value">0.1</span>
+<input type="range" id="fraction-unbound-slider" min="0" max="1.0" value="1.0" step="0.05">
+<span id="fraction-unbound-value">1.0</span>
 :::
 
 ::: {.control-group-compact}
@@ -92,8 +92,8 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 ::: {.control-group-compact}
 <label for="f-renal-slider">Fraction Renally Cleared:</label>
-<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="0.8" step="0.05">
-<span id="f-renal-value">0.8</span>
+<input type="range" id="f-renal-slider" min="0.0" max="1.0" value="1.0" step="0.05">
+<span id="f-renal-value">1.0</span>
 :::
 
 <div id="two-compartment-params" style="display: none;">
@@ -863,7 +863,7 @@ function handleModelChange() {
   runSimulation();
 }
 
-// NCA calculations for a concentration-time profile
+// NCA real-time Plot and Data for a concentration-time profile
 function calculateNCAParameters(concentrations, timePoints, interval) {
   // Find Cmax and Tmax
   let cmax = 0;
@@ -990,10 +990,10 @@ loadingDoseSlider.addEventListener('input', function () {
 function generateSubjects() {
   // Base PK parameters from sliders
   const baseClearance = 5.0; // Fixed base clearance (L/h)
-  const fRenal = parseFloat(document.getElementById('f-renal-slider')?.value || 0.8);
+  const fRenal = parseFloat(document.getElementById('f-renal-slider')?.value || 1.0);
   const baseVolumePerKg = parseFloat(document.getElementById('volume-slider')?.value || 0.7);
-  const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 0.8);
-  const fractionUnbound = parseFloat(document.getElementById('fraction-unbound-slider')?.value || 0.1);
+  const bioavailability = parseFloat(document.getElementById('bioavailability-slider')?.value || 1.0);
+  const fractionUnbound = parseFloat(document.getElementById('fraction-unbound-slider')?.value || 1.0);
   
   // Calculate patient-specific clearance using new formula
   const { age, sex, height, weight, creatinine } = currentPatient;
@@ -1199,7 +1199,7 @@ function saveCurrentPatient() {
   updateTable();
 }
 
-// Helper function to calculate concentration based on elimination kinetics
+// Helper function to calculate concentration based on real-time Plot and Data
 // For one-compartment model with first-order absorption
 function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, ka, ke, time, kinetics) {
   // Absorption phase - always first-order
@@ -1417,7 +1417,7 @@ function calculateConcentrationTwoCompartment(subject, time) {
   return Math.max(0, concentration);
 }
 
-// NCA-based concentration calculation (uses one-compartment as basis, then applies NCA calculations)
+// NCA-based concentration calculation (uses one-compartment as basis, then applies real-time Plot and Data)
 function calculateConcentrationNCA(subject, time) {
   return calculateConcentrationOneCompartment(subject, time);
 }
@@ -1907,10 +1907,10 @@ function downloadPlotImage() {
 function resetSimulation() {
   const sliderDefaults = {
     // Core PK parameters
-    'f-renal-slider': 0.8,
+    'f-renal-slider': 1.0,
     'volume-slider': 0.7,
-    'bioavailability-slider': 0.8,
-    'fraction-unbound-slider': 0.1,
+    'bioavailability-slider': 1.0,
+    'fraction-unbound-slider': 1.0,
     // Two-compartment parameters
     'v2-slider': 0.5,
     'q-slider': 2.0,
@@ -1942,8 +1942,8 @@ function randomizeParameters() {
     // Core PK parameters - reasonable clinical ranges
     'f-renal-slider': { min: 0.1, max: 1.0 },
     'volume-slider': { min: 0.2, max: 8.0 },
-    'bioavailability-slider': { min: 0.4, max: 1.0 },
-    'fraction-unbound-slider': { min: 0.01, max: 1.0 },
+    'bioavailability-slider': { min: 0, max: 1.0 },
+    'fraction-unbound-slider': { min: 0, max: 1.0 },
     // Dosing parameters
     'dose-slider': { min: 0, max: 3000 },
     'interval-slider': { min: 1, max: 48 },
