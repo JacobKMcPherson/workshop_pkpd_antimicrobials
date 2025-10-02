@@ -10,12 +10,12 @@ project.Rproj
 
 # Quarto output
 _site/
+site_libs/
 #/template.html
 #/template_files/
 #/template.html
 #/template_files/
 #_site/
-#site_libs/
 #/.quarto
 #/.quarto/
 #**/*.quarto_ipynb
