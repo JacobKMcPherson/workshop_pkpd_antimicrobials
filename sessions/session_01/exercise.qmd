@@ -1227,40 +1227,66 @@ function calculateConcentrationWithKinetics(dose, bioavailability, vssUnbound, k
       
     case 'zero-order':
       // Zero-order: constant elimination rate until drug is depleted
-      // Rate of elimination: k0 = ke * C0 * V (constant amount/time)
-      const k0 = ke * vssUnbound; // mg/h elimination rate
-      const initialAmount = dose * bioavailability;
+      // During absorption: amount increases, during elimination: linear decline
       
-      // Concentration after absorption phase
       if (time === 0) return 0;
-      const concAfterAbsorption = (dose * bioavailability * ka / vssUnbound) * (1 - Math.exp(-ka * time)) / ka;
-      const amountAfterAbsorption = concAfterAbsorption * vssUnbound;
       
-      // Time when drug would be fully eliminated
-      const eliminationTime = amountAfterAbsorption / k0;
+      // Amount absorbed up to time t
+      const amountAbsorbed_t = dose * bioavailability * (1 - Math.exp(-ka * time));
       
-      // Linear decline
-      if (time < eliminationTime) {
-        return Math.max(0, concAfterAbsorption - (k0 / vssUnbound) * time);
-      } else {
-        return 0;
-      }
+      // Zero-order elimination rate (constant mg/h)
+      const k0 = ke * vssUnbound; // mg/h
+      
+      // Amount eliminated up to time t (integral of k0 from 0 to t)
+      const amountEliminated = k0 * time;
+      
+      // Net amount in body
+      const amountInBody = Math.max(0, amountAbsorbed_t - amountEliminated);
+      
+      // Concentration
+      return amountInBody / vssUnbound;
       
     case 'second-order':
       // Second-order: dC/dt = -k2 * C^2
-      // Solution: C = C0 / (1 + C0*k2*t)
-      const concAbsorbed = (dose * bioavailability / vssUnbound) * (1 - Math.exp(-ka * time));
-      const k2 = ke / vssUnbound; // second-order rate constant
-      if (concAbsorbed === 0) return 0;
-      return concAbsorbed / (1 + concAbsorbed * k2 * time);
+      // This requires numerical integration due to simultaneous absorption and elimination
+      let C_second = 0;
+      const dt_second = 0.1; // time step
+      const steps_second = Math.floor(time / dt_second);
+      const k2 = ke / 10; // Scaled second-order rate constant
+      
+      for (let i = 0; i < steps_second; i++) {
+        const t = i * dt_second;
+        // Absorption rate at time t
+        const dCabs_dt = (dose * bioavailability * ka / vssUnbound) * Math.exp(-ka * t);
+        // Second-order elimination rate
+        const dCelim_dt = k2 * C_second * C_second;
+        // Net change
+        C_second += (dCabs_dt - dCelim_dt) * dt_second;
+        C_second = Math.max(0, C_second);
+      }
+      
+      return C_second;
       
     case 'third-order':
       // Third-order: dC/dt = -k3 * C^3
-      // Solution: C = C0 / sqrt(1 + 2*C0^2*k3*t)
-      const concAbs3 = (dose * bioavailability / vssUnbound) * (1 - Math.exp(-ka * time));
-      const k3 = ke / (vssUnbound * vssUnbound); // third-order rate constant
-      if (concAbs3 === 0) return 0;
-      return concAbs3 / Math.sqrt(1 + 2 * concAbs3 * concAbs3 * k3 * time);
+      // Requires numerical integration
+      let C_third = 0;
+      const dt_third = 0.1; // time step
+      const steps_third = Math.floor(time / dt_third);
+      const k3 = ke / 100; // Scaled third-order rate constant
+      
+      for (let i = 0; i < steps_third; i++) {
+        const t = i * dt_third;
+        // Absorption rate at time t
+        const dCabs_dt = (dose * bioavailability * ka / vssUnbound) * Math.exp(-ka * t);
+        // Third-order elimination rate
+        const dCelim_dt = k3 * C_third * C_third * C_third;
+        // Net change
+        C_third += (dCabs_dt - dCelim_dt) * dt_third;
+        C_third = Math.max(0, C_third);
+      }
+      
+      return C_third;
       
     case 'non-linear':
       // Michaelis-Menten kinetics: dC/dt = -Vmax*C / (Km + C)
