@@ -1331,17 +1331,12 @@ function calculateConcentrationOneCompartment(subject, time) {
   return Math.max(0, concentration);
 }
 
-// Two-compartment model calculation
+// Two-compartment model calculation with support for different elimination kinetics
 function calculateConcentrationTwoCompartment(subject, time) {
   const { clearance, vssUnbound, dose, bioavailability, interval, numDoses, loadingDose, v2PerKg, q, weight, kinetics } = subject;
 
-  // Note: Two-compartment models with non-first-order kinetics are mathematically complex
-  // For now, we only support first-order kinetics for two-compartment models
   const kineticsType = kinetics || 'first-order';
-  if (kineticsType !== 'first-order') {
-    console.warn('Two-compartment model currently only supports first-order kinetics. Using first-order.');
-  }
-
+  
   // Get absorption rate based on selected formulation
   const formulation = document.getElementById('formulation-select')?.value || 'medium';
   const ka = getAbsorptionRate(formulation);
@@ -1354,39 +1349,136 @@ function calculateConcentrationTwoCompartment(subject, time) {
   const k12 = q / v1;
   const k21 = q / v2;
 
-  // Macro-constants (hybrid rate constants)
-  const alpha = 0.5 * (k12 + k21 + k10 + Math.sqrt(Math.pow(k12 + k21 + k10, 2) - 4 * k21 * k10));
-  const beta = 0.5 * (k12 + k21 + k10 - Math.sqrt(Math.pow(k12 + k21 + k10, 2) - 4 * k21 * k10));
-
   const tau = interval;
-  let concentration = 0;
+  
+  // For first-order kinetics, use analytical solution
+  if (kineticsType === 'first-order') {
+    // Macro-constants (hybrid rate constants)
+    const alpha = 0.5 * (k12 + k21 + k10 + Math.sqrt(Math.pow(k12 + k21 + k10, 2) - 4 * k21 * k10));
+    const beta = 0.5 * (k12 + k21 + k10 - Math.sqrt(Math.pow(k12 + k21 + k10, 2) - 4 * k21 * k10));
 
-  // Apply loading dose at time 0
-  if (loadingDose > 0 && time >= 0) {
-    const A = (loadingDose * bioavailability / v1) * (ka - alpha) / ((ka - alpha) * (beta - alpha));
-    const B = (loadingDose * bioavailability / v1) * (ka - beta) / ((ka - beta) * (alpha - beta));
-    const C = (loadingDose * bioavailability / v1) * ((alpha - ka) * (beta - ka)) / ((ka - alpha) * (ka - beta));
+    let concentration = 0;
 
-    const conc = A * Math.exp(-alpha * time) + B * Math.exp(-beta * time) + C * Math.exp(-ka * time);
-    concentration += conc;
-  }
+    // Apply loading dose at time 0
+    if (loadingDose > 0 && time >= 0) {
+      const A = (loadingDose * bioavailability / v1) * (ka - alpha) / ((ka - alpha) * (beta - alpha));
+      const B = (loadingDose * bioavailability / v1) * (ka - beta) / ((ka - beta) * (alpha - beta));
+      const C = (loadingDose * bioavailability / v1) * ((alpha - ka) * (beta - ka)) / ((ka - alpha) * (ka - beta));
 
-  // Apply maintenance doses from the second dose onward
-  for (let n = 1; n < numDoses; n++) {
-    const doseTime = n * tau;
-    if (time >= doseTime) {
-      const timeSinceDose = time - doseTime;
-
-      const A = (dose * bioavailability / v1) * (ka - alpha) / ((ka - alpha) * (beta - alpha));
-      const B = (dose * bioavailability / v1) * (ka - beta) / ((ka - beta) * (alpha - beta));
-      const C = (dose * bioavailability / v1) * ((alpha - ka) * (beta - ka)) / ((ka - alpha) * (ka - beta));
-
-      const conc = A * Math.exp(-alpha * timeSinceDose) + B * Math.exp(-beta * timeSinceDose) + C * Math.exp(-ka * timeSinceDose);
+      const conc = A * Math.exp(-alpha * time) + B * Math.exp(-beta * time) + C * Math.exp(-ka * time);
       concentration += conc;
     }
-  }
 
-  return Math.max(0, concentration);
+    // Apply maintenance doses from the second dose onward
+    for (let n = 1; n < numDoses; n++) {
+      const doseTime = n * tau;
+      if (time >= doseTime) {
+        const timeSinceDose = time - doseTime;
+
+        const A = (dose * bioavailability / v1) * (ka - alpha) / ((ka - alpha) * (beta - alpha));
+        const B = (dose * bioavailability / v1) * (ka - beta) / ((ka - beta) * (alpha - beta));
+        const C = (dose * bioavailability / v1) * ((alpha - ka) * (beta - ka)) / ((ka - alpha) * (ka - beta));
+
+        const conc = A * Math.exp(-alpha * timeSinceDose) + B * Math.exp(-beta * timeSinceDose) + C * Math.exp(-ka * timeSinceDose);
+        concentration += conc;
+      }
+    }
+
+    return Math.max(0, concentration);
+  } else {
+    // For non-first-order kinetics, use numerical integration
+    return calculateConcentrationTwoCompartmentNumerical(subject, time, kineticsType, ka, v1, v2, k10, k12, k21);
+  }
+}
+
+// Numerical integration for two-compartment model with non-first-order kinetics
+function calculateConcentrationTwoCompartmentNumerical(subject, time, kineticsType, ka, v1, v2, k10, k12, k21) {
+  const { dose, bioavailability, interval, numDoses, loadingDose } = subject;
+  
+  // Initialize compartment amounts
+  let C1 = 0; // Central compartment concentration
+  let C2 = 0; // Peripheral compartment concentration
+  let absorbedAmount = 0; // Amount absorbed so far
+  
+  const dt = 0.1; // Time step for numerical integration
+  const tau = interval;
+  
+  // Simulate from time 0 to target time
+  const steps = Math.floor(time / dt);
+  
+  for (let i = 0; i < steps; i++) {
+    const t = i * dt;
+    
+    // Determine which dose(s) are being absorbed at this time
+    let totalAbsorptionRate = 0;
+    
+    // Loading dose (at time 0)
+    if (loadingDose > 0 && t >= 0) {
+      const timeSinceLoadingDose = t;
+      totalAbsorptionRate += (loadingDose * bioavailability * ka) * Math.exp(-ka * timeSinceLoadingDose);
+    }
+    
+    // Maintenance doses
+    for (let n = 1; n < numDoses; n++) {
+      const doseTime = n * tau;
+      if (t >= doseTime) {
+        const timeSinceDose = t - doseTime;
+        totalAbsorptionRate += (dose * bioavailability * ka) * Math.exp(-ka * timeSinceDose);
+      }
+    }
+    
+    // Absorption into central compartment
+    const dC1_abs = totalAbsorptionRate / v1;
+    
+    // Distribution between compartments (always first-order)
+    const dC1_dist = -k12 * C1 + k21 * C2;
+    const dC2_dist = k12 * C1 - k21 * C2;
+    
+    // Elimination from central compartment (kinetics-dependent)
+    let dC1_elim = 0;
+    
+    switch (kineticsType) {
+      case 'zero-order':
+        // Zero-order: constant elimination rate
+        const k0_rate = k10 * v1; // Convert to amount/time
+        dC1_elim = k0_rate / v1; // Convert back to concentration/time
+        break;
+        
+      case 'second-order':
+        // Second-order: dC/dt = -k2 * C^2
+        const k2 = k10 / 10; // Scaled second-order rate constant
+        dC1_elim = k2 * C1 * C1;
+        break;
+        
+      case 'third-order':
+        // Third-order: dC/dt = -k3 * C^3
+        const k3 = k10 / 100; // Scaled third-order rate constant
+        dC1_elim = k3 * C1 * C1 * C1;
+        break;
+        
+      case 'non-linear':
+        // Michaelis-Menten kinetics
+        const Vmax = k10 * v1 * 10; // Maximum elimination rate
+        const Km = 5; // Michaelis constant
+        dC1_elim = (Vmax * C1) / (Km + C1) / v1;
+        break;
+        
+      default:
+        // Default to first-order (shouldn't reach here)
+        dC1_elim = k10 * C1;
+    }
+    
+    // Update concentrations
+    C1 += (dC1_abs + dC1_dist - dC1_elim) * dt;
+    C2 += dC2_dist * dt;
+    
+    // Ensure concentrations don't go negative
+    C1 = Math.max(0, C1);
+    C2 = Math.max(0, C2);
+  }
+  
+  // Return central compartment concentration (what we measure)
+  return C1;
 }
 
 // NCA-based concentration calculation (uses one-compartment as basis, then applies real-time Plot and Data)
