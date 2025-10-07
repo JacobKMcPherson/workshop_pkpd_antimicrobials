@@ -40,3 +40,4 @@ quarto-*/
 
 # Freeze directory (Quarto cache)
 _freeze/
+screenshots/
