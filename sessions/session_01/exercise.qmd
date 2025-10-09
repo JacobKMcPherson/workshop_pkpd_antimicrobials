@@ -15,6 +15,27 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 <div class="controls-section">
 
+</div>
+
+<div class="controls-column-4 plot-section">
+### Plot
+
+<div id="concentration-plot">
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="1920" height="1080"></canvas>
+</div>
+
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 <div class="panel-tabset">
 
 ### Controls
@@ -155,27 +176,6 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 </div>
 
 </div>
-
-<div class="controls-column-4 plot-section">
-### Plot
-
-<div id="concentration-plot">
-<div id="chart-fallback">
-  <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="1920" height="1080"></canvas>
-</div>
-
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="panel-tabset">
 
 ### Reference Lines
 <div class="reference-properties">
