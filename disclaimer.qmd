@@ -1,0 +1,48 @@
+---
+title: "Disclaimer"
+format: 
+  html:
+    toc: true
+---
+
+## Educational Purpose Only
+
+This workshop and all associated materials are provided for **educational purposes only** and are not intended for patient care or clinical decision-making.
+
+### Important Notice
+
+::: {.callout-warning}
+## Not for Clinical Use
+
+The simulations, calculations, and examples provided in this workshop are designed for teaching pharmacokinetic and pharmacodynamic principles. They should **NOT** be used for:
+
+- Patient diagnosis or treatment
+- Clinical dosing decisions
+- Medication therapy management
+- Any form of patient care
+
+:::
+
+### Limitations
+
+- The models and simulations presented are simplified for educational purposes
+- Real-world patient care requires comprehensive clinical assessment
+- Always consult appropriate medical professionals and use validated clinical tools for patient care decisions
+- Drug dosing must be individualized based on patient-specific factors and clinical judgment
+
+### Professional Responsibility
+
+Healthcare professionals should:
+
+- Use clinically validated tools and resources for patient care
+- Follow evidence-based guidelines and institutional protocols
+- Consult with specialists when appropriate
+- Consider all relevant patient factors in clinical decision-making
+
+### Liability
+
+The authors and contributors to this workshop assume no liability for any consequences arising from the use or misuse of the information provided herein for clinical purposes.
+
+---
+
+*For educational inquiries, please refer to the workshop materials and contact information provided.*

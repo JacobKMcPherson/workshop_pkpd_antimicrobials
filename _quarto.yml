@@ -26,6 +26,8 @@ website:
       - text: Info
         icon: info-circle
         menu: 
+          - href: disclaimer.qmd
+            text: Disclaimer
           - href: info/team.qmd
             text: Team
           - href: info/support.qmd
