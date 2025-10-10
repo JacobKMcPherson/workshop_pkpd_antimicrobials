@@ -9,32 +9,9 @@ execute:
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
-<div class="content-section">
+<div class="layout-with-sidebar">
 
-<div class="main-layout">
-
-<div class="controls-section">
-
-</div>
-
-<div class="controls-column-4 plot-section">
-### Plot
-
-<div id="concentration-plot">
-<div id="chart-fallback">
-  <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="1920" height="1080"></canvas>
-</div>
-
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+<div class="main-content-area">
 
 <div class="panel-tabset">
 
@@ -383,12 +360,65 @@ Test your understanding by calculating the following parameters for the current 
 
 </div>
 
+</div>
+
+<div class="right-sidebar">
+### Plot
+
+<div id="concentration-plot">
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="1920" height="1080"></canvas>
+</div>
+
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+
+</div>
+
+</div>
+
+</div>
+
 
 ```{=html}
 <style>
 body {
   margin: 0;
   padding: 0;
+}
+
+/* Layout with sidebar */
+.layout-with-sidebar {
+  display: flex;
+  gap: 20px;
+  max-width: 100%;
+  width: 100%;
+}
+
+.main-content-area {
+  flex: 1;
+  min-width: 0;
+}
+
+.right-sidebar {
+  width: 400px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.right-sidebar h3 {
+  margin: 0 0 15px 0;
+  color: #495057;
+  font-size: 1.2em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
 }
 
 .main-content {
