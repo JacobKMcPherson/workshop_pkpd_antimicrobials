@@ -80,8 +80,8 @@ Submit
 ```{=html}
 <script>
 // Configuration injected during build time
-const SUPABASE_URL = "https://YOURPROJECT.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY"; // safe with insert-only policy
+const SUPABASE_URL = "${SUPABASE_URL}";
+const SUPABASE_ANON_KEY = "${SUPABASE_ANON_KEY}"; // safe with insert-only policy
 const QUIZ_ID = "post-workshop-survey";
 
 function getAnonUserId() {
@@ -148,11 +148,11 @@ document.getElementById("quiz-form").addEventListener("submit", async (e) => {
     }
   };
 
-  const res = await fetch(`https://YOURPROJECT.supabase.co/rest/v1/quiz_responses`, {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/quiz_responses`, {
     method: "POST",
     headers: {
       "apikey": SUPABASE_ANON_KEY,
-      "Authorization": `Bearer YOUR_PUBLIC_ANON_KEY`,
+      "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
       "Content-Type": "application/json",
       "Prefer": "return=representation"
     },
