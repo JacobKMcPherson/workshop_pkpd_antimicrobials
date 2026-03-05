@@ -9,13 +9,9 @@ execute:
 
 This interactive module demonstrates multiple dosing pharmacokinetics using patient-specific parameters.
 
-<div class="layout-with-sidebar">
+<div class="two-col-layout">
 
-<div class="main-content-area">
-
-<div class="panel-tabset">
-
-### Controls
+<div class="params-column">
 
 <div class="controls-grid">
 
@@ -154,7 +150,7 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 
 </div>
 
-### Reference Lines
+#### Reference Lines
 <div class="reference-properties">
 <div class="control-group-compact">
 <label for="toxicity-slider">Toxicity (mg/L):</label>
@@ -169,7 +165,27 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
 </div>
 </div>
 
-<br>
+</div>
+
+<div class="plot-column">
+
+#### Plot
+
+<div id="concentration-plot">
+<div id="chart-fallback">
+  <p>Loading interactive chart...</p>
+  <canvas id="pk-chart" width="1920" height="1080"></canvas>
+</div>
+
+<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="panel-tabset">
 
 ### Data
 
@@ -360,25 +376,6 @@ Test your understanding by calculating the following parameters for the current 
 
 </div>
 
-</div>
-
-<div class="right-sidebar">
-### Plot
-
-<div id="concentration-plot">
-<div id="chart-fallback">
-  <p>Loading interactive chart...</p>
-  <canvas id="pk-chart" width="1920" height="1080"></canvas>
-</div>
-
-<button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
-
-</div>
-
-</div>
-
-</div>
-
 
 ```{=html}
 <style>
@@ -387,22 +384,21 @@ body {
   padding: 0;
 }
 
-/* Layout with sidebar */
-.layout-with-sidebar {
-  display: flex;
+/* Two-column layout */
+.two-col-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
   max-width: 100%;
   width: 100%;
+  align-items: start;
 }
 
-.main-content-area {
-  flex: 1;
+.params-column {
   min-width: 0;
 }
 
-.right-sidebar {
-  width: 400px;
-  flex-shrink: 0;
+.plot-column {
   position: sticky;
   top: 20px;
   height: fit-content;
@@ -413,7 +409,7 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.right-sidebar h3 {
+.plot-column h4 {
   margin: 0 0 15px 0;
   color: #495057;
   font-size: 1.2em;
@@ -615,7 +611,7 @@ main.content {
   }
 
   /* Stack layout vertically on smaller screens */
-  .main-layout {
+  .two-col-layout {
     grid-template-columns: 1fr;
     gap: 20px;
   }
