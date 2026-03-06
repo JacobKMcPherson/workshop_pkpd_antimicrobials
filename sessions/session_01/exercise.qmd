@@ -260,6 +260,7 @@ The one-compartment model with first-order absorption focuses on the minimum ess
   \mathrm{CrCl} = \frac{(140 - \text{age}) \times \text{weight} \times (0.85\ \text{if female})}{72 \times S_{\text{Cr}}}
   \]
 - **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
+- **IBW Floor**: For instructional consistency, the ideal body weight is not allowed below 40 kg
 
 **Dosing Parameters:**
 - **Dose**: Amount of drug administered per dose
@@ -2370,8 +2371,9 @@ function checkQuizAnswers() {
     cssAvgWorked
   );
 
+  const feedbackElements = [crClFeedback, adjBWFeedback, vssFeedback, tssFeedback, cssAvgFeedback];
   if (window.MathJax?.typesetPromise) {
-    MathJax.typesetPromise([crClFeedback, adjBWFeedback, vssFeedback, tssFeedback, cssAvgFeedback])
+    MathJax.typesetPromise(feedbackElements)
       .catch(err => console.warn('MathJax failed to render quiz feedback equations; LaTeX source will appear instead of formatted formulas.', err));
   }
 }
