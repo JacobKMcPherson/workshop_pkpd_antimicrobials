@@ -2265,9 +2265,24 @@ function checkQuizAnswers() {
   const tolerance = 0.1; // 10% tolerance for answers
   const updateQuizFeedback = (feedbackElement, isCorrect, correctAnswer, workedCalculation) => {
     const statusLabel = isCorrect ? '✓ Correct!' : '✗ Incorrect.';
-    feedbackElement.innerHTML = `${statusLabel} Correct answer: ${correctAnswer}<div class="quiz-feedback-detail">${workedCalculation}</div>`;
+    const workedLines = Array.isArray(workedCalculation) ? workedCalculation : [workedCalculation];
+    feedbackElement.textContent = '';
+    const statusLine = document.createElement('div');
+    statusLine.textContent = `${statusLabel} Correct answer: ${correctAnswer}`;
+    feedbackElement.appendChild(statusLine);
+    workedLines.forEach((line, index) => {
+      const detailLine = document.createElement('div');
+      detailLine.className = 'quiz-feedback-detail';
+      detailLine.textContent = line;
+      if (index > 0) {
+        detailLine.style.marginTop = '2px';
+      }
+      feedbackElement.appendChild(detailLine);
+    });
     feedbackElement.className = `quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
   };
+  const STEADY_STATE_START_HOURS = 216;
+  const STEADY_STATE_END_HOURS = 240;
 
   // 1. Creatinine Clearance (mL/min)
   const userCrCl = parseFloat(document.getElementById('quiz-crcl').value);
@@ -2298,7 +2313,7 @@ function checkQuizAnswers() {
     adjBWFeedback,
     Math.abs(userAdjBW - correctAdjBW) / correctAdjBW <= tolerance,
     `${correctAdjBW.toFixed(1)} kg`,
-    `Worked: ${ibwWorked}<br>${adjBwWorked}`
+    [`Worked: ${ibwWorked}`, adjBwWorked]
   );
 
   // 3. Volume of Distribution of Unbound Drug (L)
@@ -2330,8 +2345,8 @@ function checkQuizAnswers() {
   const userCssAvg = parseFloat(document.getElementById('quiz-cssavg').value);
   const correctCssAvg = subject.cssAvg;
   const cssAvgFeedback = document.getElementById('quiz-cssavg-feedback');
-  const cssStartIdx = timePoints.findIndex(t => t >= 216);
-  const cssEndIdx = timePoints.findIndex(t => t >= 240);
+  const cssStartIdx = timePoints.findIndex(t => t >= STEADY_STATE_START_HOURS);
+  const cssEndIdx = timePoints.findIndex(t => t >= STEADY_STATE_END_HOURS);
   const steadyStateConcentrations = (cssStartIdx !== -1 && cssEndIdx !== -1)
     ? subject.concentrations.slice(cssStartIdx, cssEndIdx)
     : subject.concentrations;
@@ -2346,7 +2361,8 @@ function checkQuizAnswers() {
   );
 
   if (window.MathJax?.typesetPromise) {
-    MathJax.typesetPromise([crClFeedback, adjBWFeedback, vssFeedback, tssFeedback, cssAvgFeedback]);
+    MathJax.typesetPromise([crClFeedback, adjBWFeedback, vssFeedback, tssFeedback, cssAvgFeedback])
+      .catch(err => console.warn('MathJax typeset failed:', err));
   }
 }
 
