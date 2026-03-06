@@ -2263,9 +2263,11 @@ function checkQuizAnswers() {
 
   const subject = subjects[0];
   const tolerance = 0.1; // 10% tolerance for answers
-  const updateQuizFeedback = (feedbackElement, isCorrect, correctAnswer, workedCalculation) => {
+  const updateQuizFeedback = (feedbackElement, isCorrect, correctAnswer, workedCalculationLines) => {
     const statusLabel = isCorrect ? '✓ Correct!' : '✗ Incorrect.';
-    const workedLines = Array.isArray(workedCalculation) ? workedCalculation : [workedCalculation];
+    const workedLines = Array.isArray(workedCalculationLines)
+      ? workedCalculationLines
+      : [workedCalculationLines];
     feedbackElement.textContent = '';
     const statusLine = document.createElement('div');
     statusLine.textContent = `${statusLabel} Correct answer: ${correctAnswer}`;
@@ -2281,6 +2283,7 @@ function checkQuizAnswers() {
     });
     feedbackElement.className = `quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
   };
+  // Steady state evaluated from 216-240 hours (days 9-10 of the simulation).
   const STEADY_STATE_START_HOURS = 216;
   const STEADY_STATE_END_HOURS = 240;
 
@@ -2351,8 +2354,10 @@ function checkQuizAnswers() {
     ? subject.concentrations.slice(cssStartIdx, cssEndIdx)
     : subject.concentrations;
   const cssSum = steadyStateConcentrations.reduce((sum, conc) => sum + conc, 0);
-  const cssCount = Math.max(steadyStateConcentrations.length, 1);
-  const cssAvgWorked = `Worked: \\(C_{ss,\\text{avg}} = \\frac{\\sum C_i}{n} = \\frac{${cssSum.toFixed(2)}}{${cssCount}} = ${correctCssAvg.toFixed(2)}\\)`;
+  const cssCount = steadyStateConcentrations.length;
+  const cssAvgWorked = cssCount > 0
+    ? `Worked: \\(C_{ss,\\text{avg}} = \\frac{\\sum C_i}{n} = \\frac{${cssSum.toFixed(2)}}{${cssCount}} = ${correctCssAvg.toFixed(2)}\\)`
+    : 'Worked: steady-state window unavailable for averaging.';
   updateQuizFeedback(
     cssAvgFeedback,
     Math.abs(userCssAvg - correctCssAvg) / correctCssAvg <= tolerance,
@@ -2362,7 +2367,7 @@ function checkQuizAnswers() {
 
   if (window.MathJax?.typesetPromise) {
     MathJax.typesetPromise([crClFeedback, adjBWFeedback, vssFeedback, tssFeedback, cssAvgFeedback])
-      .catch(err => console.warn('MathJax typeset failed:', err));
+      .catch(err => console.warn('MathJax failed to render quiz feedback equations:', err));
   }
 }
 
