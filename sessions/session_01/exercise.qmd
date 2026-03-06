@@ -2283,7 +2283,7 @@ function checkQuizAnswers() {
     });
     feedbackElement.className = `quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
   };
-  // Steady state evaluated from 216-240 hours (days 9-10 of the simulation).
+  // Steady state evaluated from 216-240 hours (from day 9 to day 10).
   const STEADY_STATE_START_HOURS = 216;
   const STEADY_STATE_END_HOURS = 240;
 
@@ -2307,7 +2307,7 @@ function checkQuizAnswers() {
   const heightInches = subject.height / 2.54;
   const ibwBase = subject.sex === 'Male' ? 50 : 45.5;
   const ibwRaw = ibwBase + 2.3 * (heightInches - 60);
-  const ibwUsed = Math.max(ibwRaw, 40);
+  const ibwUsed = Math.max(ibwRaw, 40); // Apply clinical minimum IBW of 40 kg.
   const ibwWorked = `\\(\\text{IBW} = \\max(40, ${ibwBase.toFixed(1)} + 2.3 \\times (${heightInches.toFixed(1)} - 60)) = ${ibwUsed.toFixed(1)}\\)`;
   const adjBwWorked = subject.weight > ibwUsed
     ? `\\(\\text{AdjBW} = ${ibwUsed.toFixed(1)} + 0.4 \\times (${subject.weight.toFixed(1)} - ${ibwUsed.toFixed(1)}) = ${correctAdjBW.toFixed(1)}\\)`
@@ -2325,7 +2325,7 @@ function checkQuizAnswers() {
   const vssFeedback = document.getElementById('quiz-vss-feedback');
   const vssWorked = subject.weight > 0
     ? `Worked: \\(V = ${(subject.volume / subject.weight).toFixed(2)} \\times ${subject.weight.toFixed(1)} = ${subject.volume.toFixed(1)},\\ V_{ss,u} = ${subject.fractionUnbound.toFixed(2)} \\times ${subject.volume.toFixed(1)} = ${correctVss.toFixed(1)}\\)`
-    : 'Worked: weight unavailable for Vss,u calculation.';
+    : 'Worked: \\(\\text{Weight unavailable for } V_{ss,u} \\text{ calculation.}\\)';
   updateQuizFeedback(
     vssFeedback,
     Math.abs(userVss - correctVss) / correctVss <= tolerance,
@@ -2362,7 +2362,7 @@ function checkQuizAnswers() {
     : 'full profile';
   const cssAvgWorked = cssCount > 0
     ? `Worked (${cssRangeLabel}): \\(C_{ss,\\text{avg}} = \\frac{\\sum C_i}{n} = \\frac{${cssSum.toFixed(2)}}{${cssCount}} = ${correctCssAvg.toFixed(2)}\\)`
-    : `Worked (${cssRangeLabel}): no concentrations available for averaging.`;
+    : `Worked (${cssRangeLabel}): \\(\\text{No concentrations available for averaging.}\\)`;
   updateQuizFeedback(
     cssAvgFeedback,
     Math.abs(userCssAvg - correctCssAvg) / correctCssAvg <= tolerance,
