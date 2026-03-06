@@ -2323,8 +2323,10 @@ function checkQuizAnswers() {
   const userVss = parseFloat(document.getElementById('quiz-vss').value);
   const correctVss = subject.vssUnbound;
   const vssFeedback = document.getElementById('quiz-vss-feedback');
-  const volumePerKg = subject.weight > 0 ? subject.volume / subject.weight : 0;
-  const vssWorked = `Worked: \\(V = ${volumePerKg.toFixed(2)} \\times ${subject.weight.toFixed(1)} = ${subject.volume.toFixed(1)},\\ V_{ss,u} = ${subject.fractionUnbound.toFixed(2)} \\times ${subject.volume.toFixed(1)} = ${correctVss.toFixed(1)}\\)`;
+  const volumePerKg = subject.weight > 0 ? subject.volume / subject.weight : null;
+  const vssWorked = subject.weight > 0
+    ? `Worked: \\(V = ${volumePerKg.toFixed(2)} \\times ${subject.weight.toFixed(1)} = ${subject.volume.toFixed(1)},\\ V_{ss,u} = ${subject.fractionUnbound.toFixed(2)} \\times ${subject.volume.toFixed(1)} = ${correctVss.toFixed(1)}\\)`
+    : 'Worked: weight unavailable for Vss,u calculation.';
   updateQuizFeedback(
     vssFeedback,
     Math.abs(userVss - correctVss) / correctVss <= tolerance,
@@ -2350,14 +2352,18 @@ function checkQuizAnswers() {
   const cssAvgFeedback = document.getElementById('quiz-cssavg-feedback');
   const cssStartIdx = timePoints.findIndex(t => t >= STEADY_STATE_START_HOURS);
   const cssEndIdx = timePoints.findIndex(t => t >= STEADY_STATE_END_HOURS);
-  const steadyStateConcentrations = (cssStartIdx !== -1 && cssEndIdx !== -1)
+  const hasSteadyStateWindow = cssStartIdx !== -1 && cssEndIdx !== -1;
+  const steadyStateConcentrations = hasSteadyStateWindow
     ? subject.concentrations.slice(cssStartIdx, cssEndIdx)
     : subject.concentrations;
   const cssSum = steadyStateConcentrations.reduce((sum, conc) => sum + conc, 0);
   const cssCount = steadyStateConcentrations.length;
+  const cssRangeLabel = hasSteadyStateWindow
+    ? `${STEADY_STATE_START_HOURS}-${STEADY_STATE_END_HOURS} h`
+    : 'full profile';
   const cssAvgWorked = cssCount > 0
-    ? `Worked: \\(C_{ss,\\text{avg}} = \\frac{\\sum C_i}{n} = \\frac{${cssSum.toFixed(2)}}{${cssCount}} = ${correctCssAvg.toFixed(2)}\\)`
-    : 'Worked: steady-state window unavailable for averaging.';
+    ? `Worked (${cssRangeLabel}): \\(C_{ss,\\text{avg}} = \\frac{\\sum C_i}{n} = \\frac{${cssSum.toFixed(2)}}{${cssCount}} = ${correctCssAvg.toFixed(2)}\\)`
+    : `Worked (${cssRangeLabel}): no concentrations available for averaging.`;
   updateQuizFeedback(
     cssAvgFeedback,
     Math.abs(userCssAvg - correctCssAvg) / correctCssAvg <= tolerance,
@@ -2367,7 +2373,7 @@ function checkQuizAnswers() {
 
   if (window.MathJax?.typesetPromise) {
     MathJax.typesetPromise([crClFeedback, adjBWFeedback, vssFeedback, tssFeedback, cssAvgFeedback])
-      .catch(err => console.warn('MathJax failed to render quiz feedback equations:', err));
+      .catch(err => console.warn('MathJax failed to render quiz feedback equations; formulas will appear as plain text.', err));
   }
 }
 
