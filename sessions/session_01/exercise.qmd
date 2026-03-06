@@ -2265,7 +2265,7 @@ function checkQuizAnswers() {
 
   const subject = subjects[0];
   const tolerance = 0.1; // 10% tolerance for answers
-  const IBW_FLOOR_KG = 40;
+  const INSTRUCTIONAL_IBW_FLOOR_KG = 40;
   // workedCalculationLines accepts a single string or an array for multi-line feedback.
   const updateQuizFeedback = (feedbackElement, isCorrect, correctAnswer, workedCalculationLines) => {
     const statusLabel = isCorrect ? '✓ Correct!' : '✗ Incorrect.';
@@ -2311,8 +2311,8 @@ function checkQuizAnswers() {
   const heightInches = subject.height / 2.54;
   const ibwBase = subject.sex === 'Male' ? 50 : 45.5;
   const ibwRaw = ibwBase + 2.3 * (heightInches - 60);
-  const ibwUsed = Math.max(ibwRaw, IBW_FLOOR_KG); // Apply instructional IBW floor.
-  const ibwWorked = `\\(\\text{IBW} = \\max(${IBW_FLOOR_KG}, ${ibwBase.toFixed(1)} + 2.3 \\times (${heightInches.toFixed(1)} - 60)) = ${ibwUsed.toFixed(1)}\\)`;
+  const ibwUsed = Math.max(ibwRaw, INSTRUCTIONAL_IBW_FLOOR_KG); // Apply instructional IBW floor.
+  const ibwWorked = `\\(\\text{IBW} = \\max(${INSTRUCTIONAL_IBW_FLOOR_KG}, ${ibwBase.toFixed(1)} + 2.3 \\times (${heightInches.toFixed(1)} - 60)) = ${ibwUsed.toFixed(1)}\\)`;
   const adjBwWorked = subject.weight > ibwUsed
     ? `\\(\\text{AdjBW} = ${ibwUsed.toFixed(1)} + 0.4 \\times (${subject.weight.toFixed(1)} - ${ibwUsed.toFixed(1)}) = ${correctAdjBW.toFixed(1)}\\)`
     : `\\(\\text{AdjBW} = ${subject.weight.toFixed(1)}\\)`;
@@ -2377,8 +2377,7 @@ function checkQuizAnswers() {
 
   const feedbackElements = [crClFeedback, adjBWFeedback, vssFeedback, tssFeedback, cssAvgFeedback];
   if (window.MathJax?.typesetPromise) {
-    const mathJaxWarning = 'MathJax failed to render quiz feedback equations; '
-      + 'LaTeX source will appear instead of formatted formulas.';
+    const mathJaxWarning = `MathJax failed to render quiz feedback equations; LaTeX source will appear instead of formatted formulas.`;
     MathJax.typesetPromise(feedbackElements)
       .catch(err => console.warn(mathJaxWarning, err));
   }
