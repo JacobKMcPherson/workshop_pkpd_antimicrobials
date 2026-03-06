@@ -255,8 +255,13 @@ The one-compartment model with first-order absorption focuses on the minimum ess
 - **Bioavailability (F)**: Fraction of dose reaching systemic circulation
 
 **Patient-Specific Factors:**
-- **Creatinine Clearance**: Calculated using Cockcroft-Gault: CrCl = [(140 - age) × weight × (0.85 if female)] / (72 × serum creatinine)
+- **Creatinine Clearance**: Calculated using Cockcroft-Gault:
+  \[
+  \mathrm{CrCl} = \frac{(140 - \text{age}) \times \text{weight} \times (0.85\ \text{if female})}{72 \times S_{\text{Cr}}}
+  \]
 - **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
+- **IBW Floor**: For instructional consistency, the ideal body weight is floored at 40 kg to prevent
+  unrealistic calculations when the formula yields values below physiologic norms
 
 **Dosing Parameters:**
 - **Dose**: Amount of drug administered per dose
@@ -277,9 +282,15 @@ This model is particularly useful for drugs that:
 - Require loading doses to account for peripheral distribution
 
 **Two-Compartment Equations:**
-- Central compartment: dA1/dt = -k10·A1 - k12·A1 + k21·A2 + ka·Absorption
-- Peripheral compartment: dA2/dt = k12·A1 - k21·A2
-- Where: k10 = CL/V1, k12 = Q/V1, k21 = Q/V2
+- Central compartment:
+  \[
+  \frac{dA_1}{dt} = -k_{10} A_1 - k_{12} A_1 + k_{21} A_2 + k_a A_{\text{abs}}
+  \]
+- Peripheral compartment:
+  \[
+  \frac{dA_2}{dt} = k_{12} A_1 - k_{21} A_2
+  \]
+- Where: \(k_{10} = \frac{CL}{V_1},\ k_{12} = \frac{Q}{V_1},\ k_{21} = \frac{Q}{V_2}\)
 
 ##### Non-Compartmental Analysis (NCA)
 
@@ -290,7 +301,10 @@ NCA calculates pharmacokinetic parameters directly from observed concentration-t
 - **Cmax**: Maximum observed concentration
 - **Tmax**: Time to maximum concentration
 - **Terminal Half-life**: Calculated from the terminal elimination phase (regression of log-concentration vs time)
-- **Clearance (CL/F)**: Dose/AUC for extravascular administration
+- **Clearance (CL/F)**:
+  \[
+  \frac{CL}{F} = \frac{\text{Dose}}{\text{AUC}}
+  \]
 
 **Advantages of NCA:**
 - No model assumptions required
@@ -303,29 +317,44 @@ NCA calculates pharmacokinetic parameters directly from observed concentration-t
 This simulation supports multiple elimination kinetic models:
 
 **First-Order Kinetics (Default):**
-- Elimination rate proportional to drug concentration: dC/dt = -ke × C
+- Elimination rate proportional to drug concentration:
+  \[
+  \frac{dC}{dt} = -k_e C
+  \]
 - Constant half-life independent of dose
 - Most common for therapeutic drugs
 - Linear pharmacokinetics (dose proportional)
 
 **Zero-Order Kinetics:**
-- Constant elimination rate regardless of concentration: dC/dt = -k0
+- Constant elimination rate regardless of concentration:
+  \[
+  \frac{dC}{dt} = -k_0
+  \]
 - Seen when elimination pathways are saturated
 - Examples: Alcohol, phenytoin at high doses
 - Non-linear pharmacokinetics
 
 **Second-Order Kinetics:**
-- Elimination rate proportional to concentration squared: dC/dt = -k2 × C²
+- Elimination rate proportional to concentration squared:
+  \[
+  \frac{dC}{dt} = -k_2 C^2
+  \]
 - Faster elimination at higher concentrations
 - Rare in clinical practice
 
 **Third-Order Kinetics:**
-- Elimination rate proportional to concentration cubed: dC/dt = -k3 × C³
+- Elimination rate proportional to concentration cubed:
+  \[
+  \frac{dC}{dt} = -k_3 C^3
+  \]
 - Even faster elimination at higher concentrations
 - Theoretical interest, rarely observed clinically
 
 **Non-Linear (Michaelis-Menten) Kinetics:**
-- Saturable elimination: dC/dt = -Vmax × C / (Km + C)
+- Saturable elimination:
+  \[
+  \frac{dC}{dt} = -\frac{V_{\max} C}{K_m + C}
+  \]
 - Combination of first-order (low C) and zero-order (high C)
 - Examples: Phenytoin, salicylates, theophylline at high doses
 - Dose-dependent half-life
@@ -339,30 +368,66 @@ Test your understanding by calculating the following parameters for the current 
 <div class="quiz-section">
 <div class="quiz-question">
 **1. Creatinine Clearance (mL/min):**
+<div class="quiz-equation">
+\[
+\mathrm{CrCl} = \frac{(140 - \text{age}) \times \text{weight} \times (0.85\ \text{if female})}{72 \times S_{\text{Cr}}}
+\]
+</div>
 <input type="number" id="quiz-crcl" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
 <span id="quiz-crcl-feedback" class="quiz-feedback"></span>
 </div>
 
 <div class="quiz-question">
 **2. Adjusted Body Weight (kg):**
+<div class="quiz-equation">
+\[
+\text{IBW} =
+\begin{cases}
+50 + 2.3(\text{Ht}_{\text{in}} - 60) & \text{male} \\
+45.5 + 2.3(\text{Ht}_{\text{in}} - 60) & \text{female}
+\end{cases}
+\]
+\[
+\text{AdjBW} =
+\begin{cases}
+\text{IBW} + 0.4(\text{Wt} - \text{IBW}) & \text{if Wt} > \text{IBW} \\
+\text{Wt} & \text{if Wt} \le \text{IBW}
+\end{cases}
+\]
+</div>
 <input type="number" id="quiz-adjbw" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
 <span id="quiz-adjbw-feedback" class="quiz-feedback"></span>
 </div>
 
 <div class="quiz-question">
 **3. Volume of Distribution of Unbound Drug (L):**
+<div class="quiz-equation">
+\[
+V_{ss,u} = f_u \times V = f_u \times (V_{d/kg} \times \text{Wt})
+\]
+</div>
 <input type="number" id="quiz-vss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
 <span id="quiz-vss-feedback" class="quiz-feedback"></span>
 </div>
 
 <div class="quiz-question">
 **4. Time to Steady State - tss (hours):**
+<div class="quiz-equation">
+\[
+t_{ss} \approx 5 \times t_{1/2}
+\]
+</div>
 <input type="number" id="quiz-tss" placeholder="Enter your calculation" step="0.1" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
 <span id="quiz-tss-feedback" class="quiz-feedback"></span>
 </div>
 
 <div class="quiz-question">
 **5. Average Steady-State Concentration - Css,avg (mg/L):**
+<div class="quiz-equation">
+\[
+C_{ss,\text{avg}} = \frac{\sum_{i=1}^{n} C_i}{n}
+\]
+</div>
 <input type="number" id="quiz-cssavg" placeholder="Enter your calculation" step="0.01" style="width: 100%; padding: 5px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 4px;">
 <span id="quiz-cssavg-feedback" class="quiz-feedback"></span>
 </div>
@@ -479,11 +544,22 @@ main.content {
   border-radius: 5px;
 }
 
+.quiz-equation {
+  margin: 6px 0 8px;
+  font-size: 0.85em;
+  color: #495057;
+}
+
 .quiz-feedback {
   display: block;
   margin-top: 5px;
   font-size: 0.85em;
   font-weight: bold;
+}
+
+.quiz-feedback-detail {
+  margin-top: 4px;
+  font-weight: normal;
 }
 
 .quiz-feedback.correct {
@@ -2189,65 +2265,121 @@ function checkQuizAnswers() {
 
   const subject = subjects[0];
   const tolerance = 0.1; // 10% tolerance for answers
+  const INSTRUCTIONAL_IBW_FLOOR_KG = 40;
+  // workedCalculationLines accepts a single string or an array for multi-line feedback.
+  const updateQuizFeedback = (feedbackElement, isCorrect, correctAnswer, workedCalculationLines) => {
+    const statusLabel = isCorrect ? '✓ Correct!' : '✗ Incorrect.';
+    const workedLines = Array.isArray(workedCalculationLines)
+      ? workedCalculationLines
+      : [workedCalculationLines];
+    feedbackElement.replaceChildren();
+    const statusLine = document.createElement('div');
+    statusLine.textContent = `${statusLabel} Correct answer: ${correctAnswer}`;
+    feedbackElement.appendChild(statusLine);
+    workedLines.forEach((line, index) => {
+      const detailLine = document.createElement('div');
+      detailLine.className = 'quiz-feedback-detail';
+      detailLine.textContent = line;
+      if (index > 0) {
+        detailLine.style.marginTop = '2px';
+      }
+      feedbackElement.appendChild(detailLine);
+    });
+    feedbackElement.className = `quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+  };
+  // Steady state evaluated from 216-240 hours (from day 9 to day 10).
+  const STEADY_STATE_START_HOURS = 216;
+  const STEADY_STATE_END_HOURS = 240;
 
   // 1. Creatinine Clearance (mL/min)
   const userCrCl = parseFloat(document.getElementById('quiz-crcl').value);
   const correctCrCl = subject.creatinineClearanceMlMin;
   const crClFeedback = document.getElementById('quiz-crcl-feedback');
-  if (Math.abs(userCrCl - correctCrCl) / correctCrCl <= tolerance) {
-    crClFeedback.textContent = `✓ Correct! (${correctCrCl.toFixed(1)} mL/min)`;
-    crClFeedback.className = 'quiz-feedback correct';
-  } else {
-    crClFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCrCl.toFixed(1)} mL/min`;
-    crClFeedback.className = 'quiz-feedback incorrect';
-  }
+  const crClFactor = subject.sex === 'Female' ? 0.85 : 1;
+  const crClWorked = `Worked: \\(\\frac{(140 - ${subject.age}) \\times ${subject.weight.toFixed(1)} \\times ${crClFactor}}{72 \\times ${subject.creatinine.toFixed(2)}} = ${correctCrCl.toFixed(1)}\\)`;
+  updateQuizFeedback(
+    crClFeedback,
+    Math.abs(userCrCl - correctCrCl) / correctCrCl <= tolerance,
+    `${correctCrCl.toFixed(1)} mL/min`,
+    crClWorked
+  );
 
   // 2. Adjusted Body Weight (kg)
   const userAdjBW = parseFloat(document.getElementById('quiz-adjbw').value);
   const correctAdjBW = subject.adjustedIbw;
   const adjBWFeedback = document.getElementById('quiz-adjbw-feedback');
-  if (Math.abs(userAdjBW - correctAdjBW) / correctAdjBW <= tolerance) {
-    adjBWFeedback.textContent = `✓ Correct! (${correctAdjBW.toFixed(1)} kg)`;
-    adjBWFeedback.className = 'quiz-feedback correct';
-  } else {
-    adjBWFeedback.textContent = `✗ Incorrect. Correct answer: ${correctAdjBW.toFixed(1)} kg`;
-    adjBWFeedback.className = 'quiz-feedback incorrect';
-  }
+  const heightInches = subject.height / 2.54;
+  const ibwBase = subject.sex === 'Male' ? 50 : 45.5;
+  const ibwRaw = ibwBase + 2.3 * (heightInches - 60);
+  const ibwUsed = Math.max(ibwRaw, INSTRUCTIONAL_IBW_FLOOR_KG); // Apply instructional IBW floor.
+  const ibwWorked = `\\(\\text{IBW} = \\max(${INSTRUCTIONAL_IBW_FLOOR_KG}, ${ibwBase.toFixed(1)} + 2.3 \\times (${heightInches.toFixed(1)} - 60)) = ${ibwUsed.toFixed(1)}\\)`;
+  const adjBwWorked = subject.weight > ibwUsed
+    ? `\\(\\text{AdjBW} = ${ibwUsed.toFixed(1)} + 0.4 \\times (${subject.weight.toFixed(1)} - ${ibwUsed.toFixed(1)}) = ${correctAdjBW.toFixed(1)}\\)`
+    : `\\(\\text{AdjBW} = ${subject.weight.toFixed(1)}\\)`;
+  updateQuizFeedback(
+    adjBWFeedback,
+    Math.abs(userAdjBW - correctAdjBW) / correctAdjBW <= tolerance,
+    `${correctAdjBW.toFixed(1)} kg`,
+    [`Worked: ${ibwWorked}`, adjBwWorked]
+  );
 
   // 3. Volume of Distribution of Unbound Drug (L)
   const userVss = parseFloat(document.getElementById('quiz-vss').value);
   const correctVss = subject.vssUnbound;
   const vssFeedback = document.getElementById('quiz-vss-feedback');
-  if (Math.abs(userVss - correctVss) / correctVss <= tolerance) {
-    vssFeedback.textContent = `✓ Correct! (${correctVss.toFixed(1)} L)`;
-    vssFeedback.className = 'quiz-feedback correct';
-  } else {
-    vssFeedback.textContent = `✗ Incorrect. Correct answer: ${correctVss.toFixed(1)} L`;
-    vssFeedback.className = 'quiz-feedback incorrect';
-  }
+  const vssWorked = subject.weight > 0
+    ? `Worked: \\(V = ${(subject.volume / subject.weight).toFixed(2)} \\times ${subject.weight.toFixed(1)} = ${subject.volume.toFixed(1)},\\ V_{ss,u} = ${subject.fractionUnbound.toFixed(2)} \\times ${subject.volume.toFixed(1)} = ${correctVss.toFixed(1)}\\)`
+    : `Worked: \\(\\text{Weight must be > 0 (current: ${subject.weight.toFixed(1)} kg) `
+      + `for } V_{ss,u} \\text{ calculation.}\\)`;
+  updateQuizFeedback(
+    vssFeedback,
+    Math.abs(userVss - correctVss) / correctVss <= tolerance,
+    `${correctVss.toFixed(1)} L`,
+    vssWorked
+  );
 
   // 4. Time to Steady State (hours) - approximately 5 half-lives
   const userTss = parseFloat(document.getElementById('quiz-tss').value);
   const correctTss = subject.halfLife * 5;
   const tssFeedback = document.getElementById('quiz-tss-feedback');
-  if (Math.abs(userTss - correctTss) / correctTss <= tolerance) {
-    tssFeedback.textContent = `✓ Correct! (${correctTss.toFixed(1)} hours)`;
-    tssFeedback.className = 'quiz-feedback correct';
-  } else {
-    tssFeedback.textContent = `✗ Incorrect. Correct answer: ${correctTss.toFixed(1)} hours`;
-    tssFeedback.className = 'quiz-feedback incorrect';
-  }
+  const tssWorked = `Worked: \\(t_{ss} = 5 \\times ${subject.halfLife.toFixed(1)} = ${correctTss.toFixed(1)}\\)`;
+  updateQuizFeedback(
+    tssFeedback,
+    Math.abs(userTss - correctTss) / correctTss <= tolerance,
+    `${correctTss.toFixed(1)} hours`,
+    tssWorked
+  );
 
   // 5. Css,avg (mg/L)
   const userCssAvg = parseFloat(document.getElementById('quiz-cssavg').value);
   const correctCssAvg = subject.cssAvg;
   const cssAvgFeedback = document.getElementById('quiz-cssavg-feedback');
-  if (Math.abs(userCssAvg - correctCssAvg) / correctCssAvg <= tolerance) {
-    cssAvgFeedback.textContent = `✓ Correct! (${correctCssAvg.toFixed(2)} mg/L)`;
-    cssAvgFeedback.className = 'quiz-feedback correct';
-  } else {
-    cssAvgFeedback.textContent = `✗ Incorrect. Correct answer: ${correctCssAvg.toFixed(2)} mg/L`;
-    cssAvgFeedback.className = 'quiz-feedback incorrect';
+  const cssStartIdx = timePoints.findIndex(t => t >= STEADY_STATE_START_HOURS);
+  const cssEndIdx = timePoints.findIndex(t => t >= STEADY_STATE_END_HOURS);
+  const hasSteadyStateWindow = cssStartIdx !== -1 && cssEndIdx !== -1;
+  const steadyStateConcentrations = hasSteadyStateWindow
+    ? subject.concentrations.slice(cssStartIdx, cssEndIdx)
+    : subject.concentrations;
+  const cssSum = steadyStateConcentrations.reduce((sum, conc) => sum + conc, 0);
+  const cssCount = steadyStateConcentrations.length;
+  const cssRangeLabel = hasSteadyStateWindow
+    ? `${STEADY_STATE_START_HOURS}-${STEADY_STATE_END_HOURS} h`
+    : 'full profile';
+  const cssAvgWorked = cssCount > 0
+    ? `Worked (${cssRangeLabel}): \\(C_{ss,\\text{avg}} = \\frac{\\sum C_i}{n} = \\frac{${cssSum.toFixed(2)}}{${cssCount}} = ${correctCssAvg.toFixed(2)}\\)`
+    : `Worked (${cssRangeLabel}): \\(\\text{No concentration data available in the expected time range for averaging.}\\)`;
+  updateQuizFeedback(
+    cssAvgFeedback,
+    Math.abs(userCssAvg - correctCssAvg) / correctCssAvg <= tolerance,
+    `${correctCssAvg.toFixed(2)} mg/L`,
+    cssAvgWorked
+  );
+
+  const feedbackElements = [crClFeedback, adjBWFeedback, vssFeedback, tssFeedback, cssAvgFeedback];
+  if (window.MathJax?.typesetPromise) {
+    const mathJaxWarning = `MathJax failed to render quiz feedback equations; LaTeX source will appear instead of formatted formulas.`;
+    MathJax.typesetPromise(feedbackElements)
+      .catch(err => console.warn(mathJaxWarning, err));
   }
 }
 
