@@ -2268,7 +2268,7 @@ function checkQuizAnswers() {
     const workedLines = Array.isArray(workedCalculationLines)
       ? workedCalculationLines
       : [workedCalculationLines];
-    feedbackElement.textContent = '';
+    feedbackElement.replaceChildren();
     const statusLine = document.createElement('div');
     statusLine.textContent = `${statusLabel} Correct answer: ${correctAnswer}`;
     feedbackElement.appendChild(statusLine);
@@ -2323,9 +2323,8 @@ function checkQuizAnswers() {
   const userVss = parseFloat(document.getElementById('quiz-vss').value);
   const correctVss = subject.vssUnbound;
   const vssFeedback = document.getElementById('quiz-vss-feedback');
-  const volumePerKg = subject.weight > 0 ? subject.volume / subject.weight : null;
   const vssWorked = subject.weight > 0
-    ? `Worked: \\(V = ${volumePerKg.toFixed(2)} \\times ${subject.weight.toFixed(1)} = ${subject.volume.toFixed(1)},\\ V_{ss,u} = ${subject.fractionUnbound.toFixed(2)} \\times ${subject.volume.toFixed(1)} = ${correctVss.toFixed(1)}\\)`
+    ? `Worked: \\(V = ${(subject.volume / subject.weight).toFixed(2)} \\times ${subject.weight.toFixed(1)} = ${subject.volume.toFixed(1)},\\ V_{ss,u} = ${subject.fractionUnbound.toFixed(2)} \\times ${subject.volume.toFixed(1)} = ${correctVss.toFixed(1)}\\)`
     : 'Worked: weight unavailable for Vss,u calculation.';
   updateQuizFeedback(
     vssFeedback,
@@ -2373,7 +2372,7 @@ function checkQuizAnswers() {
 
   if (window.MathJax?.typesetPromise) {
     MathJax.typesetPromise([crClFeedback, adjBWFeedback, vssFeedback, tssFeedback, cssAvgFeedback])
-      .catch(err => console.warn('MathJax failed to render quiz feedback equations; formulas will appear as plain text.', err));
+      .catch(err => console.warn('MathJax failed to render quiz feedback equations; LaTeX source will appear instead of formatted formulas.', err));
   }
 }
 
