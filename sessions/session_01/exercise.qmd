@@ -260,7 +260,8 @@ The one-compartment model with first-order absorption focuses on the minimum ess
   \mathrm{CrCl} = \frac{(140 - \text{age}) \times \text{weight} \times (0.85\ \text{if female})}{72 \times S_{\text{Cr}}}
   \]
 - **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
-- **IBW Floor**: For instructional consistency, the ideal body weight is floored at 40 kg to prevent unrealistic calculations when the formula yields values below physiologic norms
+- **IBW Floor**: For instructional consistency, the ideal body weight is floored at 40 kg to prevent
+  unrealistic calculations when the formula yields values below physiologic norms
 
 **Dosing Parameters:**
 - **Dose**: Amount of drug administered per dose
@@ -2328,7 +2329,8 @@ function checkQuizAnswers() {
   const vssFeedback = document.getElementById('quiz-vss-feedback');
   const vssWorked = subject.weight > 0
     ? `Worked: \\(V = ${(subject.volume / subject.weight).toFixed(2)} \\times ${subject.weight.toFixed(1)} = ${subject.volume.toFixed(1)},\\ V_{ss,u} = ${subject.fractionUnbound.toFixed(2)} \\times ${subject.volume.toFixed(1)} = ${correctVss.toFixed(1)}\\)`
-    : 'Worked: \\(\\text{Weight must be greater than 0 for } V_{ss,u} \\text{ calculation.}\\)';
+    : `Worked: \\(\\text{Weight must be > 0 (current: ${subject.weight.toFixed(1)} kg) `
+      + `for } V_{ss,u} \\text{ calculation.}\\)`;
   updateQuizFeedback(
     vssFeedback,
     Math.abs(userVss - correctVss) / correctVss <= tolerance,
@@ -2375,8 +2377,10 @@ function checkQuizAnswers() {
 
   const feedbackElements = [crClFeedback, adjBWFeedback, vssFeedback, tssFeedback, cssAvgFeedback];
   if (window.MathJax?.typesetPromise) {
+    const mathJaxWarning = 'MathJax failed to render quiz feedback equations; '
+      + 'LaTeX source will appear instead of formatted formulas.';
     MathJax.typesetPromise(feedbackElements)
-      .catch(err => console.warn('MathJax failed to render quiz feedback equations; LaTeX source will appear instead of formatted formulas.', err));
+      .catch(err => console.warn(mathJaxWarning, err));
   }
 }
 
