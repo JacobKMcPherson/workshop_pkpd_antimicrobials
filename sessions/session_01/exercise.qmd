@@ -260,7 +260,7 @@ The one-compartment model with first-order absorption focuses on the minimum ess
   \mathrm{CrCl} = \frac{(140 - \text{age}) \times \text{weight} \times (0.85\ \text{if female})}{72 \times S_{\text{Cr}}}
   \]
 - **Weight-Based Dosing**: Volume of distribution scales directly with patient weight
-- **IBW Floor**: For instructional consistency, the ideal body weight is not allowed below 40 kg
+- **IBW Floor**: For instructional consistency, the ideal body weight is floored at 40 kg to avoid unrealistic values
 
 **Dosing Parameters:**
 - **Dose**: Amount of drug administered per dose
@@ -2308,7 +2308,7 @@ function checkQuizAnswers() {
   const heightInches = subject.height / 2.54;
   const ibwBase = subject.sex === 'Male' ? 50 : 45.5;
   const ibwRaw = ibwBase + 2.3 * (heightInches - 60);
-  const ibwUsed = Math.max(ibwRaw, 40); // Apply clinical minimum IBW of 40 kg.
+  const ibwUsed = Math.max(ibwRaw, 40); // Apply instructional IBW floor of 40 kg.
   const ibwWorked = `\\(\\text{IBW} = \\max(40, ${ibwBase.toFixed(1)} + 2.3 \\times (${heightInches.toFixed(1)} - 60)) = ${ibwUsed.toFixed(1)}\\)`;
   const adjBwWorked = subject.weight > ibwUsed
     ? `\\(\\text{AdjBW} = ${ibwUsed.toFixed(1)} + 0.4 \\times (${subject.weight.toFixed(1)} - ${ibwUsed.toFixed(1)}) = ${correctAdjBW.toFixed(1)}\\)`
@@ -2326,7 +2326,7 @@ function checkQuizAnswers() {
   const vssFeedback = document.getElementById('quiz-vss-feedback');
   const vssWorked = subject.weight > 0
     ? `Worked: \\(V = ${(subject.volume / subject.weight).toFixed(2)} \\times ${subject.weight.toFixed(1)} = ${subject.volume.toFixed(1)},\\ V_{ss,u} = ${subject.fractionUnbound.toFixed(2)} \\times ${subject.volume.toFixed(1)} = ${correctVss.toFixed(1)}\\)`
-    : 'Worked: \\(\\text{Weight unavailable for } V_{ss,u} \\text{ calculation.}\\)';
+    : 'Worked: \\(\\text{Invalid weight value for } V_{ss,u} \\text{ calculation.}\\)';
   updateQuizFeedback(
     vssFeedback,
     Math.abs(userVss - correctVss) / correctVss <= tolerance,
@@ -2363,7 +2363,7 @@ function checkQuizAnswers() {
     : 'full profile';
   const cssAvgWorked = cssCount > 0
     ? `Worked (${cssRangeLabel}): \\(C_{ss,\\text{avg}} = \\frac{\\sum C_i}{n} = \\frac{${cssSum.toFixed(2)}}{${cssCount}} = ${correctCssAvg.toFixed(2)}\\)`
-    : `Worked (${cssRangeLabel}): \\(\\text{No concentrations available for averaging.}\\)`;
+    : `Worked (${cssRangeLabel}): \\(\\text{No concentration data available for averaging.}\\)`;
   updateQuizFeedback(
     cssAvgFeedback,
     Math.abs(userCssAvg - correctCssAvg) / correctCssAvg <= tolerance,
