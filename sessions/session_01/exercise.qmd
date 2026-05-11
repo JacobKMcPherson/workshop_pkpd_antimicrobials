@@ -177,7 +177,10 @@ This interactive module demonstrates multiple dosing pharmacokinetics using pati
   <canvas id="pk-chart" width="1920" height="1080"></canvas>
 </div>
 
+<div class="plot-actions">
 <button id="scale-toggle-btn" onclick="toggleScale()">Switch to Linear</button>
+<button id="popout-plot-btn" onclick="popOutPlot()">Pop Out Plot</button>
+</div>
 
 </div>
 
@@ -399,8 +402,8 @@ body {
 }
 
 .plot-column {
-  position: sticky;
-  top: 20px;
+  position: relative;
+  top: auto;
   height: fit-content;
   background-color: #ffffff;
   padding: 20px;
@@ -591,6 +594,13 @@ main.content {
 #pk-chart {
   max-width: 100%;
   height: auto;
+}
+
+.plot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .controls-middle h3 {
@@ -859,6 +869,7 @@ let canvas = null;
 let ctx = null;
 let isLogScale = true; // Track current scale type
 let initialSimulationData = null; // Store the initial simulation state
+let popoutWindow = null; // Track chart pop-out window
 
 // Patient data
 let currentPatient = {
@@ -1888,6 +1899,8 @@ function drawChart() {
       ctx.fillText(tick.toString(), margin.left - 10, y + 4);
     }
   });
+
+  syncPopoutPlot();
 }
 
 // Toggle between log and linear scale
@@ -1898,6 +1911,70 @@ function toggleScale() {
     toggleBtn.textContent = isLogScale ? 'Switch to Linear' : 'Switch to Log';
   }
   drawChart();
+}
+
+// Open the chart in a separate window
+function popOutPlot() {
+  if (!canvas) return;
+
+  if (popoutWindow && !popoutWindow.closed) {
+    syncPopoutPlot();
+    popoutWindow.focus();
+    return;
+  }
+
+  popoutWindow = window.open('', 'pkPlotWindow', 'width=1000,height=700,resizable=yes,scrollbars=yes');
+  if (!popoutWindow) {
+    alert('Unable to open pop-out window. Please allow pop-ups for this site.');
+    return;
+  }
+
+  popoutWindow.document.write(`
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <title>PK Simulation Plot</title>
+        <style>
+          body {
+            margin: 0;
+            padding: 16px;
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+          }
+          h1 {
+            margin: 0 0 12px 0;
+            font-size: 18px;
+            color: #212529;
+          }
+          #popout-plot-image {
+            width: 100%;
+            height: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background: #ffffff;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Plasma Concentration-Time Profile</h1>
+        <img id="popout-plot-image" alt="PK simulation plot">
+      </body>
+    </html>
+  `);
+  popoutWindow.document.close();
+  syncPopoutPlot();
+  popoutWindow.focus();
+}
+
+// Keep pop-out chart synchronized with the in-page chart
+function syncPopoutPlot() {
+  if (!canvas || !popoutWindow || popoutWindow.closed) return;
+
+  const popoutImage = popoutWindow.document.getElementById('popout-plot-image');
+  if (popoutImage) {
+    popoutImage.src = canvas.toDataURL('image/png');
+  }
 }
 
 // Update the subjects table
