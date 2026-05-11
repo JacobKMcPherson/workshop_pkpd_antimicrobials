@@ -872,6 +872,7 @@ let initialSimulationData = null; // Store the initial simulation state
 let popoutWindow = null; // Track chart pop-out window
 let lastPopoutSync = 0; // Limit pop-out redraw frequency
 const POPOUT_SYNC_INTERVAL_MS = 150;
+const POPOUT_INITIAL_SYNC_DELAY_MS = 50;
 
 // Patient data
 let currentPatient = {
@@ -1965,7 +1966,7 @@ function popOutPlot() {
     </html>
   `);
   popoutWindow.document.close();
-  setTimeout(() => syncPopoutPlot(true), 50);
+  setTimeout(() => syncPopoutPlot(true), POPOUT_INITIAL_SYNC_DELAY_MS);
   popoutWindow.focus();
 }
 
@@ -1995,14 +1996,14 @@ function syncPopoutPlot(force = false) {
     return;
   }
 
-  if (!force && popoutDocument.visibilityState === 'hidden') return;
+  if (!force && popoutDocument.hidden) return;
 
   const popoutImage = popoutDocument.getElementById('popout-plot-image');
   if (popoutImage) {
     lastPopoutSync = now;
     popoutImage.src = canvas.toDataURL('image/png');
   } else if (force) {
-    setTimeout(() => syncPopoutPlot(true), 50);
+    setTimeout(() => syncPopoutPlot(true), POPOUT_INITIAL_SYNC_DELAY_MS);
   }
 }
 
