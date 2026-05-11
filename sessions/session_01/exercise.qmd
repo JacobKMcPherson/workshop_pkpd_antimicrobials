@@ -870,6 +870,8 @@ let ctx = null;
 let isLogScale = true; // Track current scale type
 let initialSimulationData = null; // Store the initial simulation state
 let popoutWindow = null; // Track chart pop-out window
+let lastPopoutSync = 0; // Limit pop-out redraw frequency
+const POPOUT_SYNC_INTERVAL_MS = 150;
 
 // Patient data
 let currentPatient = {
@@ -1917,8 +1919,8 @@ function toggleScale() {
 function popOutPlot() {
   if (!canvas) return;
 
-  if (popoutWindow && !popoutWindow.closed) {
-    syncPopoutPlot();
+  if (isPopoutWindowAvailable()) {
+    syncPopoutPlot(true);
     popoutWindow.focus();
     return;
   }
@@ -1963,17 +1965,44 @@ function popOutPlot() {
     </html>
   `);
   popoutWindow.document.close();
-  syncPopoutPlot();
+  setTimeout(() => syncPopoutPlot(true), 50);
   popoutWindow.focus();
 }
 
-// Keep pop-out chart synchronized with the in-page chart
-function syncPopoutPlot() {
-  if (!canvas || !popoutWindow || popoutWindow.closed) return;
+// Safely determine whether the pop-out window can be accessed
+function isPopoutWindowAvailable() {
+  if (!popoutWindow) return false;
+  try {
+    return !popoutWindow.closed && !!popoutWindow.document;
+  } catch (error) {
+    popoutWindow = null;
+    return false;
+  }
+}
 
-  const popoutImage = popoutWindow.document.getElementById('popout-plot-image');
+// Keep pop-out chart synchronized with the in-page chart
+function syncPopoutPlot(force = false) {
+  if (!canvas || !isPopoutWindowAvailable()) return;
+
+  const now = Date.now();
+  if (!force && (now - lastPopoutSync) < POPOUT_SYNC_INTERVAL_MS) return;
+
+  let popoutDocument;
+  try {
+    popoutDocument = popoutWindow.document;
+  } catch (error) {
+    popoutWindow = null;
+    return;
+  }
+
+  if (!force && popoutDocument.visibilityState === 'hidden') return;
+
+  const popoutImage = popoutDocument.getElementById('popout-plot-image');
   if (popoutImage) {
+    lastPopoutSync = now;
     popoutImage.src = canvas.toDataURL('image/png');
+  } else if (force) {
+    setTimeout(() => syncPopoutPlot(true), 50);
   }
 }
 
