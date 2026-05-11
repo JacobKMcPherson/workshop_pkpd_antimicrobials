@@ -873,6 +873,7 @@ let popoutWindow = null; // Track chart pop-out window
 let lastPopoutSync = 0; // Limit pop-out redraw frequency
 const POPOUT_SYNC_INTERVAL_MS = 150;
 const POPOUT_INITIAL_SYNC_DELAY_MS = 50;
+const POPOUT_MAX_SYNC_RETRIES = 5;
 
 // Patient data
 let currentPatient = {
@@ -1974,7 +1975,7 @@ function popOutPlot() {
 function isPopoutWindowAvailable() {
   if (!popoutWindow) return false;
   try {
-    return !popoutWindow.closed && !!popoutWindow.document;
+    return !popoutWindow.closed && popoutWindow.document !== null;
   } catch (error) {
     popoutWindow = null;
     return false;
@@ -1982,7 +1983,7 @@ function isPopoutWindowAvailable() {
 }
 
 // Keep pop-out chart synchronized with the in-page chart
-function syncPopoutPlot(force = false) {
+function syncPopoutPlot(force = false, retryCount = 0) {
   if (!canvas || !isPopoutWindowAvailable()) return;
 
   const now = Date.now();
@@ -1996,14 +1997,14 @@ function syncPopoutPlot(force = false) {
     return;
   }
 
-  if (!force && popoutDocument.hidden) return;
+  if (!force && popoutDocument.hidden === true) return;
 
   const popoutImage = popoutDocument.getElementById('popout-plot-image');
   if (popoutImage) {
     lastPopoutSync = now;
     popoutImage.src = canvas.toDataURL('image/png');
-  } else if (force) {
-    setTimeout(() => syncPopoutPlot(true), POPOUT_INITIAL_SYNC_DELAY_MS);
+  } else if (force && retryCount < POPOUT_MAX_SYNC_RETRIES) {
+    setTimeout(() => syncPopoutPlot(true, retryCount + 1), POPOUT_INITIAL_SYNC_DELAY_MS);
   }
 }
 
